@@ -1,0 +1,12 @@
+@CHARSET "UTF-8";
+
+@font-face {
+	font-family: 'LexiSaebomR';
+	src: url('../fonts/LexiSaebomR.eot');
+	src: url('../fonts/LexiSaebomR.eot?#iefix')
+		format('embedded-opentype'),
+		url('../fonts/LexiSaebomR.woff')
+		format('woff');
+	font-weight: normal;
+	font-style: normal
+}

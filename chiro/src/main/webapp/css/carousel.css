@@ -1,0 +1,66 @@
+body{
+	margin: 0px;
+}
+
+#carousel_section{
+	width: 100%;
+	background-color: gray;
+	
+	display: inline-block;
+    position: relative;
+    overflow: hidden; /* 불필요한 부분 가리기 */
+    padding: 6px; /* 6px정도 이미지 밖으로 표현 */
+}
+
+#carousel_section > ul{
+	margin: 0px;
+	padding: 0px;
+	width: 100%;
+	height: 100%;
+	position: relative;
+	overflow: hidden;
+}
+
+#carousel_section > ul > li{
+	list-style: none;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+}
+
+#carousel_section > ul > li > img{
+	list-style: none;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	
+	box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+}
+
+#carousel_section:before,
+#carousel_section:after {
+    content: "";
+    position: absolute;
+    z-index: 1;
+    width: 97px;
+    height: 50px;
+    background: #fff; /* 배경색과 같은 색 */
+    transform: rotate(-30deg);
+}
+/* 왼쪽 위 */
+#carousel_section:before {
+    box-shadow: 0 10px 8px -12px rgba(0, 0, 0, 0.8);
+    top: -24px;
+    bottom: auto;
+    right: auto;
+    left: -26px;
+ 
+}
+/* 오른쪽 아래 */
+#carousel_section:after {
+    box-shadow: 0 -10px 10px -10px rgba(0, 0, 0, 0.7);
+    top: auto;
+    bottom: -22px;
+    right: -25px;
+    left: auto;
+}
