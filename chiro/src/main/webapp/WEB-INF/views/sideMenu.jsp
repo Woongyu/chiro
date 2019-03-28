@@ -42,7 +42,7 @@
 			</header>
 			<ul>
 				<li><a href="#this" id="side_main">메인</a></li>
-				<li><a href="signup.jsp">Sign up</a></li>
+				<li><a href="#this" id="side_join">등록하기</a></li>
 				<li><a href="elements.html">Elements</a></li>
 				<li><span class="opener">Submenu</span>
 					<ul>
@@ -106,13 +106,24 @@
 		$(document).ready(function() {
 			$("#side_main").on("click", function(e) {
 				e.preventDefault();
-				fn_openIndexPage();
+				fn_openMainPage();
+			});
+			
+			$("#side_join").on("click", function(e) {
+				e.preventDefault();
+				fn_openJoinPage();
 			});
 		});
 		
-		function fn_openIndexPage() {
+		function fn_openMainPage() {
 			var comSubmit = new ComSubmit();
-			comSubmit.setUrl("<c:url value='/index.do' />");
+			comSubmit.setUrl("<c:url value='/main.do' />");
+			comSubmit.submit();
+		}
+		
+		function fn_openJoinPage() {
+			var comSubmit = new ComSubmit();
+			comSubmit.setUrl("<c:url value='/join.do' />");
 			comSubmit.submit();
 		}
 	</script>

@@ -10,6 +10,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import com.ch.vo.CommandMap;
 
 public class CustomMapArgumentResolver implements HandlerMethodArgumentResolver {
+	
 	@Override
 	public boolean supportsParameter(MethodParameter parameter) {
 		return CommandMap.class.isAssignableFrom(parameter.getParameterType());

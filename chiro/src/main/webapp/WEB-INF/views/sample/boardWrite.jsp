@@ -29,29 +29,29 @@
 	</form>
 	<%@ include file="/WEB-INF/include/include-body.jspf"%>
 	<script type="text/javascript">
-		$(document).ready(function() {
-			$("#list").on("click", function(e) {
-				e.preventDefault();
-				fn_openBoardList();
-			});
-		});
-
-		$("#write").on("click", function(e) { //작성하기 버튼
+	$(document).ready(function() {
+		$("#list").on("click", function(e) {
 			e.preventDefault();
-			fn_insertBoard();
+			fn_openBoardList();
 		});
+	});
 
-		function fn_openBoardList() {
-			var comSubmit = new ComSubmit();
-			comSubmit.setUrl("<c:url value='openBoardList.do' />");
-			comSubmit.submit();
-		}
+	$("#write").on("click", function(e) { //작성하기 버튼
+		e.preventDefault();
+		fn_insertBoard();
+	});
 
-		function fn_insertBoard() {
-			var comSubmit = new ComSubmit("frm");
-			comSubmit.setUrl("<c:url value='/insertBoard.do' />");
-			comSubmit.submit();
-		}
+	function fn_openBoardList() {
+		var comSubmit = new ComSubmit();
+		comSubmit.setUrl("<c:url value='openBoardList.do' />");
+		comSubmit.submit();
+	}
+
+	function fn_insertBoard() {
+		var comSubmit = new ComSubmit("frm");
+		comSubmit.setUrl("<c:url value='/insertBoard.do' />");
+		comSubmit.submit();
+	}
 	</script>
 </body>
 </html>

@@ -10,5 +10,7 @@ public interface MyService {
 	void insertBoard(Map<String, Object> map) throws Exception;
 
 	Map<String, Object> selectBoardDetail(Map<String, Object> map) throws Exception;
+
+	void insUser(Map<String, Object> map) throws Exception;
 	
 }

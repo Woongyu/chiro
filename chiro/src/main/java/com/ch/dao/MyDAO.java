@@ -26,4 +26,8 @@ public class MyDAO extends AbstractDAO {
 		return (Map<String, Object>) selectOne("ch.selectBoardDetail", map);
 	}
 
+	public void insUser(Map<String, Object> map) {
+		insert("ch.insUser", map);
+	}
+
 }

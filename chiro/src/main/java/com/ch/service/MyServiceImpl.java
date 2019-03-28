@@ -32,4 +32,9 @@ public class MyServiceImpl implements MyService {
 		return resultMap;
 	}
 
+	@Override
+	public void insUser(Map<String, Object> map) throws Exception {
+		myDAO.insUser(map);
+	}
+
 }

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ch.service.MyService;
+import com.ch.util.Utlz;
 import com.ch.vo.CommandMap;
 
 @Controller
@@ -90,15 +91,41 @@ public class MyController {
 
 	@RequestMapping(value = "/openBoardDetail.do")
 	public ModelAndView openBoardDetail(CommandMap commandMap) throws Exception {
-		System.out.println("일로옴");
 		ModelAndView mv = new ModelAndView("/boardDetail");
 		Map<String, Object> map = myService.selectBoardDetail(commandMap.getMap());
 		mv.addObject("map", map);
 		return mv;
 	}
 	
-	@RequestMapping(value = "/index.do")
-	public ModelAndView openIndexPage() throws Exception {
-		return new ModelAndView("index");
+	@RequestMapping(value = "/main.do")
+	public ModelAndView openMainPage() throws Exception {
+		return new ModelAndView("main");
+	}
+	
+	@RequestMapping(value = "/join.do")
+	public ModelAndView openJoinPage() throws Exception {
+		return new ModelAndView("join");
+	}
+	
+	@RequestMapping(value = "/insUser.do")
+	public ModelAndView insUser(CommandMap map) throws Exception {
+		if(Utlz.isBlank((String) map.get("USER_AGE"))){
+			map.remove("USER_AGE");
+		}
+		if(Utlz.isBlank((String) map.get("BIRTH"))){
+			map.remove("BIRTH");
+		}
+		if(Utlz.isBlank((String) map.get("REGISTRATION_DATE"))){
+			map.remove("REGISTRATION_DATE");
+		}
+		if(Utlz.isBlank((String) map.get("COUNTING"))){
+			map.remove("COUNTING");
+		}
+		
+		map.put("USER_ID", Utlz.getSurrogateKey(11));
+		
+		Utlz.print("insUser: " + map.toString());
+		myService.insUser(map.getMap());
+		return new ModelAndView("redirect:/join.do");
 	}
 }

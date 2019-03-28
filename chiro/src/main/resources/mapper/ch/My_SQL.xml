@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="ch">
 	<select id="selectBoardList" parameterType="hashmap" resultType="hashmap">
 		<![CDATA[
@@ -78,5 +79,52 @@
 			WHERE USER_IDX = #{USER_IDX}
 		]]>
 	</select>
+	
+	<insert id="insUser" parameterType="hashmap">
+		<![CDATA[
+			INSERT INTO MEMBER
+			(
+				USER_IDX
+			  , USER_ID
+			  , USER_NAME
+			  , USER_AGE
+			  , BIRTH
+			  , E_MAIL
+			  , PHONE_NUMBER
+			  , GENDER
+			  , REGISTRATION_DATE
+			  , COUNTING
+			  , OUTL_CTT
+			  , CHK01
+			  , CHK02
+			  , CHK03
+			  , CHK04
+			  , DEL_YN
+			  , LUPD_CNT
+			  , PC_TS
+			 )
+			 VALUES
+			 (
+			 	NULL
+			   , #{USER_ID}
+			   , #{USER_NAME}
+			   , #{USER_AGE}
+			   , DATE_FORMAT(IFNULL(#{BIRTH}, now()), '%Y-%m-%d')
+			   , #{E_MAIL}
+			   , #{PHONE_NUMBER}
+			   , #{GENDER}
+			   , DATE_FORMAT(IFNULL(#{REGISTRATION_DATE}, now()), '%Y-%m-%d')
+			   , IFNULL(#{COUNTING}, 1)
+			   , #{OUTL_CTT}
+			   , IFNULL(#{CHK01}, '0')
+			   , IFNULL(#{CHK02}, '0')
+			   , IFNULL(#{CHK03}, '0')
+			   , IFNULL(#{CHK04}, '0')
+			   , 'N'
+			   , 1
+			   , CURRENT_TIMESTAMP
+			 )
+		]]>
+	</insert>
 
 </mapper>

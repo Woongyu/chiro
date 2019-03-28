@@ -47,7 +47,7 @@ function ComSubmit(opt_formId) {
 }
 
 var gfv_ajaxCallback = "";
-function ComAjax(opt_formId){
+function ComAjax(opt_formId) {
 	this.url = "";		
 	this.formId = gfn_isNull(opt_formId) == true ? "commonForm" : opt_formId;
 	this.param = "";
@@ -93,4 +93,9 @@ function ComAjax(opt_formId){
 			}
 		});
 	};
+}
+
+function fn_readyAlert() {
+	alert("해당 기능은 준비중입니다.");
+	return false;
 }
