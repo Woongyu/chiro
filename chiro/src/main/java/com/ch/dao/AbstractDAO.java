@@ -12,7 +12,7 @@ public class AbstractDAO {
 	private SqlSessionTemplate sqlSession;
 
 	protected void printQueryId(String queryId) {
-		Utlz.print("\t QueryId \t: " + queryId);
+		Utlz.print("QueryId : " + queryId);
 	}
 
 	public Object insert(String queryId, Object params) {

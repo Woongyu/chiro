@@ -95,7 +95,7 @@ function ComAjax(opt_formId) {
 	};
 }
 
-function fn_readyAlert() {
+function gfn_readyAlert() {
 	alert("해당 기능은 준비중입니다.");
 	return false;
 }

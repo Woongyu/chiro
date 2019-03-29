@@ -42,14 +42,10 @@
 			</header>
 			<ul>
 				<li><a href="#this" id="side_main">메인</a></li>
-				<li><a href="#this" id="side_join">등록하기</a></li>
-				<li><a href="elements.html">Elements</a></li>
-				<li><span class="opener">Submenu</span>
+				<li><span class="opener">회원관리</span>
 					<ul>
-						<li><a href="#">Lorem Dolor</a></li>
-						<li><a href="#">Ipsum Adipiscing</a></li>
-						<li><a href="#">Tempus Magna</a></li>
-						<li><a href="#">Feugiat Veroeros</a></li>
+						<li><a href="#this" id="side_join">회원등록</a></li>
+						<li><a href="#">회원목록</a></li>
 					</ul></li>
 				<li><a href="#">Etiam Dolore</a></li>
 				<li><a href="#">Adipiscing</a></li>
@@ -101,6 +97,9 @@
 		</footer>
 
 	</div>
+	
+	<!-- Scripts -->
+	<script src="<c:url value='/js/main.js'/>" charset="utf-8"></script>
 	
 	<script type="text/javascript">
 		$(document).ready(function() {

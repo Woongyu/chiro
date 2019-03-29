@@ -54,6 +54,6 @@ public class CommandMap {
 
 	@Override
 	public String toString() {
-		return "CommandMap [toString=" + map.toString() + "]";
+		return "Map [" + map.toString() + "]";
 	}
 }

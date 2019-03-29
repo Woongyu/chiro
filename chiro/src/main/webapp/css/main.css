@@ -2950,6 +2950,7 @@ input[type="submit"].disabled, input[type="submit"]:disabled, input[type="reset"
 	-ms-object-position: center;
 	object-position: center;
 	width: 100%;
+	
 	box-shadow: 10px 10px 20px -5px rgba(0, 0, 0, 0.8);
 }
 
@@ -3096,7 +3097,7 @@ input[type="submit"].disabled, input[type="submit"]:disabled, input[type="reset"
 }
 
 #menu>ul>li>ul a, #menu>ul>li>ul span {
-	font-size: 0.8em;
+	font-size: 1.0em;
 }
 
 #menu>ul>li>ul>li {

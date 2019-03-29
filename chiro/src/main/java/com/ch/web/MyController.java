@@ -109,6 +109,8 @@ public class MyController {
 	
 	@RequestMapping(value = "/insUser.do")
 	public ModelAndView insUser(CommandMap map) throws Exception {
+		
+		// MySql을 입력할 때 int, date 컬럼에 빈 값('')이 입력되면 에러가 발생한다.
 		if(Utlz.isBlank((String) map.get("USER_AGE"))){
 			map.remove("USER_AGE");
 		}
@@ -122,10 +124,16 @@ public class MyController {
 			map.remove("COUNTING");
 		}
 		
+		// 랜덤 키 값을 생성하여 쿼리 조회 시 복합키를 사용한다.
 		map.put("USER_ID", Utlz.getSurrogateKey(11));
 		
 		Utlz.print("insUser: " + map.toString());
 		myService.insUser(map.getMap());
 		return new ModelAndView("redirect:/join.do");
+	}
+	
+	@RequestMapping(value = "/sideMenu.do")
+	public ModelAndView sideMenu() throws Exception {
+		return new ModelAndView("sideMenu");
 	}
 }

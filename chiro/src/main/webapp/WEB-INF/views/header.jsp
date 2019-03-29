@@ -31,7 +31,7 @@
 		
 		$("a[name='icon_link']").on("click", function(e) {
 			e.preventDefault();
-			fn_readyAlert();
+			gfn_readyAlert();
 		});
 	});
 	

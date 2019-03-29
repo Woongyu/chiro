@@ -6,30 +6,6 @@
 <meta charset="UTF-8">
 <%@ include file="/WEB-INF/include/include-header.jspf"%>
 <title>회원등록</title>
-<script type="text/javascript">
-function fn_ins() {
-	$(function() {
-		$.ajax({
-			url : "/Controller?type=signup",
-			type : "get",
-			data : $("#userInfo").serialize(),
-			dataType : "text",
-			success : function(data) {
-				if (data == "1") {
-					alert("success");
-					location.href = "member.jsp";
-				} else {
-					alert("fail");
-				}
-			},
-			error : function(data) {
-				alert(data);
-				alert("error");
-			}
-		});
-	});
-}
-</script>
 </head>
 <body class="is-preload">
 
@@ -49,7 +25,9 @@ function fn_ins() {
 						<h1>SIGN UP</h1>
 					</header>
 
-					<span class="image main"><img src="/images/join_chiro01.jpg" alt="" /></span>
+					<span class="image main">
+						<img src="/images/join_chiro01.jpg" alt="" style="box-shadow: 10px 10px 20px -5px rgba(0, 0, 0, 0.8);" />
+					</span>
 
 					<!-- Form -->
 					<h2>Membership Application Form</h2>
@@ -111,8 +89,8 @@ function fn_ins() {
 							<!-- Break -->
 							<div class="col-12">
 								<ul class="actions">
-									<li><input type="submit" id="submit" value="Register" class="button primary" /></li>
-									<li><input type="reset" value="Reset" /></li>
+									<li><input type="submit" id="submit" value="REGISTER" class="button primary" /></li>
+									<li><input type="reset" value="RESET" /></li>
 								</ul>
 							</div>
 						</div>
