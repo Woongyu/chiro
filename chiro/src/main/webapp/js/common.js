@@ -44,6 +44,15 @@ function ComSubmit(opt_formId) {
 		frm.method = "post";
 		frm.submit();
 	};
+	
+	this.openPopup = function openPopup() {
+		var frm = $("#" + this.formId)[0];
+		frm.action = this.url;
+		frm.method = "post";
+		frm.target = "commonForm";
+		window.open('', "commonForm", "width=700, height=500");
+		frm.submit();
+	};
 }
 
 var gfv_ajaxCallback = "";

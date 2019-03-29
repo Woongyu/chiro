@@ -45,7 +45,7 @@
 				<li><span class="opener">회원관리</span>
 					<ul>
 						<li><a href="#this" id="side_join">회원등록</a></li>
-						<li><a href="#">회원목록</a></li>
+						<li><a href="#this" id="side_list">회원목록</a></li>
 					</ul></li>
 				<li><a href="#">Etiam Dolore</a></li>
 				<li><a href="#">Adipiscing</a></li>
@@ -76,8 +76,9 @@
 					서울특별시 마포구 도화동 4-48 2층<br />
 					공덕 이마트 뒷편(공덕역 10번 출구) 오르막 30m 에이스부동산 2층에 위치하고 있습니다.
 				</li>
-				<li class="fa-phone"><a href="tel:0507-1454-4391" target="_blank">0507-1454-4391</a><br />
-				<a href="tel:010-3917-0805" target="_blank">010-3917-0805</a>
+				<li class="fa-phone">
+					<a href="tel:0507-1454-4391" target="_blank">0507-1454-4391</a><br />
+					<a href="tel:010-3917-0805" target="_blank">010-3917-0805</a>
 				</li>
 				<li class="fa-heart">
 					- 평일 10:00 ~ 19:00<br />
@@ -112,6 +113,11 @@
 				e.preventDefault();
 				fn_openJoinPage();
 			});
+			
+			$("#side_list").on("click", function(e) {
+				e.preventDefault();
+				fn_openListPage();
+			});
 		});
 		
 		function fn_openMainPage() {
@@ -123,6 +129,12 @@
 		function fn_openJoinPage() {
 			var comSubmit = new ComSubmit();
 			comSubmit.setUrl("<c:url value='/join.do' />");
+			comSubmit.submit();
+		}
+		
+		function fn_openListPage() {
+			var comSubmit = new ComSubmit();
+			comSubmit.setUrl("<c:url value='/list.do' />");
 			comSubmit.submit();
 		}
 	</script>

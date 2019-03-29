@@ -68,6 +68,7 @@
 			WHERE USER_IDX = #{USER_IDX}
 		]]>
 	</update>
+	
 	<select id="selectBoardDetail" parameterType="hashmap" resultType="hashmap">
 		<![CDATA[
 			SELECT
@@ -126,5 +127,49 @@
 			 )
 		]]>
 	</insert>
+	
+	<select id="selectMemberList" parameterType="hashmap" resultType="hashmap">
+		<![CDATA[
+			SELECT
+				T1.USER_ID
+			  , T1.USER_IDX
+			  , T1.USER_NAME
+			  , T1.USER_AGE
+			  , DATE_FORMAT(T1.BIRTH, '%Y-%m-%d') AS BIRTH
+			  , T1.E_MAIL
+			  , T1.PHONE_NUMBER
+			  , (CASE T1.GENDER WHEN 'M' THEN '남성' WHEN 'W' THEN '여성' END) AS GENDER
+			  , DATE_FORMAT(T1.REGISTRATION_DATE, '%Y-%m-%d') AS REGISTRATION_DATE
+			  , T1.COUNTING
+			  , DATE_FORMAT(T1.PC_TS, '%Y-%m-%d %H:%i:%s') AS PC_TS
+			  , DEL_YN
+			FROM MEMBER T1
+			WHERE 1 = 1
+		]]>
+	</select>
+	
+	<select id="selectMemberDetail" parameterType="hashmap" resultType="hashmap">
+		<![CDATA[
+			SELECT
+				T1.USER_ID
+			  , T1.USER_NAME
+			  , T1.USER_AGE
+			  , DATE_FORMAT(T1.BIRTH, '%Y-%m-%d') AS BIRTH
+			  , T1.E_MAIL
+			  , T1.PHONE_NUMBER
+			  , (CASE T1.GENDER WHEN 'M' THEN '남성' WHEN 'W' THEN '여성' END) AS GENDER
+			  , DATE_FORMAT(PC_TS, '%Y-%m-%d %H:%i:%s') AS PC_TS
+			  , DATE_FORMAT(T1.REGISTRATION_DATE, '%Y-%m-%d') AS REGISTRATION_DATE
+			  , T1.COUNTING
+			  , T1.CHK01
+			  , T1.CHK02
+			  , T1.CHK03
+			  , T1.CHK04
+			  , T1.OUTL_CTT
+			FROM MEMBER T1
+			WHERE 1 = 1
+			AND T1.USER_ID = #{USER_ID}
+		]]>
+	</select>
 
 </mapper>

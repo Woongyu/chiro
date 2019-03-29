@@ -41,10 +41,10 @@
 								<input type="text" numberOnly name="USER_AGE" id="USER_AGE" value="" class="int" placeholder="나이" maxlength="11" />
 							</div>
 							<div class="col-6 col-12-xsmall">
-								<input type="text" name="BIRTH" id="BIRTH" value="" class="int" placeholder="생일(예 : 1970-01-01)" />
+								<input type="text" name="BIRTH" id="BIRTH" value="" class="int" placeholder="생년월일(예 : 1970-01-01)" />
 							</div>
 							<div class="col-6 col-12-xsmall">
-								<input type="email" name="EMAIL" id="EMAIL" value="" placeholder="이메일" maxlength="100" />
+								<input type="email" name="EMAIL" id="EMAIL" value="" placeholder="E-MAIL" maxlength="100" />
 							</div>
 							<div class="col-6 col-12-xsmall">
 								<input type="text" numberOnly name="PHONE_NUMBER" id="PHONE_NUMBER" value="" class="int" placeholder="휴대전화" pattern="[0-9]{2,3}-[0-9]{3,4}-[0-9]{3,4}" maxlength="11" />
@@ -60,7 +60,7 @@
 								<input type="text" name="REGISTRATION_DATE" id="REGISTRATION_DATE" value="" class="int" placeholder="등록일자(예 : 1970-01-01)" />
 							</div>
 							<div class="col-6 col-12-xsmall">
-								<input type="text" numberOnly name="COUNTING" id="COUNTING" value="" class="int" placeholder="회차" maxlength="11" />
+								<input type="text" numberOnly name="COUNTING" id="COUNTING" value="" class="int" placeholder="횟수" maxlength="11" />
 							</div>
 
 							<!-- Break -->
@@ -206,7 +206,7 @@
 		alert("등록이 완료되었습니다.");
 		
 		var comSubmit = new ComSubmit();
-		comSubmit.setUrl("<c:url value='main.do' />");
+		comSubmit.setUrl("<c:url value='list.do' />");
 		comSubmit.submit();
 	}
 	</script>

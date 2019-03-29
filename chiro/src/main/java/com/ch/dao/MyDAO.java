@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
+import com.ch.vo.CommandMap;
+
 @Repository("myDAO")
 public class MyDAO extends AbstractDAO {
 
@@ -28,6 +30,16 @@ public class MyDAO extends AbstractDAO {
 
 	public void insUser(Map<String, Object> map) {
 		insert("ch.insUser", map);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Map<String, Object>> selectMemberList(CommandMap map) {
+		return (List<Map<String, Object>>) selectList("ch.selectMemberList", map);
+	}
+
+	@SuppressWarnings("unchecked")
+	public Map<String, Object> selectMemberDetail(String sStr) {
+		return (Map<String, Object>) selectOne("ch.selectMemberDetail", sStr);
 	}
 
 }

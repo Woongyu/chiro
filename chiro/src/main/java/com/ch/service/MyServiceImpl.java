@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.ch.dao.MyDAO;
+import com.ch.vo.CommandMap;
 
 @Service("myService")
 public class MyServiceImpl implements MyService {
@@ -35,6 +36,16 @@ public class MyServiceImpl implements MyService {
 	@Override
 	public void insUser(Map<String, Object> map) throws Exception {
 		myDAO.insUser(map);
+	}
+
+	@Override
+	public List<Map<String, Object>> selectMemberList(CommandMap map) throws Exception {
+		return myDAO.selectMemberList(map);
+	}
+
+	@Override
+	public Map<String, Object> selectMemberDetail(String sStr) throws Exception {
+		return myDAO.selectMemberDetail(sStr);
 	}
 
 }

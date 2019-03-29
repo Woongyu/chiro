@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ch.service.MyService;
@@ -97,14 +99,35 @@ public class MyController {
 		return mv;
 	}
 	
+	// 메인
 	@RequestMapping(value = "/main.do")
 	public ModelAndView openMainPage() throws Exception {
 		return new ModelAndView("main");
 	}
 	
+	// 회원등록
 	@RequestMapping(value = "/join.do")
 	public ModelAndView openJoinPage() throws Exception {
 		return new ModelAndView("join");
+	}
+	
+	// 회원목록
+	@RequestMapping(value = "/list.do")
+	public ModelAndView openListPage(CommandMap map) throws Exception {
+		ModelAndView mv = new ModelAndView("memberList");
+		
+		List<Map<String, Object>> list = myService.selectMemberList(map);
+		mv.addObject("list", list);
+		return mv;
+	}
+	
+	@RequestMapping(value = "/detail2.do", method = RequestMethod.GET)
+	public ModelAndView openMemberDetail2(@RequestParam String user_id) throws Exception {
+		ModelAndView mv = new ModelAndView("memberDetail");
+		
+		Utlz.print("user_id: " + user_id);
+		mv.addObject("user", myService.selectMemberDetail(user_id));
+		return mv;
 	}
 	
 	@RequestMapping(value = "/insUser.do")
@@ -132,8 +155,4 @@ public class MyController {
 		return new ModelAndView("redirect:/join.do");
 	}
 	
-	@RequestMapping(value = "/sideMenu.do")
-	public ModelAndView sideMenu() throws Exception {
-		return new ModelAndView("sideMenu");
-	}
 }
