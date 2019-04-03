@@ -42,15 +42,19 @@
 			</header>
 			<ul>
 				<li><a href="#this" id="side_main">메인</a></li>
-				<li><a href="signup.jsp">Sign up</a></li>
-				<li><a href="elements.html">Elements</a></li>
-				<li><span class="opener">Submenu</span>
+				<li><a href="#">공지사항</a></li>
+				<li><span class="opener">회원관리</span>
 					<ul>
-						<li><a href="#">Lorem Dolor</a></li>
-						<li><a href="#">Ipsum Adipiscing</a></li>
-						<li><a href="#">Tempus Magna</a></li>
-						<li><a href="#">Feugiat Veroeros</a></li>
-					</ul></li>
+						<li><a href="#this" id="side_join">회원등록</a></li>
+						<li><a href="#this" id="side_list">회원목록</a></li>
+					</ul>
+				</li>
+				<li><span class="opener">예약관리</span>
+					<ul>
+						<li><a href="#">예약등록</a></li>
+						<li><a href="#">예약조회</a></li>
+					</ul>
+				</li>
 				<li><a href="#">Etiam Dolore</a></li>
 				<li><a href="#">Adipiscing</a></li>
 				<li><span class="opener">Another Submenu</span>
@@ -80,8 +84,9 @@
 					서울특별시 마포구 도화동 4-48 2층<br />
 					공덕 이마트 뒷편(공덕역 10번 출구) 오르막 30m 에이스부동산 2층에 위치하고 있습니다.
 				</li>
-				<li class="fa-phone"><a href="tel:0507-1454-4391" target="_blank">0507-1454-4391</a><br />
-				<a href="tel:010-3917-0805" target="_blank">010-3917-0805</a>
+				<li class="fa-phone">
+					<a href="tel:0507-1454-4391" target="_blank">0507-1454-4391</a><br />
+					<a href="tel:010-3917-0805" target="_blank">010-3917-0805</a>
 				</li>
 				<li class="fa-heart">
 					- 평일 10:00 ~ 19:00<br />
@@ -102,17 +107,42 @@
 
 	</div>
 	
+	<!-- Scripts -->
+	<script src="<c:url value='/js/main.js'/>" charset="utf-8"></script>
+	
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$("#side_main").on("click", function(e) {
 				e.preventDefault();
-				fn_openIndexPage();
+				fn_openMainPage();
+			});
+			
+			$("#side_join").on("click", function(e) {
+				e.preventDefault();
+				fn_openJoinPage();
+			});
+			
+			$("#side_list").on("click", function(e) {
+				e.preventDefault();
+				fn_openListPage();
 			});
 		});
 		
-		function fn_openIndexPage() {
+		function fn_openMainPage() {
 			var comSubmit = new ComSubmit();
-			comSubmit.setUrl("<c:url value='/index.do' />");
+			comSubmit.setUrl("<c:url value='/main.do' />");
+			comSubmit.submit();
+		}
+		
+		function fn_openJoinPage() {
+			var comSubmit = new ComSubmit();
+			comSubmit.setUrl("<c:url value='/join.do' />");
+			comSubmit.submit();
+		}
+		
+		function fn_openListPage() {
+			var comSubmit = new ComSubmit();
+			comSubmit.setUrl("<c:url value='/list.do' />");
 			comSubmit.submit();
 		}
 	</script>

@@ -20,6 +20,7 @@ function gfn_isNull(str) {
 	return false;
 }
 
+var gfv_SubmitCallback = "";
 function ComSubmit(opt_formId) {
 	this.formId = gfn_isNull(opt_formId) == true ? "commonForm" : opt_formId;
 	this.url = "";
@@ -38,16 +39,37 @@ function ComSubmit(opt_formId) {
 		);
 	};
 	
+	this.setCallback = function setCallback(callBack) {
+		gfv_SubmitCallback = callBack;
+	};
+	
 	this.submit = function submit() {
 		var frm = $("#" + this.formId)[0];
 		frm.action = this.url;
 		frm.method = "post";
 		frm.submit();
 	};
+	
+	this.openPopup = function openPopup(w, h) {
+		var l = (screen.availWidth - w) / 2;
+		var t = (screen.availHeight - h) / 2;
+		var frm = $("#" + this.formId)[0];
+		frm.action = this.url;
+		frm.method = "post";
+		frm.target = "commonForm";
+		window.open('', "commonForm", "width= "+ w + ",height=" + h + ",left=" + l + ",top=" + t
+				+ ", scrollbars = no, location = no, toolbar = no, menubar = no, status = no");
+		frm.submit();
+		
+		// 호출 후 콜백
+		if(!gfn_isNull(gfv_SubmitCallback)){
+			eval(gfv_SubmitCallback+"();");
+		}
+	};
 }
 
 var gfv_ajaxCallback = "";
-function ComAjax(opt_formId){
+function ComAjax(opt_formId) {
 	this.url = "";		
 	this.formId = gfn_isNull(opt_formId) == true ? "commonForm" : opt_formId;
 	this.param = "";
@@ -93,4 +115,9 @@ function ComAjax(opt_formId){
 			}
 		});
 	};
+}
+
+function gfn_readyAlert() {
+	alert("해당 기능은 준비중입니다.");
+	return false;
 }

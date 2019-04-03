@@ -1,24 +1,15 @@
-<?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC
+"-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="ch">
-	<select id="selectBoardList" parameterType="hashmap" resultType="hashmap">
-		<![CDATA[
-			SELECT
-				USER_IDX
-			  , USER_NAME
-			  , LUPD_CNT
-			  , DATE_FORMAT(PC_TS, '%Y-%m-%d %H:%i:%s') AS PC_TS
-			FROM MEMBER
-			WHERE 1 = 1
-			AND DEL_YN = 'N'
-		]]>
-	</select>
-
-	<insert id="insertBoard" parameterType="hashmap">
+	
+	<insert id="insUser" parameterType="hashmap">
 		<![CDATA[
 			INSERT INTO MEMBER
 			(
 				USER_IDX
-			  , USER_ID
+			  , USER_KEY
 			  , USER_NAME
 			  , USER_AGE
 			  , BIRTH
@@ -39,44 +30,81 @@
 			 VALUES
 			 (
 			 	NULL
-			   , #{TITLE}
-			   , NULL
-			   , NULL
-			   , NULL
-			   , NULL
-			   , NULL
-			   , NULL
-			   , NULL
-			   , 1
-			   , #{CONTENTS}
-			   , 0
-			   , 0
-			   , 0
-			   , 0
+			   , #{USER_KEY}
+			   , #{USER_NAME}
+			   , #{USER_AGE}
+			   , DATE_FORMAT(IFNULL(#{BIRTH}, now()), '%Y-%m-%d')
+			   , #{E_MAIL}
+			   , #{PHONE_NUMBER}
+			   , #{GENDER}
+			   , DATE_FORMAT(IFNULL(#{REGISTRATION_DATE}, now()), '%Y-%m-%d')
+			   , IFNULL(#{COUNTING}, 1)
+			   , #{OUTL_CTT}
+			   , IFNULL(#{CHK01}, '0')
+			   , IFNULL(#{CHK02}, '0')
+			   , IFNULL(#{CHK03}, '0')
+			   , IFNULL(#{CHK04}, '0')
 			   , 'N'
 			   , 1
 			   , CURRENT_TIMESTAMP
 			 )
 		]]>
 	</insert>
-
-	<update id="updateHitCnt" parameterType="hashmap">
-		<![CDATA[
-			UPDATE MEMBER SET
-				LUPD_CNT = IFNULL(LUPD_CNT, 0) + 1
-			WHERE USER_IDX = #{USER_IDX}
-		]]>
-	</update>
-	<select id="selectBoardDetail" parameterType="hashmap" resultType="hashmap">
+	
+	<select id="selectMemberList" parameterType="hashmap" resultType="hashmap">
 		<![CDATA[
 			SELECT
-				USER_IDX
-			  , USER_NAME
-			  , LUPD_CNT
-			  , DATE_FORMAT(PC_TS, '%Y-%m-%d %H:%i:%s') AS PC_TS
-			FROM MEMBER
-			WHERE USER_IDX = #{USER_IDX}
+				T1.USER_KEY
+			  , T1.USER_IDX
+			  , T1.USER_NAME
+			  , T1.USER_AGE
+			  , DATE_FORMAT(T1.BIRTH, '%Y-%m-%d') AS BIRTH
+			  , T1.E_MAIL
+			  , T1.PHONE_NUMBER
+			  , (CASE T1.GENDER WHEN 'M' THEN '남성' WHEN 'W' THEN '여성' END) AS GENDER
+			  , DATE_FORMAT(T1.REGISTRATION_DATE, '%Y-%m-%d') AS REGISTRATION_DATE
+			  , T1.COUNTING
+			  , DATE_FORMAT(T1.PC_TS, '%Y-%m-%d %H:%i:%s') AS PC_TS
+			  , DEL_YN
+			FROM MEMBER T1
+			WHERE 1 = 1
 		]]>
 	</select>
+	
+	<select id="selectMemberDetail" parameterType="string" resultType="hashmap">
+		<![CDATA[
+			SELECT
+				T1.USER_KEY
+			  , T1.USER_NAME
+			  , T1.USER_AGE
+			  , DATE_FORMAT(T1.BIRTH, '%Y-%m-%d') AS BIRTH
+			  , T1.E_MAIL
+			  , T1.PHONE_NUMBER
+			  , (CASE T1.GENDER WHEN 'M' THEN '남성' WHEN 'W' THEN '여성' END) AS GENDER
+			  , DATE_FORMAT(PC_TS, '%Y-%m-%d %H:%i:%s') AS PC_TS
+			  , DATE_FORMAT(T1.REGISTRATION_DATE, '%Y-%m-%d') AS REGISTRATION_DATE
+			  , T1.COUNTING
+			  , T1.CHK01
+			  , T1.CHK02
+			  , T1.CHK03
+			  , T1.CHK04
+			  , T1.OUTL_CTT
+			FROM MEMBER T1
+			WHERE 1 = 1
+			AND T1.USER_KEY = #{USER_KEY}
+		]]>
+	</select>
+	
+	<!-- 논리삭제 -->
+	<update id="delUser" parameterType="string">
+		<![CDATA[
+			UPDATE MEMBER
+			SET
+				LUPD_CNT = IFNULL(LUPD_CNT, 0) + 1
+			  , DEL_YN = 'Y'
+			  , PC_TS = CURRENT_TIMESTAMP
+			WHERE USER_KEY = #{USER_KEY}
+		]]>
+	</update>
 
 </mapper>

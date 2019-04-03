@@ -43,7 +43,7 @@ public class CommandMap {
 	public boolean isEmpty() {
 		return map.isEmpty();
 	}
-
+	
 	public void putAll(Map<? extends String, ? extends Object> m) {
 		map.putAll(m);
 	}
@@ -51,9 +51,13 @@ public class CommandMap {
 	public Map<String, Object> getMap() {
 		return map;
 	}
+	
+	public int size() {
+		return map.size();
+	}
 
 	@Override
 	public String toString() {
-		return "CommandMap [toString=" + map.toString() + "]";
+		return "Map [" + map.toString() + "]";
 	}
 }

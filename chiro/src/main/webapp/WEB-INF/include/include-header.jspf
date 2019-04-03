@@ -13,3 +13,6 @@
 <script src="<c:url value='/js/main.js'/>" charset="utf-8"></script>
 <script src="<c:url value='/js/common.js'/>" charset="utf-8"></script>
 <link rel="shortcut icon" type="image/x-icon" href="<c:url value='/images/x_ray_icon.ico' />" />
+<script src="<c:url value='/js/jquery.calendar.js'/>" charset="utf-8"></script>
+<script src="<c:url value='//code.jquery.com/ui/1.11.4/jquery-ui.min.js'/>" charset="utf-8"></script>
+<link rel="stylesheet" type="text/css" href="<c:url value='//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css'/>"/>

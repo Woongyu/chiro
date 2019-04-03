@@ -26,24 +26,19 @@
 	$(document).ready(function() {
 		$("#head_main").on("click", function(e) {
 			e.preventDefault();
-			fn_openIndexPage();
+			fn_openMainPage();
 		});
 		
 		$("a[name='icon_link']").on("click", function(e) {
 			e.preventDefault();
-			fn_iconLink();
+			gfn_readyAlert();
 		});
 	});
 	
-	function fn_openIndexPage() {
+	function fn_openMainPage() {
 		var comSubmit = new ComSubmit();
-		comSubmit.setUrl("<c:url value='/index.do' />");
+		comSubmit.setUrl("<c:url value='/main.do' />");
 		comSubmit.submit();
-	}
-	
-	function fn_iconLink() {
-		alert("해당 기능은 준비중입니다.");
-		return false;
 	}
 	</script>
 </body>

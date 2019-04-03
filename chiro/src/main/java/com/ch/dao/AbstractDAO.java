@@ -8,11 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.ch.util.Utlz;
 
 public class AbstractDAO {
+	
 	@Autowired
 	private SqlSessionTemplate sqlSession;
 
 	protected void printQueryId(String queryId) {
-		Utlz.print("\t QueryId \t: " + queryId);
+		Utlz.print("QueryId : " + queryId);
 	}
 
 	public Object insert(String queryId, Object params) {

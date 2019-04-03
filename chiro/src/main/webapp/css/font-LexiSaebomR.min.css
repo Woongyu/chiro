@@ -2,10 +2,10 @@
 
 @font-face {
 	font-family: 'LexiSaebomR';
-	src: url('../fonts/LexiSaebomR.eot');
-	src: url('../fonts/LexiSaebomR.eot?#iefix')
+	src: url('../fonts/LexiSaebomR/LexiSaebomR.eot');
+	src: url('../fonts/LexiSaebomR/LexiSaebomR.eot?#iefix')
 		format('embedded-opentype'),
-		url('../fonts/LexiSaebomR.woff')
+		url('../fonts/LexiSaebomR/LexiSaebomR.woff')
 		format('woff');
 	font-weight: normal;
 	font-style: normal
