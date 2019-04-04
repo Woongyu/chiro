@@ -18,6 +18,10 @@ public class MyDAO extends AbstractDAO {
 		insert("ch.insUser", map);
 	}
 	
+	public void updUser(Map<String, Object> map) {
+		update("ch.updUser", map);		
+	}
+	
 	@SuppressWarnings("unchecked")
 	public List<Map<String, Object>> selectMemberList(CommandMap map) throws Exception {
 		return (List<Map<String, Object>>) selectList("ch.selectMemberList", map);

@@ -11,6 +11,8 @@ public interface MyService {
 	
 	void insUser(Map<String, Object> map) throws Exception;
 	
+	void updUser(Map<String, Object> map) throws Exception;
+	
 	List<Map<String, Object>> selectMemberList(CommandMap map) throws Exception;
 	
 	Map<String, Object> selectMemberDetail(String sStr) throws Exception;

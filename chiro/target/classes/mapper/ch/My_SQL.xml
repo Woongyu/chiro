@@ -51,6 +51,30 @@
 		]]>
 	</insert>
 	
+	<update id="updUser" parameterType="hashmap">
+		<![CDATA[
+			UPDATE MEMBER
+			SET
+				USER_NAME = #{USER_NAME}
+			  , USER_AGE = #{USER_AGE}
+			  , BIRTH = DATE_FORMAT(IFNULL(#{BIRTH}, now()), '%Y-%m-%d')
+			  , E_MAIL = #{E_MAIL}
+			  , PHONE_NUMBER = #{PHONE_NUMBER}
+			  , GENDER = #{GENDER}
+			  , REGISTRATION_DATE = DATE_FORMAT(IFNULL(#{REGISTRATION_DATE}, now()), '%Y-%m-%d')
+			  , COUNTING = IFNULL(#{COUNTING}, 1)
+			  , OUTL_CTT = #{OUTL_CTT}
+			  , CHK01 = IFNULL(#{CHK01}, '0')
+			  , CHK02 = IFNULL(#{CHK02}, '0')
+			  , CHK03 = IFNULL(#{CHK03}, '0')
+			  , CHK04 = IFNULL(#{CHK04}, '0')
+			  , LUPD_CNT = IFNULL(LUPD_CNT, 0) + 1
+			  , PC_TS = CURRENT_TIMESTAMP
+			WHERE 1 = 1
+			AND USER_KEY = #{USER_KEY}
+		]]>
+	</update>
+	
 	<select id="selectMemberList" parameterType="hashmap" resultType="hashmap">
 		<![CDATA[
 			SELECT
@@ -89,6 +113,7 @@
 			  , T1.CHK03
 			  , T1.CHK04
 			  , T1.OUTL_CTT
+			  , T1.DEL_YN
 			FROM MEMBER T1
 			WHERE 1 = 1
 			AND T1.USER_KEY = #{USER_KEY}
@@ -103,8 +128,10 @@
 				LUPD_CNT = IFNULL(LUPD_CNT, 0) + 1
 			  , DEL_YN = 'Y'
 			  , PC_TS = CURRENT_TIMESTAMP
-			WHERE USER_KEY = #{USER_KEY}
+			WHERE 1 = 1
+			AND USER_KEY = #{USER_KEY}
+			AND DEL_YN = 'N'
 		]]>
 	</update>
-
+	
 </mapper>

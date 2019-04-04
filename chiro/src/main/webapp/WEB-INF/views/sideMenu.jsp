@@ -34,7 +34,7 @@
 		
 			<!-- Image -->
 			<div class="effect">
-				<img src="/images/icon_chiro.jpeg" />
+				<img src="/images/icon_chiro.jpeg" onclick="fn_openMainPage();" style="cursor: pointer;"/>
 			</div>
 			
 			<header class="major">

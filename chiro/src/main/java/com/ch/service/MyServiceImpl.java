@@ -27,7 +27,12 @@ public class MyServiceImpl implements MyService {
 	public void insUser(Map<String, Object> map) throws Exception {
 		myDAO.insUser(map);
 	}
-
+	
+	@Override
+	public void updUser(Map<String, Object> map) throws Exception {
+		myDAO.updUser(map);
+	}
+	
 	@Override
 	public List<Map<String, Object>> selectMemberList(CommandMap map) throws Exception {
 		return myDAO.selectMemberList(map);

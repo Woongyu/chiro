@@ -33,6 +33,8 @@ p {
 						<p><c:out value="${exception.getMessage()}" /></p>
 						<p><c:out value="${exception.getStackTrace()}" /></p>
 					</div>
+					
+					<a href="/main.do" class="button primary">GO HOME</a>
 				</section>
 				
 			</div>

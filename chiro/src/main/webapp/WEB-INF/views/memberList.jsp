@@ -62,6 +62,7 @@
 															${row.USER_NAME}
 														</a>
 														<input type="hidden" id="USER_KEY" name="USER_KEY" value="${row.USER_KEY}">
+														<input type="hidden" id="DEL_YN" name="DEL_YN" value="${row.DEL_YN}">
 													</td>
 													<td>${row.USER_AGE}</td>
 													<td>${row.BIRTH}</td>
@@ -116,9 +117,14 @@
 	<script type="text/javascript">
 	$(document).ready(function() {
 		$("a[name='user_name']").on("click", function(e) {
-			var sUserKey = $(this).parent().find("#USER_KEY").val();
-			
 			e.preventDefault();
+			var sUserKey = $(this).parent().find("#USER_KEY").val();
+			var sDelYn = $(this).parent().find("#DEL_YN").val();
+			if(sDelYn === "Y"){
+				alert("이미 삭제된 회원입니다.");
+				return false;
+			}
+			
 			fn_openMemberDetail(sUserKey);
 		});
 	});

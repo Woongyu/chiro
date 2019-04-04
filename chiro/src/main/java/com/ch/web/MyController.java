@@ -35,10 +35,12 @@ public class MyController {
 	@PostMapping(value = "/join.do")
 	public ModelAndView openJoinPage(CommandMap map) throws Exception {
 		ModelAndView mv = new ModelAndView("join");
-		logger.info("join: " + map.toString());
-		
-		if(!Utlz.isBlank((String) map.get("USER_KEY"))){
-			mv.addObject("user", map.getMap());
+		if(map != null){
+			logger.info("join: " + map.toString());
+			
+			if(!Utlz.isBlank((String) map.get("USER_KEY"))){
+				mv.addObject("user", map.getMap());
+			}
 		}
 		
 		return mv;
@@ -77,6 +79,29 @@ public class MyController {
 		
 		logger.info("insUser: " + map.toString());
 		myService.insUser(map.getMap());
+		return "redirect:/join.do";
+	}
+	
+	// 회원등록(수정)
+	@PostMapping("/updUser.do")
+	public String updUser(CommandMap map) throws Exception {
+		
+		// MySql을 입력할 때 int, date 컬럼에 빈 값('')이 입력되면 에러가 발생한다.
+		if(Utlz.isBlank((String) map.get("USER_AGE"))){
+			map.remove("USER_AGE");
+		}
+		if(Utlz.isBlank((String) map.get("BIRTH"))){
+			map.remove("BIRTH");
+		}
+		if(Utlz.isBlank((String) map.get("REGISTRATION_DATE"))){
+			map.remove("REGISTRATION_DATE");
+		}
+		if(Utlz.isBlank((String) map.get("COUNTING"))){
+			map.remove("COUNTING");
+		}
+		
+		logger.info("updUser: " + map.toString());
+		myService.updUser(map.getMap());
 		return "redirect:/join.do";
 	}
 	

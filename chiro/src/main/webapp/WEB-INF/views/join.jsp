@@ -22,12 +22,7 @@
 				<!-- Content -->
 				<section>
 					<header class="main">
-						<c:if test="${!empty user}">
-							<h1>SIGN UP(UPDATE)</h1>
-						</c:if>
-						<c:if test="${empty user}">
-							<h1>SIGN UP</h1>
-						</c:if>
+						<h1>SIGN UP</h1>
 					</header>
 
 					<span class="image main">
@@ -118,26 +113,37 @@
 	<script type="text/javascript">
 	$(function(){
 		
-	    // 달력 생성
+		 // 달력 생성
 	    $("#BIRTH").calendar();
 	    $("#REGISTRATION_DATE").calendar();
 	    
-	    // 오늘날짜 입력
-	    $("#REGISTRATION_DATE").val(new Date().toISOString().substring(0, 10));
-	    
-	    // TO-DO 성별 스크립트 만들기
-	    
-		if('${user.CHK01}' == '1'){
-			$("#CHK01").prop("checked", true);
-		}
-		if('${user.CHK02}' == '1'){
-			$("#CHK02").prop("checked", true);
-		}
-		if('${user.CHK03}' == '1'){
-			$("#CHK03").prop("checked", true);
-		}
-		if('${user.CHK04}' == '1'){
-			$("#CHK04").prop("checked", true);
+		// USER_KEY CHECK
+		if(!gfn_isNull('${user.USER_KEY}')){
+			$("H1").append("(UPDATE)"); // header
+			$("#submit").val("MODIFY"); // 입력 --> 수정
+			
+			// 성별
+		    var sGender = '${user.GENDER}';
+		    sGender = (sGender == "남성" ? "M" : (!gfn_isNull(sGender) ? "W" : ""));
+			$("#GENDER").val(sGender).prop("selected", true);
+			
+			// 체크박스
+			if('${user.CHK01}' == '1'){
+				$("#CHK01").prop("checked", true);
+			}
+			if('${user.CHK02}' == '1'){
+				$("#CHK02").prop("checked", true);
+			}
+			if('${user.CHK03}' == '1'){
+				$("#CHK03").prop("checked", true);
+			}
+			if('${user.CHK04}' == '1'){
+				$("#CHK04").prop("checked", true);
+			}
+		}else{
+			
+			 // 오늘날짜 입력
+			$("#REGISTRATION_DATE").val(new Date().toISOString().substring(0, 10));
 		}
 	});
 	
@@ -171,7 +177,8 @@
 		    $(this).val($(this).val().replace(/[^0-9]/g,""));
 		});
 		
-		$("#submit").on("click", function(e) { // Register
+		$("#submit").on("click", function(e) {
+			e.preventDefault();
 			
 			if(gfn_isNull($("#USER_NAME").val())){
 				alert("이름은 필수입력 사항입니다.");
@@ -196,8 +203,11 @@
 				}
 			}
 			
-			e.preventDefault();
-			fn_insUser();
+			if(!gfn_isNull('${user.USER_KEY}')){
+				fn_updUser(); // 수정
+			}else{
+				fn_insUser(); // 입력
+			}
 		});
 	});
 	
@@ -224,12 +234,26 @@
 		comAjax.ajax();
 	}
 	
+	function fn_updUser(){
+		var comAjax = new ComAjax("frm");
+		comAjax.setUrl("<c:url value='/updUser.do' />");
+		comAjax.setCallback("fn_updUserCallback");
+		comAjax.ajax();
+	}
+	
 	function fn_insUserCallback(){
 		alert("등록이 완료되었습니다.");
 		
 		var comSubmit = new ComSubmit();
 		comSubmit.setUrl("<c:url value='list.do' />");
 		comSubmit.submit();
+	}
+	
+	function fn_updUserCallback(){
+		alert("수정이 완료되었습니다.");
+		
+		window.opener.location.reload();
+		window.close();
 	}
 	</script>
 	

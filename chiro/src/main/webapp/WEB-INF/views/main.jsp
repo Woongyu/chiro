@@ -176,6 +176,11 @@ google.maps.event.addDomListener(window, 'load', initialize);
 			e.preventDefault();
 			fn_openJoinPage();
 		});
+		
+		$("#edu").on("click", function(e) {
+			e.preventDefault();
+			gfn_readyAlert();
+		});
 	});
 	
 	function fn_openJoinPage() {
