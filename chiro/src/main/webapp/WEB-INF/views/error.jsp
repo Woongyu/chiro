@@ -30,11 +30,10 @@ p {
 					</header>
 					
 					<div class="box">
-						<p><c:out value="${exception.getMessage()}" /></p>
-						<p><c:out value="${exception.getStackTrace()}" /></p>
+						<p><c:out value="${exception.getCause()}" /></p>
 					</div>
 					
-					<a href="/main.do" class="button primary">GO HOME</a>
+					<a href="/" class="button primary">GO HOME</a>
 				</section>
 				
 			</div>

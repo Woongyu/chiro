@@ -7,16 +7,22 @@ import com.ch.vo.CommandMap;
 
 public interface MyService {
 	
-	Map<String, Object> selectBoardDetail(Map<String, Object> map) throws Exception;
+	Object insUser(Map<String, Object> map) throws Exception;
 	
-	void insUser(Map<String, Object> map) throws Exception;
+	Object updUser(Map<String, Object> map) throws Exception;
 	
-	void updUser(Map<String, Object> map) throws Exception;
+	List<Map<String, Object>> srchMemberList(CommandMap map) throws Exception;
 	
-	List<Map<String, Object>> selectMemberList(CommandMap map) throws Exception;
-	
-	Map<String, Object> selectMemberDetail(String sStr) throws Exception;
+	Map<String, Object> srchMemberDetail(String sStr) throws Exception;
 
 	Object delUser(String sStr) throws Exception;
+
+	List<Map<String, Object>> srchNoticeList(CommandMap map) throws Exception;
+
+	Object insNotice(Map<String, Object> map) throws Exception;
+
+	void updNoticeHit(String sStr) throws Exception;
+
+	Map<String, Object> srchBoardDetail(String sStr) throws Exception;
 	
 }

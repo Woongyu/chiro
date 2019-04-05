@@ -1,9 +1,9 @@
-<%@page import="java.util.ArrayList"%>
+<%@ page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%
 	// 슬라이드 이미지
-	ArrayList<String> arrPicList = new ArrayList<>();
+	ArrayList<String> arrPicList = new ArrayList<String>();
 	arrPicList.add("modoo_pic01.jpeg");
 	arrPicList.add("modoo_pic02.jpeg");
 	arrPicList.add("modoo_pic03.jpeg");
@@ -21,7 +21,7 @@
 <link rel="stylesheet" type="text/css" href="<c:url value='/css/carousel.css'/>"/>
 <script src="<c:url value='http://maps.googleapis.com/maps/api/js?sensor=false'/>" charset="utf-8"></script>
 <script type="text/javascript">
-<!-- GoogoleMap Asynchronously Loading the API ********************************************* -->
+// GoogoleMap Asynchronously Loading the API
 function initialize() {
 	var lo = "37.541448";
 	var ro = "126.953565";
@@ -131,7 +131,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
 							</h1>
 						</header>
 						<div id="carousel_section">
-							<ul>
+							<ul id="picList">
 								<c:set var="arrPicList" value="<%= arrPicList %>" />
 								<c:forEach items="${arrPicList}" var="pic">
 									<li> <img src="/images/${pic}"> </li>

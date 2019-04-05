@@ -15,37 +15,50 @@ public class MyServiceImpl implements MyService {
 
 	@Resource(name = "myDAO")
 	private MyDAO myDAO;
+
+	@Override
+	public Object insUser(Map<String, Object> map) throws Exception {
+		return myDAO.insUser(map);
+	}
 	
 	@Override
-	public Map<String, Object> selectBoardDetail(Map<String, Object> map) throws Exception {
-		myDAO.updateHitCnt(map);
-		Map<String, Object> resultMap = null;
-		return resultMap;
+	public Object updUser(Map<String, Object> map) throws Exception {
+		return myDAO.updUser(map);
+	}
+	
+	@Override
+	public List<Map<String, Object>> srchMemberList(CommandMap map) throws Exception {
+		return myDAO.srchMemberList(map);
 	}
 
 	@Override
-	public void insUser(Map<String, Object> map) throws Exception {
-		myDAO.insUser(map);
-	}
-	
-	@Override
-	public void updUser(Map<String, Object> map) throws Exception {
-		myDAO.updUser(map);
-	}
-	
-	@Override
-	public List<Map<String, Object>> selectMemberList(CommandMap map) throws Exception {
-		return myDAO.selectMemberList(map);
-	}
-
-	@Override
-	public Map<String, Object> selectMemberDetail(String sStr) throws Exception {
-		return myDAO.selectMemberDetail(sStr);
+	public Map<String, Object> srchMemberDetail(String sStr) throws Exception {
+		return myDAO.srchMemberDetail(sStr);
 	}
 
 	@Override
 	public Object delUser(String sStr) throws Exception {
 		return myDAO.delUser(sStr);
+	}
+
+	@Override
+	public List<Map<String, Object>> srchNoticeList(CommandMap map) throws Exception {
+		return myDAO.srchNoticeList(map);
+	}
+
+	@Override
+	public Object insNotice(Map<String, Object> map) throws Exception {
+		return myDAO.insNotice(map);
+	}
+
+	@Override
+	public void updNoticeHit(String sStr) throws Exception {
+		myDAO.updNoticeHit(sStr);
+	}
+
+	@Override
+	public Map<String, Object> srchBoardDetail(String sStr) throws Exception {
+		return myDAO.srchBoardDetail(sStr);
 	}
 
 }

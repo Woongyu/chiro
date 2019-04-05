@@ -42,7 +42,7 @@
 			</header>
 			<ul>
 				<li><a href="#this" id="side_main">메인</a></li>
-				<li><a href="#">공지사항</a></li>
+				<li><a href="#thid" id="side_notice">공지사항</a></li>
 				<li><span class="opener">회원관리</span>
 					<ul>
 						<li><a href="#this" id="side_join">회원등록</a></li>
@@ -55,18 +55,21 @@
 						<li><a href="#">예약조회</a></li>
 					</ul>
 				</li>
-				<li><a href="#">Etiam Dolore</a></li>
-				<li><a href="#">Adipiscing</a></li>
-				<li><span class="opener">Another Submenu</span>
+				<li><a href="#thid">고객 게시판</a></li>
+				<li><span class="opener">건강상식</span>
 					<ul>
-						<li><a href="#">Lorem Dolor</a></li>
-						<li><a href="#">Ipsum Adipiscing</a></li>
-						<li><a href="#">Tempus Magna</a></li>
-						<li><a href="#">Feugiat Veroeros</a></li>
-					</ul></li>
-				<li><a href="#">Maximus Erat</a></li>
-				<li><a href="#">Sapien Mauris</a></li>
-				<li><a href="#">Amet Lacinia</a></li>
+						<li><a href="#">냉온찜질의 올바른 사용법</a></li>
+						<li><a href="#">어깨통증과 바른자세</a></li>
+						<li><a href="#">장요근과 허리통증</a></li>
+					</ul>
+				</li>
+				<li><span class="opener">카이로 프로그램</span>
+					<ul>
+						<li><a href="#">기초반 연수생 모집안내</a></li>
+						<li><a href="#">교육 및 과정</a></li>
+					</ul>
+				</li>
+				<li><a href="#thid">이벤트</a></li>
 			</ul>
 		</nav>
 
@@ -126,6 +129,11 @@
 				e.preventDefault();
 				fn_openListPage();
 			});
+			
+			$("#side_notice").on("click", function(e) {
+				e.preventDefault();
+				fn_openNoticePage();
+			});
 		});
 		
 		function fn_openMainPage() {
@@ -143,6 +151,12 @@
 		function fn_openListPage() {
 			var comSubmit = new ComSubmit();
 			comSubmit.setUrl("<c:url value='/list.do' />");
+			comSubmit.submit();
+		}
+		
+		function fn_openNoticePage() {
+			var comSubmit = new ComSubmit();
+			comSubmit.setUrl("<c:url value='/notice.do' />");
 			comSubmit.submit();
 		}
 	</script>

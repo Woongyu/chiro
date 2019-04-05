@@ -38,16 +38,16 @@
 						<table class="alt" style="text-align: center">
 							<thead>
 								<tr>
-									<th scope="col">순번</th>
+									<th scope="col">번호</th>
 									<th scope="col">이름</th>
 									<th scope="col">나이</th>
-									<th scope="col">생년월일</th>
-									<th scope="col">E-MAIL</th>
-									<th scope="col">휴대전화</th>
+									<th scope="col">생일</th>
+									<th scope="col">이메일</th>
+									<th scope="col">전화번호</th>
 									<th scope="col">성별</th>
 									<th scope="col">등록일자</th>
 									<th scope="col">전체횟수</th>
-									<th scope="col">최근수정일자</th>
+									<th scope="col">갱신일자</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -120,7 +120,7 @@
 			e.preventDefault();
 			var sUserKey = $(this).parent().find("#USER_KEY").val();
 			var sDelYn = $(this).parent().find("#DEL_YN").val();
-			if(sDelYn === "Y"){
+			if(sDelYn == "Y"){
 				alert("이미 삭제된 회원입니다.");
 				return false;
 			}

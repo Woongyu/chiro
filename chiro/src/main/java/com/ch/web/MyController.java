@@ -51,7 +51,7 @@ public class MyController {
 	public ModelAndView openListPage(CommandMap map) throws Exception {
 		ModelAndView mv = new ModelAndView("memberList");
 		
-		List<Map<String, Object>> list = myService.selectMemberList(map);
+		List<Map<String, Object>> list = myService.srchMemberList(map);
 		mv.addObject("list", list);
 		return mv;
 	}
@@ -78,8 +78,8 @@ public class MyController {
 		map.put("USER_KEY", Utlz.getSurrogateKey(11));
 		
 		logger.info("insUser: " + map.toString());
-		myService.insUser(map.getMap());
-		return "redirect:/join.do";
+		int nCnt = (int) myService.insUser(map.getMap());
+		return (nCnt > 0 ? "redirect:/join.do" : "error");
 	}
 	
 	// 회원등록(수정)
@@ -101,8 +101,8 @@ public class MyController {
 		}
 		
 		logger.info("updUser: " + map.toString());
-		myService.updUser(map.getMap());
-		return "redirect:/join.do";
+		int nCnt = (int) myService.updUser(map.getMap());
+		return (nCnt > 0 ? "redirect:/join.do" : "error");
 	}
 	
 	// 회원상세정보
@@ -110,8 +110,8 @@ public class MyController {
 	public ModelAndView openMemberDetail(CommandMap map) throws Exception {
 		ModelAndView mv = new ModelAndView("memberDetail");
 		
-		logger.info("openMemberDetail: " + (String) map.get("USER_KEY"));
-		mv.addObject("user", myService.selectMemberDetail((String) map.get("USER_KEY")));
+		logger.info("detail: " + (String) map.get("USER_KEY"));
+		mv.addObject("user", myService.srchMemberDetail((String) map.get("USER_KEY")));
 		return mv;
 	}
 	
@@ -124,4 +124,47 @@ public class MyController {
 		return (nCnt > 0 ? "memberDetail" : "error");
 	}
 	
+	// 공지사항
+	@PostMapping(value = "/notice.do")
+	public ModelAndView openNoticePage(CommandMap map) throws Exception {
+		ModelAndView mv = new ModelAndView("board");
+		List<Map<String, Object>> list = myService.srchNoticeList(map);
+		mv.addObject("list", list);
+		mv.addObject("command", "notice");
+		return mv;
+	}
+	
+	// 글쓰기
+	@PostMapping(value = "/write.do")
+	public ModelAndView openWritePage(CommandMap map) throws Exception {
+		ModelAndView mv = new ModelAndView("write");
+		logger.info("write: " + map.toString());
+		
+		mv.addObject("command", (String) map.get("command"));
+		return mv;
+	}
+	
+	// 글쓰기(공지사항)
+	@PostMapping("/insNotice.do")
+	public String insNotice(CommandMap map) throws Exception {
+		logger.info("insNotice: " + map.toString());
+		int nCnt = (int) myService.insNotice(map.getMap());
+		return (nCnt > 0 ? "redirect:/write.do" : "error");
+	}
+	
+	// 글 읽기
+	@PostMapping("/post.do")
+	public ModelAndView openBoardDetail(CommandMap map) throws Exception {
+		ModelAndView mv = new ModelAndView("boardDetail");
+		
+		logger.info("view: " + map.toString());
+		if("notice".equals((String) map.get("command"))){
+			myService.updNoticeHit((String) map.get("IDX"));
+			mv.addObject("board", myService.srchBoardDetail((String) map.get("IDX")));
+		}else{
+			
+		}
+		
+		return mv;
+	}
 }

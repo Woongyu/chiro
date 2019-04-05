@@ -83,8 +83,8 @@
 							<!-- Break -->
 							<div class="col-12">
 								<ul class="actions">
-									<li><input type="submit" id="delete" value="DELETE" class="button primary" /></li>
-									<li><input type="submit" id="modify" value="MODIFY" class="button" /></li>
+									<li><input type="submit" id="modify" value="MODIFY" class="button primary" /></li>
+									<li><input type="submit" id="delete" value="DELETE" class="button" /></li>
 								</ul>
 							</div>
 						</div>

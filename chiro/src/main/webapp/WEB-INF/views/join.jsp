@@ -241,7 +241,7 @@
 		comAjax.ajax();
 	}
 	
-	function fn_insUserCallback(){
+	function fn_insUserCallback(data){
 		alert("등록이 완료되었습니다.");
 		
 		var comSubmit = new ComSubmit();

@@ -6,7 +6,7 @@
 	
 	<insert id="insUser" parameterType="hashmap">
 		<![CDATA[
-			INSERT INTO MEMBER
+			INSERT INTO TB_MEMBER
 			(
 				USER_IDX
 			  , USER_KEY
@@ -30,30 +30,30 @@
 			 VALUES
 			 (
 			 	NULL
-			   , #{USER_KEY}
-			   , #{USER_NAME}
-			   , #{USER_AGE}
-			   , DATE_FORMAT(IFNULL(#{BIRTH}, now()), '%Y-%m-%d')
-			   , #{E_MAIL}
-			   , #{PHONE_NUMBER}
-			   , #{GENDER}
-			   , DATE_FORMAT(IFNULL(#{REGISTRATION_DATE}, now()), '%Y-%m-%d')
-			   , IFNULL(#{COUNTING}, 1)
-			   , #{OUTL_CTT}
-			   , IFNULL(#{CHK01}, '0')
-			   , IFNULL(#{CHK02}, '0')
-			   , IFNULL(#{CHK03}, '0')
-			   , IFNULL(#{CHK04}, '0')
-			   , 'N'
-			   , 1
-			   , CURRENT_TIMESTAMP
+			  , #{USER_KEY}
+			  , #{USER_NAME}
+			  , #{USER_AGE}
+			  , DATE_FORMAT(IFNULL(#{BIRTH}, now()), '%Y-%m-%d')
+			  , #{E_MAIL}
+			  , #{PHONE_NUMBER}
+			  , #{GENDER}
+			  , DATE_FORMAT(IFNULL(#{REGISTRATION_DATE}, now()), '%Y-%m-%d')
+			  , IFNULL(#{COUNTING}, 1)
+			  , #{OUTL_CTT}
+			  , IFNULL(#{CHK01}, '0')
+			  , IFNULL(#{CHK02}, '0')
+			  , IFNULL(#{CHK03}, '0')
+			  , IFNULL(#{CHK04}, '0')
+			  , 'N'
+			  , 1
+			  , CURRENT_TIMESTAMP
 			 )
 		]]>
 	</insert>
 	
 	<update id="updUser" parameterType="hashmap">
 		<![CDATA[
-			UPDATE MEMBER
+			UPDATE TB_MEMBER
 			SET
 				USER_NAME = #{USER_NAME}
 			  , USER_AGE = #{USER_AGE}
@@ -75,7 +75,7 @@
 		]]>
 	</update>
 	
-	<select id="selectMemberList" parameterType="hashmap" resultType="hashmap">
+	<select id="srchMemberList" resultType="hashmap">
 		<![CDATA[
 			SELECT
 				T1.USER_KEY
@@ -89,13 +89,13 @@
 			  , DATE_FORMAT(T1.REGISTRATION_DATE, '%Y-%m-%d') AS REGISTRATION_DATE
 			  , T1.COUNTING
 			  , DATE_FORMAT(T1.PC_TS, '%Y-%m-%d %H:%i:%s') AS PC_TS
-			  , DEL_YN
-			FROM MEMBER T1
+			  , T1.DEL_YN
+			FROM TB_MEMBER T1
 			WHERE 1 = 1
 		]]>
 	</select>
 	
-	<select id="selectMemberDetail" parameterType="string" resultType="hashmap">
+	<select id="srchMemberDetail" parameterType="string" resultType="hashmap">
 		<![CDATA[
 			SELECT
 				T1.USER_KEY
@@ -114,7 +114,7 @@
 			  , T1.CHK04
 			  , T1.OUTL_CTT
 			  , T1.DEL_YN
-			FROM MEMBER T1
+			FROM TB_MEMBER T1
 			WHERE 1 = 1
 			AND T1.USER_KEY = #{USER_KEY}
 		]]>
@@ -123,7 +123,7 @@
 	<!-- 논리삭제 -->
 	<update id="delUser" parameterType="string">
 		<![CDATA[
-			UPDATE MEMBER
+			UPDATE TB_MEMBER
 			SET
 				LUPD_CNT = IFNULL(LUPD_CNT, 0) + 1
 			  , DEL_YN = 'Y'
@@ -133,5 +133,120 @@
 			AND DEL_YN = 'N'
 		]]>
 	</update>
+	
+	<select id="srchNoticeList" resultType="hashmap">
+		<![CDATA[
+			SELECT
+				A.LEV
+			  , A.IDX
+			  , A.USER_KEY
+			  , A.TITLE
+			  , A.NAME
+			  , A.CONTENTS
+			  , A.HIT_CNT
+			  , A.CHK_INFO
+			  , A.DEL_YN
+			  , A.PC_DT
+			FROM
+			(
+				SELECT
+					'1' AS LEV
+				  , T1.IDX
+				  , T1.USER_KEY
+				  , T1.TITLE
+				  , T1.NAME
+				  , T1.CONTENTS
+				  , T1.HIT_CNT
+				  , T1.CHK_INFO
+				  , T1.DEL_YN
+				  , DATE_FORMAT(T1.PC_DT, '%Y-%m-%d') AS PC_DT
+				FROM TB_BOARD_NOTICE T1
+				WHERE 1 = 1
+				AND T1.CHK_INFO = '1'
+				AND T1.DEL_YN = 'N'
+			
+				UNION
+			
+				SELECT
+					'2' AS LEV
+				  , T1.IDX
+				  , T1.USER_KEY
+				  , T1.TITLE
+				  , T1.NAME
+				  , T1.CONTENTS
+				  , T1.HIT_CNT
+				  , T1.CHK_INFO
+				  , T1.DEL_YN
+				  , DATE_FORMAT(T1.PC_DT, '%Y-%m-%d') AS PC_DT
+				FROM TB_BOARD_NOTICE T1
+				WHERE 1 = 1
+			) A
+			WHERE 1 = 1
+			ORDER BY
+				A.LEV ASC
+			  , A.IDX DESC
+		]]>
+	</select>
+	
+	<insert id="insNotice" parameterType="hashmap">
+		<![CDATA[
+			INSERT INTO TB_BOARD_NOTICE
+			(
+				IDX
+			  , USER_KEY
+			  , TITLE
+			  , NAME
+			  , CONTENTS
+			  , HIT_CNT
+			  , CHK_INFO
+			  , LUPD_CNT
+			  , DEL_YN
+			  , PC_DT
+			  , PC_TS
+			 )
+			 VALUES
+			 (
+			 	NULL
+			  , NULL
+			  , #{USER_KEY}
+			  , #{TITLE}
+			  , #{NAME}
+			  , #{CONTENTS}
+			  , 1
+			  , IFNULL(#{CHK_INFO}, '0')
+			  , 1
+			  , 'N'
+			  , DATE_FORMAT(now(), '%Y-%m-%d')
+			  , CURRENT_TIMESTAMP
+			 )
+		]]>
+	</insert>
+	
+	<update id="updNoticeHit" parameterType="string">
+		<![CDATA[
+			UPDATE TB_BOARD_NOTICE
+			SET
+				HIT_CNT = IFNULL(HIT_CNT, 0) + 1
+			WHERE 1 = 1
+			AND IDX = #{IDX}
+		]]>
+	</update>
+	
+	<select id="srchBoardDetail" parameterType="string" resultType="hashmap">
+		<![CDATA[
+			SELECT
+				T1.IDX
+			  , T1.USER_KEY
+			  , T1.TITLE
+			  , T1.CONTENTS
+			  , T1.HIT_CNT
+			  , T1.CHK_INFO
+			  , T1.DEL_YN
+			  , DATE_FORMAT(T1.PC_DT, '%Y-%m-%d') AS PC_DT
+			FROM TB_BOARD_NOTICE T1
+			WHERE 1 = 1
+			AND T1.IDX = #{IDX}
+		]]>
+	</select>
 	
 </mapper>
