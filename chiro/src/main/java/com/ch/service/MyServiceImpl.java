@@ -61,4 +61,9 @@ public class MyServiceImpl implements MyService {
 		return myDAO.srchBoardDetail(sStr);
 	}
 
+	@Override
+	public Object delNotice(String sStr) throws Exception {
+		return myDAO.delNotice(sStr);
+	}
+
 }

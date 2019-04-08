@@ -107,12 +107,12 @@
 			}
 		});
 		
-		$("#modify").on("click", function(e) { // Modify
+		$("#modify").on("click", function(e) { // 수정
 			e.preventDefault();
 			fn_openJoinUpd();
 		});
 		
-		$("#delete").on("click", function(e) { // Delete
+		$("#delete").on("click", function(e) { // 삭제
 			e.preventDefault();
 		
 			if(confirm("정말 삭제하시겠습니까?")){

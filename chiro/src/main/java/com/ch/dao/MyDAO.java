@@ -49,5 +49,9 @@ public class MyDAO extends AbstractDAO {
 	public Map<String, Object> srchBoardDetail(String sStr) throws Exception{
 		return (Map<String, Object>) selectOne("ch.srchBoardDetail", sStr);
 	}
+
+	public Object delNotice(String sStr) throws Exception{
+		return update("ch.delNotice", sStr);
+	}
 	
 }

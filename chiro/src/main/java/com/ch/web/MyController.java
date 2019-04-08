@@ -42,7 +42,7 @@ public class MyController {
 				mv.addObject("user", map.getMap());
 			}
 		}
-		
+			
 		return mv;
 	}
 	
@@ -138,9 +138,16 @@ public class MyController {
 	@PostMapping(value = "/write.do")
 	public ModelAndView openWritePage(CommandMap map) throws Exception {
 		ModelAndView mv = new ModelAndView("write");
-		logger.info("write: " + map.toString());
+		String sCommand = (String) map.get("command");
+		if(map != null){
+			logger.info("write: " + map.toString());
+			
+			if(!Utlz.isBlank((String) map.get("IDX"))){
+				mv.addObject("board", map.getMap());
+			}
+		}
 		
-		mv.addObject("command", (String) map.get("command"));
+		mv.addObject("command", sCommand);
 		return mv;
 	}
 	
@@ -152,19 +159,29 @@ public class MyController {
 		return (nCnt > 0 ? "redirect:/write.do" : "error");
 	}
 	
-	// 글 읽기
+	// 글읽기
 	@PostMapping("/post.do")
 	public ModelAndView openBoardDetail(CommandMap map) throws Exception {
 		ModelAndView mv = new ModelAndView("boardDetail");
+		String sCommand = (String) map.get("command");
+		logger.info("post: " + map.toString());
 		
-		logger.info("view: " + map.toString());
-		if("notice".equals((String) map.get("command"))){
+		if("notice".equals(sCommand)){
 			myService.updNoticeHit((String) map.get("IDX"));
 			mv.addObject("board", myService.srchBoardDetail((String) map.get("IDX")));
 		}else{
 			
 		}
 		
+		mv.addObject("command", sCommand);
 		return mv;
+	}
+	
+	// 글삭제(공지사항)
+	@PostMapping("/delNotice.do")
+	public String delNotice(CommandMap map) throws Exception {
+		logger.info("delNotice: " + map.toString());
+		int nCnt = (int) myService.delNotice((String) map.get("IDX"));
+		return (nCnt > 0 ? "redirect:/post.do" : "error");
 	}
 }

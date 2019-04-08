@@ -29,14 +29,15 @@
 					<form method="post" id="frm" name="frm" method="post" autocomplete="off">
 						<div class="row gtr-uniform">
 							<div class="col-12-xsmall">
-								<input type="text" name="NAME" id="NAME" value="" placeholder="작성자" maxlength="30" />
-								<input type="hidden" id="USER_KEY" name="USER_KEY" value="">
+								<input type="text" name="NAME" id="NAME" value="${board.NAME}" placeholder="작성자" maxlength="30" />
+								<input type="hidden" id="USER_KEY" name="USER_KEY" value="${board.USER_KEY}">
+								<input type="hidden" id="IDX" name="IDX" value="${board.IDX}">
 							</div>
 							<div class="col-12-xsmall">
-								<input type="password" name="PWD" id="PWD" placeholder="비밀번호" maxlength="30" />
+								<input type="password" id="PWD" name="PWD" value="${board.PWD}" placeholder="비밀번호" maxlength="30" />
 							</div>
 							<div class="col-12">
-								<input type="text" name="TITLE" id="TITLE" value="" placeholder="제목" maxlength="100" />
+								<input type="text" name="TITLE" id="TITLE" value="${board.TITLE}" placeholder="제목" maxlength="100" />
 							</div>
 							<div class="col-12">
 								<input type="checkbox" id="CHK_INFO" name="CHK_INFO" value="1">
@@ -45,12 +46,12 @@
 							
 							<!-- Break -->
 							<div class="col-12">
-								<textarea name="CONTENTS" id="CONTENTS" placeholder="내용" rows="10" maxlength="4000" ></textarea>
+								<textarea name="CONTENTS" id="CONTENTS" placeholder="내용" rows="10" maxlength="4000" >${board.CONTENTS}</textarea>
 							</div>
 
 							<!-- Break -->
 							<div class="col-12">
-								<ul class="actions">
+								<ul class="actions" style="float: right;">
 									<li><input type="submit" id="submit" value="작성완료" class="button primary" /></li>
 									<li><a href="#this" class="button big" id="cancel">취소</a></li>
 								</ul>
@@ -75,12 +76,30 @@
 	var sCommand = '${command}';
 	
 	$(function(){
-		if(sCommand == "notice"){
-			$("#NAME").val("관리자");
-			$("#NAME").prop("readonly", true);
-			document.getElementById('PWD').style.display = 'none';
-		}else if(sCommand == "board"){
-			document.getElementById('CHK_INFO').style.display = 'none';
+		
+		if(!gfn_isNull('${board.IDX}')){
+			if(sCommand == "notice"){
+				$("H1").append("(UPDATE)"); // header
+				$("#submit").val("수정완료"); // 입력 --> 수정
+				
+				$("#NAME").prop("readonly", true);
+				document.getElementById('PWD').style.display = 'none';
+				
+				// 체크박스
+				if('${board.CHK_INFO}' == '1'){
+					$("#CHK_INFO").prop("checked", true);
+				}
+			}else if(sCommand == "board"){
+				
+			}
+		}else{
+			if(sCommand == "notice"){
+				$("#NAME").val("관리자");
+				$("#NAME").prop("readonly", true);
+				document.getElementById('PWD').style.display = 'none';
+			}else if(sCommand == "board"){
+				document.getElementById('CHK_INFO').style.display = 'none';
+			}
 		}
 		
 		$("#cancel").on("click", function(e) { // 뒤로가기
@@ -118,10 +137,19 @@
 				alert("내용을 입력하세요.");
 				return false;
 			}
-			if(sCommand == "notice"){
-				fn_insNotice();
+			
+			if(!gfn_isNull('${board.IDX}')){
+				if(sCommand == "notice"){
+					fn_updNotice();
+				}else{
+					fn_updBoard();
+				}
 			}else{
-				fn_insUser();
+				if(sCommand == "notice"){
+					fn_insNotice();
+				}else{
+					fn_insBoard();
+				}
 			}
 		});
 	});
@@ -133,8 +161,23 @@
 		comAjax.ajax();
 	}
 	
-	function fn_insNoticeCallback(data){
+	function fn_insNoticeCallback(){
 		alert("등록이 완료되었습니다.");
+		
+		var comSubmit = new ComSubmit();
+		comSubmit.setUrl("<c:url value='notice.do' />");
+		comSubmit.submit();
+	}
+	
+	function fn_updNotice(){
+		var comAjax = new ComAjax("frm");
+		comAjax.setUrl("<c:url value='/updNotice.do' />");
+		comAjax.setCallback("fn_updNoticeCallback");
+		comAjax.ajax();
+	}
+	
+	function fn_updNoticeCallback(){
+		alert("수정이 완료되었습니다.");
 		
 		var comSubmit = new ComSubmit();
 		comSubmit.setUrl("<c:url value='notice.do' />");

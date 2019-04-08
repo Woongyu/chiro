@@ -234,19 +234,19 @@
 		comAjax.ajax();
 	}
 	
-	function fn_updUser(){
-		var comAjax = new ComAjax("frm");
-		comAjax.setUrl("<c:url value='/updUser.do' />");
-		comAjax.setCallback("fn_updUserCallback");
-		comAjax.ajax();
-	}
-	
-	function fn_insUserCallback(data){
+	function fn_insUserCallback(){
 		alert("등록이 완료되었습니다.");
 		
 		var comSubmit = new ComSubmit();
 		comSubmit.setUrl("<c:url value='list.do' />");
 		comSubmit.submit();
+	}
+	
+	function fn_updUser(){
+		var comAjax = new ComAjax("frm");
+		comAjax.setUrl("<c:url value='/updUser.do' />");
+		comAjax.setCallback("fn_updUserCallback");
+		comAjax.ajax();
 	}
 	
 	function fn_updUserCallback(){

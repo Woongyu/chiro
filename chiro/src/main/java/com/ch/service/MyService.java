@@ -24,5 +24,7 @@ public interface MyService {
 	void updNoticeHit(String sStr) throws Exception;
 
 	Map<String, Object> srchBoardDetail(String sStr) throws Exception;
+
+	Object delNotice(String sStr) throws Exception;
 	
 }

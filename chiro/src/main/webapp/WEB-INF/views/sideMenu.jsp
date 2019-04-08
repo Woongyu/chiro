@@ -55,7 +55,7 @@
 						<li><a href="#">예약조회</a></li>
 					</ul>
 				</li>
-				<li><a href="#thid">고객 게시판</a></li>
+				<li><a href="#this">고객 게시판</a></li>
 				<li><span class="opener">건강상식</span>
 					<ul>
 						<li><a href="#">냉온찜질의 올바른 사용법</a></li>
@@ -69,7 +69,7 @@
 						<li><a href="#">교육 및 과정</a></li>
 					</ul>
 				</li>
-				<li><a href="#thid">이벤트</a></li>
+				<li><a href="#this">이벤트</a></li>
 			</ul>
 		</nav>
 

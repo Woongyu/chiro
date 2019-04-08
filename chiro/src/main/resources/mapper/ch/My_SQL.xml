@@ -207,7 +207,6 @@
 			 VALUES
 			 (
 			 	NULL
-			  , NULL
 			  , #{USER_KEY}
 			  , #{TITLE}
 			  , #{NAME}
@@ -238,6 +237,7 @@
 				T1.IDX
 			  , T1.USER_KEY
 			  , T1.TITLE
+			  , T1.NAME
 			  , T1.CONTENTS
 			  , T1.HIT_CNT
 			  , T1.CHK_INFO
@@ -248,5 +248,19 @@
 			AND T1.IDX = #{IDX}
 		]]>
 	</select>
+	
+	<!-- 논리삭제 -->
+	<update id="delNotice" parameterType="string">
+		<![CDATA[
+			UPDATE TB_BOARD_NOTICE
+			SET
+				LUPD_CNT = IFNULL(LUPD_CNT, 0) + 1
+			  , DEL_YN = 'Y'
+			  , PC_TS = CURRENT_TIMESTAMP
+			WHERE 1 = 1
+			AND IDX = #{IDX}
+			AND DEL_YN = 'N'
+		]]>
+	</update>
 	
 </mapper>
