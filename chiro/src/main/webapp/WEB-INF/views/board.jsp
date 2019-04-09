@@ -181,7 +181,7 @@
 	}
 	
 	function fn_openWritePage(sCommand) {
-		// TO-DO 관리자 로그인 체크
+		// TODO 관리자 로그인 체크
 		var comSubmit = new ComSubmit();
 		comSubmit.addParam("command", sCommand);
 		comSubmit.setUrl("<c:url value='/write.do' />");

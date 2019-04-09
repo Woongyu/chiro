@@ -11,7 +11,7 @@ public interface MyService {
 	
 	Object updUser(Map<String, Object> map) throws Exception;
 	
-	List<Map<String, Object>> srchMemberList(CommandMap map) throws Exception;
+	List<Map<String, Object>> srchMemberList(Map<String, Object> map) throws Exception;
 	
 	Map<String, Object> srchMemberDetail(String sStr) throws Exception;
 
@@ -26,5 +26,7 @@ public interface MyService {
 	Map<String, Object> srchBoardDetail(String sStr) throws Exception;
 
 	Object delNotice(String sStr) throws Exception;
-	
+
+	Object updNotice(Map<String, Object> map) throws Exception;
+
 }

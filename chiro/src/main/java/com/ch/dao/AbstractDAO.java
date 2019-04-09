@@ -1,9 +1,11 @@
 package com.ch.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 
 import com.ch.util.Utlz;
 
@@ -51,5 +53,31 @@ public class AbstractDAO {
 	public List selectList(String queryId, Object params) {
 		printQueryId(queryId);
 		return sqlSession.selectList(queryId, params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Object selectPagingList(String queryId, Object params){
+		printQueryId(queryId);
+		Map<String, Object> map = (Map<String, Object>)params;
+		
+		String strPageIndex = (String)map.get("PAGE_INDEX");
+		String strPageRow = (String)map.get("PAGE_ROW");
+		int nPageIndex = 0;
+		int nPageRow = 20;
+		
+		if(StringUtils.isEmpty(strPageIndex) == false){
+			nPageIndex = Integer.parseInt(strPageIndex)-1;
+		}
+		if(StringUtils.isEmpty(strPageRow) == false){
+			nPageRow = Integer.parseInt(strPageRow);
+		}
+		
+		// 오라클과 달리 MySql은 Limit가 1이 아닌 0부터 시작하는 것을 알았다.
+		//map.put("START", (nPageIndex * nPageRow) + 1);
+		map.put("START", (nPageIndex * nPageRow));
+		//map.put("END", (nPageIndex * nPageRow) + nPageRow);
+		map.put("END", 14); // LIMIT
+		
+		return sqlSession.selectList(queryId, map);
 	}
 }

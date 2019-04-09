@@ -42,7 +42,7 @@
 								<input type="text" readonly="readonly"  name="BIRTH" id="BIRTH" value="${user.BIRTH}" placeholder="생년월일" />
 							</div>
 							<div class="col-6 col-12-xsmall">
-								<input type="email" readonly="readonly" name="E_MAIL" id="E_MAIL" value="${user.E_MAIL}" placeholder="E-MAIL" />
+								<input type="email" readonly="readonly" name="USER_MAIL" id="USER_MAIL" value="${user.USER_MAIL}" placeholder="이메일" />
 							</div>
 							<div class="col-6 col-12-xsmall">
 								<input type="text" readonly="readonly" name="PHONE_NUMBER" id="PHONE_NUMBER" value="${user.PHONE_NUMBER}" placeholder="휴대전화" />
@@ -51,10 +51,10 @@
 								<input type="text" readonly="readonly" name="GENDER" id="GENDER" value="${user.GENDER}" placeholder="성별" />
 							</div>
 							<div class="col-6 col-12-xsmall">
-								<input type="text" readonly="readonly" name="REGISTRATION_DATE" id="REGISTRATION_DATE" value="${user.REGISTRATION_DATE}" placeholder="등록일자" />
+								<input type="text" readonly="readonly" name="RGS_DT" id="RGS_DT" value="${user.RGS_DT}" placeholder="등록일자" />
 							</div>
 							<div class="col-6 col-12-xsmall">
-								<input type="text" readonly="readonly" name="COUNTING" id="COUNTING" value="${user.COUNTING}" placeholder="횟수" />
+								<input type="text" readonly="readonly" name="RGS_CNT" id="RGS_CNT" value="${user.RGS_CNT}" placeholder="횟수" />
 							</div>
 							
 							<!-- Break -->
@@ -134,7 +134,8 @@
 		alert("삭제가 완료되었습니다.");
 		
 		window.opener.location.reload();
-		window.close();
+		//window.close();
+		window.open("about:blank","_self").close();
 	}
 	
 	function fn_openJoinUpd() {

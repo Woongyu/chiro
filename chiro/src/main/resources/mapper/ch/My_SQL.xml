@@ -3,6 +3,53 @@
 "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="ch">
+	<sql id="pagingPre">
+		<![CDATA[
+			SELECT
+				@I AS TOTAL_COUNT
+			  , AAA.*
+			FROM(
+				SELECT
+					@I := @I + 1 AS RNUM
+				  , AA.*
+				FROM(
+		]]>
+	</sql>
+	
+	<sql id="pagingPost">
+		<![CDATA[
+				) AA
+			, (SELECT @I := 0, @J := 0) TEMP
+			) AAA
+			WHERE AAA.RNUM LIMIT #{START}, #{END}
+		]]>
+	</sql>
+	
+	<select id="srchMemberList" resultType="hashmap">
+		<include refid="ch.pagingPre"/>
+		
+		<![CDATA[
+			SELECT
+				T1.USER_KEY
+			  , T1.USER_IDX
+			  , IFNULL(T1.USER_NAME, '') AS USER_NAME
+			  , IFNULL(T1.USER_AGE, '') AS USER_AGE
+			  , IFNULL(DATE_FORMAT(T1.BIRTH, '%Y-%m-%d'), '') AS BIRTH
+			  , IFNULL(T1.USER_MAIL, '') AS USER_MAIL
+			  , IFNULL(T1.PHONE_NUMBER, '') AS PHONE_NUMBER
+			  , (CASE T1.GENDER WHEN 'M' THEN '남성' WHEN 'W' THEN '여성' ELSE '' END) AS GENDER
+			  , IFNULL(DATE_FORMAT(T1.RGS_DT, '%Y-%m-%d'), '') AS RGS_DT
+			  , T1.RGS_CNT
+			  , DATE_FORMAT(T1.PC_TS, '%Y-%m-%d %H:%i:%s') AS PC_TS
+			  , T1.DEL_YN
+			FROM TB_MEMBER T1
+			WHERE 1 = 1
+			ORDER BY
+				T1.USER_IDX DESC
+		]]>
+		
+		<include refid="ch.pagingPost"/> 
+	</select>
 	
 	<insert id="insUser" parameterType="hashmap">
 		<![CDATA[
@@ -13,11 +60,11 @@
 			  , USER_NAME
 			  , USER_AGE
 			  , BIRTH
-			  , E_MAIL
+			  , USER_MAIL
 			  , PHONE_NUMBER
 			  , GENDER
-			  , REGISTRATION_DATE
-			  , COUNTING
+			  , RGS_DT
+			  , RGS_CNT
 			  , OUTL_CTT
 			  , CHK01
 			  , CHK02
@@ -34,11 +81,11 @@
 			  , #{USER_NAME}
 			  , #{USER_AGE}
 			  , DATE_FORMAT(IFNULL(#{BIRTH}, now()), '%Y-%m-%d')
-			  , #{E_MAIL}
+			  , #{USER_MAIL}
 			  , #{PHONE_NUMBER}
 			  , #{GENDER}
-			  , DATE_FORMAT(IFNULL(#{REGISTRATION_DATE}, now()), '%Y-%m-%d')
-			  , IFNULL(#{COUNTING}, 1)
+			  , DATE_FORMAT(IFNULL(#{RGS_DT}, now()), '%Y-%m-%d')
+			  , IFNULL(#{RGS_CNT}, 1)
 			  , #{OUTL_CTT}
 			  , IFNULL(#{CHK01}, '0')
 			  , IFNULL(#{CHK02}, '0')
@@ -58,11 +105,11 @@
 				USER_NAME = #{USER_NAME}
 			  , USER_AGE = #{USER_AGE}
 			  , BIRTH = DATE_FORMAT(IFNULL(#{BIRTH}, now()), '%Y-%m-%d')
-			  , E_MAIL = #{E_MAIL}
+			  , USER_MAIL = #{USER_MAIL}
 			  , PHONE_NUMBER = #{PHONE_NUMBER}
 			  , GENDER = #{GENDER}
-			  , REGISTRATION_DATE = DATE_FORMAT(IFNULL(#{REGISTRATION_DATE}, now()), '%Y-%m-%d')
-			  , COUNTING = IFNULL(#{COUNTING}, 1)
+			  , RGS_DT = DATE_FORMAT(IFNULL(#{RGS_DT}, now()), '%Y-%m-%d')
+			  , RGS_CNT = IFNULL(#{RGS_CNT}, 1)
 			  , OUTL_CTT = #{OUTL_CTT}
 			  , CHK01 = IFNULL(#{CHK01}, '0')
 			  , CHK02 = IFNULL(#{CHK02}, '0')
@@ -72,28 +119,9 @@
 			  , PC_TS = CURRENT_TIMESTAMP
 			WHERE 1 = 1
 			AND USER_KEY = #{USER_KEY}
+			AND DEL_YN = 'N'
 		]]>
 	</update>
-	
-	<select id="srchMemberList" resultType="hashmap">
-		<![CDATA[
-			SELECT
-				T1.USER_KEY
-			  , T1.USER_IDX
-			  , T1.USER_NAME
-			  , T1.USER_AGE
-			  , DATE_FORMAT(T1.BIRTH, '%Y-%m-%d') AS BIRTH
-			  , T1.E_MAIL
-			  , T1.PHONE_NUMBER
-			  , (CASE T1.GENDER WHEN 'M' THEN '남성' WHEN 'W' THEN '여성' END) AS GENDER
-			  , DATE_FORMAT(T1.REGISTRATION_DATE, '%Y-%m-%d') AS REGISTRATION_DATE
-			  , T1.COUNTING
-			  , DATE_FORMAT(T1.PC_TS, '%Y-%m-%d %H:%i:%s') AS PC_TS
-			  , T1.DEL_YN
-			FROM TB_MEMBER T1
-			WHERE 1 = 1
-		]]>
-	</select>
 	
 	<select id="srchMemberDetail" parameterType="string" resultType="hashmap">
 		<![CDATA[
@@ -102,12 +130,12 @@
 			  , T1.USER_NAME
 			  , T1.USER_AGE
 			  , DATE_FORMAT(T1.BIRTH, '%Y-%m-%d') AS BIRTH
-			  , T1.E_MAIL
+			  , T1.USER_MAIL
 			  , T1.PHONE_NUMBER
 			  , (CASE T1.GENDER WHEN 'M' THEN '남성' WHEN 'W' THEN '여성' END) AS GENDER
 			  , DATE_FORMAT(PC_TS, '%Y-%m-%d %H:%i:%s') AS PC_TS
-			  , DATE_FORMAT(T1.REGISTRATION_DATE, '%Y-%m-%d') AS REGISTRATION_DATE
-			  , T1.COUNTING
+			  , DATE_FORMAT(T1.RGS_DT, '%Y-%m-%d') AS RGS_DT
+			  , T1.RGS_CNT
 			  , T1.CHK01
 			  , T1.CHK02
 			  , T1.CHK03
@@ -256,6 +284,23 @@
 			SET
 				LUPD_CNT = IFNULL(LUPD_CNT, 0) + 1
 			  , DEL_YN = 'Y'
+			  , PC_TS = CURRENT_TIMESTAMP
+			WHERE 1 = 1
+			AND IDX = #{IDX}
+			AND DEL_YN = 'N'
+		]]>
+	</update>
+	
+	<update id="updNotice" parameterType="hashmap">
+		<![CDATA[
+			UPDATE TB_BOARD_NOTICE
+			SET
+				USER_KEY = #{USER_KEY}
+			  , TITLE = #{TITLE}
+			  , NAME = #{NAME}
+			  , CONTENTS = #{CONTENTS}
+			  , CHK_INFO = IFNULL(#{CHK_INFO}, '0')
+			  , LUPD_CNT = IFNULL(LUPD_CNT, 0) + 1
 			  , PC_TS = CURRENT_TIMESTAMP
 			WHERE 1 = 1
 			AND IDX = #{IDX}

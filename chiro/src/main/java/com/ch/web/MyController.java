@@ -1,6 +1,5 @@
 package com.ch.web;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -48,11 +47,26 @@ public class MyController {
 	
 	// 회원목록
 	@RequestMapping(value = "/list.do")
+	public String openListPage() throws Exception {
+		return "memberList";
+	}
+	
+	// 회원목록(페이징)
+	@RequestMapping(value = "/listPage.do")
 	public ModelAndView openListPage(CommandMap map) throws Exception {
-		ModelAndView mv = new ModelAndView("memberList");
+		ModelAndView mv = new ModelAndView("jsonView");
+		if(Utlz.isBlank((String) map.get("PAGE_INDEX"))){
+			map.put("PAGE_INDEX", "1");
+		}
 		
-		List<Map<String, Object>> list = myService.srchMemberList(map);
+		List<Map<String, Object>> list = myService.srchMemberList(map.getMap());
 		mv.addObject("list", list);
+		
+		if(list.size() > 0){
+			mv.addObject("TOTAL", list.get(0).get("TOTAL_COUNT"));
+		}else{
+			mv.addObject("TOTAL", 0);
+		}
 		return mv;
 	}
 	
@@ -67,11 +81,11 @@ public class MyController {
 		if(Utlz.isBlank((String) map.get("BIRTH"))){
 			map.remove("BIRTH");
 		}
-		if(Utlz.isBlank((String) map.get("REGISTRATION_DATE"))){
-			map.remove("REGISTRATION_DATE");
+		if(Utlz.isBlank((String) map.get("RGS_DT"))){
+			map.remove("RGS_DT");
 		}
-		if(Utlz.isBlank((String) map.get("COUNTING"))){
-			map.remove("COUNTING");
+		if(Utlz.isBlank((String) map.get("RGS_CNT"))){
+			map.remove("RGS_CNT");
 		}
 		
 		// 랜덤 키 값을 생성하여 쿼리 조회 시 복합키를 사용한다.
@@ -93,11 +107,11 @@ public class MyController {
 		if(Utlz.isBlank((String) map.get("BIRTH"))){
 			map.remove("BIRTH");
 		}
-		if(Utlz.isBlank((String) map.get("REGISTRATION_DATE"))){
-			map.remove("REGISTRATION_DATE");
+		if(Utlz.isBlank((String) map.get("RGS_DT"))){
+			map.remove("RGS_DT");
 		}
-		if(Utlz.isBlank((String) map.get("COUNTING"))){
-			map.remove("COUNTING");
+		if(Utlz.isBlank((String) map.get("RGS_CNT"))){
+			map.remove("RGS_CNT");
 		}
 		
 		logger.info("updUser: " + map.toString());
@@ -170,7 +184,7 @@ public class MyController {
 			myService.updNoticeHit((String) map.get("IDX"));
 			mv.addObject("board", myService.srchBoardDetail((String) map.get("IDX")));
 		}else{
-			
+			// TODO 고객 게시판
 		}
 		
 		mv.addObject("command", sCommand);
@@ -183,5 +197,13 @@ public class MyController {
 		logger.info("delNotice: " + map.toString());
 		int nCnt = (int) myService.delNotice((String) map.get("IDX"));
 		return (nCnt > 0 ? "redirect:/post.do" : "error");
+	}
+	
+	// 글쓰기(수정)
+	@PostMapping("/updNotice.do")
+	public String updNotice(CommandMap map) throws Exception {
+		logger.info("updNotice: " + map.toString());
+		int nCnt = (int) myService.updNotice(map.getMap());
+		return (nCnt > 0 ? "redirect:/write.do" : "error");
 	}
 }

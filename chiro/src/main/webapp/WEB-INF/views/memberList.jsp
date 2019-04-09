@@ -51,53 +51,13 @@
 								</tr>
 							</thead>
 							<tbody>
-								<c:choose>
-									<c:when test="${fn:length(list) > 0}">
-										<c:forEach items="${list}" var="row">
-											<c:if test="${row.DEL_YN eq 'N'}">
-												<tr>
-													<td>${row.USER_IDX}</td>
-													<td class="user_name">
-														<a href="#this" name="user_name">
-															${row.USER_NAME}
-														</a>
-														<input type="hidden" id="USER_KEY" name="USER_KEY" value="${row.USER_KEY}">
-														<input type="hidden" id="DEL_YN" name="DEL_YN" value="${row.DEL_YN}">
-													</td>
-													<td>${row.USER_AGE}</td>
-													<td>${row.BIRTH}</td>
-													<td>${row.E_MAIL}</td>
-													<td>${row.PHONE_NUMBER}</td>
-													<td>${row.GENDER}</td>
-													<td>${row.REGISTRATION_DATE}</td>
-													<td>${row.COUNTING}</td>
-													<td>${row.PC_TS}</td>
-												</tr>
-											</c:if>
-											<c:if test="${row.DEL_YN ne 'N'}">
-												<tr style="text-decoration: line-through;">
-													<td>${row.USER_IDX}</td>
-													<td>${row.USER_NAME}</td>
-													<td>${row.USER_AGE}</td>
-													<td>${row.BIRTH}</td>
-													<td>${row.E_MAIL}</td>
-													<td>${row.PHONE_NUMBER}</td>
-													<td>${row.GENDER}</td>
-													<td>${row.REGISTRATION_DATE}</td>
-													<td>${row.COUNTING}</td>
-													<td>${row.PC_TS}</td>
-												</tr>
-											</c:if>
-										</c:forEach>
-									</c:when>
-									<c:otherwise>
-										<tr>
-											<td colspan="9">조회된 결과가 없습니다.</td>
-										</tr>
-									</c:otherwise>
-								</c:choose>
+								
 							</tbody>
 						</table>
+						
+						<div id="PAGE_NAVI"></div>
+						<input type="hidden" id="PAGE_INDEX" name="PAGE_INDEX"/>
+						
 					</div>
 					
 					<hr class="major" />
@@ -116,17 +76,9 @@
 	<%@ include file="/WEB-INF/include/include-body.jspf"%>
 	<script type="text/javascript">
 	$(document).ready(function() {
-		$("a[name='user_name']").on("click", function(e) {
-			e.preventDefault();
-			var sUserKey = $(this).parent().find("#USER_KEY").val();
-			var sDelYn = $(this).parent().find("#DEL_YN").val();
-			if(sDelYn == "Y"){
-				alert("이미 삭제된 회원입니다.");
-				return false;
-			}
-			
-			fn_openMemberDetail(sUserKey);
-		});
+		
+		// 시작
+		fn_openListPage(1);
 	});
 	
 	function fn_openMemberDetail(sUserKey){
@@ -141,6 +93,93 @@
 		
 		// 팝업 호출 후 제거
 		$("#commonForm").empty();
+	}
+	
+	function fn_openListPage(pageNo) {
+		var comAjax = new ComAjax();
+		comAjax.setUrl("<c:url value='/listPage.do' />");
+		comAjax.setCallback("fn_openListPageCallback"); 
+		comAjax.addParam("PAGE_INDEX", pageNo);
+		comAjax.addParam("PAGE_ROW", 15);
+		comAjax.ajax();
+	}
+	
+	function fn_openListPageCallback(data){
+		var total = data.TOTAL;
+		var body = $("table>tbody");
+		body.empty();
+		
+		if(total == 0){
+			var str =
+				"<tr>" + 
+					"<td colspan='9'>조회된 결과가 없습니다.</td>" + 
+				"</tr>";
+			
+			body.append(str);
+		}else{
+			var params = {
+				divId : "PAGE_NAVI",
+				pageIndex : "PAGE_INDEX",
+				totalCount : total,
+				eventName : "fn_openListPage"
+			};
+			
+			gfn_renderPaging(params);
+			
+			var str = "";
+			$.each(data.list, function(key, value){
+				if(value.DEL_YN == "N"){
+					str +=
+					"<tr>" + 
+						"<td>" + value.USER_IDX + "</td>" + 
+						"<td class='USER_NAME'>" +
+						"<a href='#this' name='USER_NAME'>" + value.USER_NAME + "</a>" +
+						"<input type='hidden' id='USER_KEY' name='USER_KEY' value=" + value.USER_KEY + ">" + 
+						"<input type='hidden' id='DEL_YN' name='DEL_YN' value=" + value.DEL_YN + ">" + 
+						"</td>" +
+						"<td>" + value.USER_AGE + "</td>" + 
+						"<td>" + value.BIRTH + "</td>" + 
+						"<td>" + value.USER_MAIL + "</td>" + 
+						"<td>" + value.PHONE_NUMBER + "</td>" + 
+						"<td>" + value.GENDER + "</td>" + 
+						"<td>" + value.RGS_DT + "</td>" + 
+						"<td>" + value.RGS_CNT + "</td>" + 
+						"<td>" + value.PC_TS + "</td>" + 
+					"</tr>";
+				}else{
+					str +=
+					"<tr style='text-decoration: line-through;'>" + 
+						"<td>" + value.USER_IDX + "</td>" + 
+						"<td>" + value.USER_NAME + "</td>" + 
+						"<input type='hidden' id='USER_KEY' name='USER_KEY' value=" + value.USER_KEY + ">" + 
+						"<input type='hidden' id='DEL_YN' name='DEL_YN' value=" + value.DEL_YN + ">" + 
+						"<td>" + value.USER_AGE + "</td>" + 
+						"<td>" + value.BIRTH + "</td>" + 
+						"<td>" + value.USER_MAIL + "</td>" + 
+						"<td>" + value.PHONE_NUMBER + "</td>" + 
+						"<td>" + value.GENDER + "</td>" + 
+						"<td>" + value.RGS_DT + "</td>" + 
+						"<td>" + value.RGS_CNT + "</td>" + 
+						"<td>" + value.PC_TS + "</td>" + 
+					"</tr>";
+				}
+			});
+			
+			body.append(str);
+			
+			// 페이징처리 후 동적으로 이벤트를 생성한다.
+			$("a[name='USER_NAME']").on("click", function(e) {
+				e.preventDefault();
+				var sUserKey = $(this).parent().find("#USER_KEY").val();
+				var sDelYn = $(this).parent().find("#DEL_YN").val();
+				if(sDelYn == "Y"){
+					alert("이미 삭제된 회원입니다.");
+					return false;
+				}
+				
+				fn_openMemberDetail(sUserKey);
+			});
+		}
 	}
 	</script>
 	

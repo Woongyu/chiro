@@ -27,10 +27,10 @@ public class MyServiceImpl implements MyService {
 	}
 	
 	@Override
-	public List<Map<String, Object>> srchMemberList(CommandMap map) throws Exception {
+	public List<Map<String, Object>> srchMemberList(Map<String, Object> map) throws Exception {
 		return myDAO.srchMemberList(map);
 	}
-
+	
 	@Override
 	public Map<String, Object> srchMemberDetail(String sStr) throws Exception {
 		return myDAO.srchMemberDetail(sStr);
@@ -64,6 +64,11 @@ public class MyServiceImpl implements MyService {
 	@Override
 	public Object delNotice(String sStr) throws Exception {
 		return myDAO.delNotice(sStr);
+	}
+
+	@Override
+	public Object updNotice(Map<String, Object> map) throws Exception {
+		return myDAO.updNotice(map);
 	}
 
 }

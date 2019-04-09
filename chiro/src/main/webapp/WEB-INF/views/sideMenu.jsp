@@ -114,51 +114,51 @@
 	<script src="<c:url value='/js/main.js'/>" charset="utf-8"></script>
 	
 	<script type="text/javascript">
-		$(document).ready(function() {
-			$("#side_main").on("click", function(e) {
-				e.preventDefault();
-				fn_openMainPage();
-			});
-			
-			$("#side_join").on("click", function(e) {
-				e.preventDefault();
-				fn_openJoinPage();
-			});
-			
-			$("#side_list").on("click", function(e) {
-				e.preventDefault();
-				fn_openListPage();
-			});
-			
-			$("#side_notice").on("click", function(e) {
-				e.preventDefault();
-				fn_openNoticePage();
-			});
+	$(document).ready(function() {
+		$("#side_main").on("click", function(e) {
+			e.preventDefault();
+			fn_openMainPage();
 		});
 		
-		function fn_openMainPage() {
-			var comSubmit = new ComSubmit();
-			comSubmit.setUrl("<c:url value='/main.do' />");
-			comSubmit.submit();
-		}
+		$("#side_join").on("click", function(e) {
+			e.preventDefault();
+			fn_openJoinPage();
+		});
 		
-		function fn_openJoinPage() {
-			var comSubmit = new ComSubmit();
-			comSubmit.setUrl("<c:url value='/join.do' />");
-			comSubmit.submit();
-		}
+		$("#side_list").on("click", function(e) {
+			e.preventDefault();
+			fn_openListPage();
+		});
 		
-		function fn_openListPage() {
-			var comSubmit = new ComSubmit();
-			comSubmit.setUrl("<c:url value='/list.do' />");
-			comSubmit.submit();
-		}
-		
-		function fn_openNoticePage() {
-			var comSubmit = new ComSubmit();
-			comSubmit.setUrl("<c:url value='/notice.do' />");
-			comSubmit.submit();
-		}
+		$("#side_notice").on("click", function(e) {
+			e.preventDefault();
+			fn_openNoticePage();
+		});
+	});
+	
+	function fn_openMainPage() {
+		var comSubmit = new ComSubmit();
+		comSubmit.setUrl("<c:url value='/main.do' />");
+		comSubmit.submit();
+	}
+	
+	function fn_openJoinPage() {
+		var comSubmit = new ComSubmit();
+		comSubmit.setUrl("<c:url value='/join.do' />");
+		comSubmit.submit();
+	}
+	
+	function fn_openListPage() {
+		var comSubmit = new ComSubmit();
+		comSubmit.setUrl("<c:url value='/list.do' />");
+		comSubmit.submit();
+	}
+	
+	function fn_openNoticePage() {
+		var comSubmit = new ComSubmit();
+		comSubmit.setUrl("<c:url value='/notice.do' />");
+		comSubmit.submit();
+	}
 	</script>
 </body>
 </html>

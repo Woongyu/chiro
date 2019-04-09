@@ -73,10 +73,10 @@
 	var sCommand = '${command}';
 	
 	$(function(){
-		// TO-DO 관리자 로그인 체크하여 수정, 삭제, 글쓰기 display 처리
+		// TODO 관리자 로그인 체크하여 수정, 삭제, 글쓰기 display 처리
 		$("#modify").on("click", function(e) { // 수정
 			e.preventDefault();
-			// TO-DO 수정삭제 시 관리자 체크
+			// TODO 수정삭제 시 관리자 체크
 			fn_openWriteUpd(sCommand);
 		});
 		
@@ -121,7 +121,7 @@
 	}
 	
 	function fn_openWritePage(sCommand) {
-		// TO-DO 관리자 로그인 체크
+		// TODO 관리자 로그인 체크
 		var comSubmit = new ComSubmit();
 		comSubmit.addParam("command", sCommand);
 		comSubmit.setUrl("<c:url value='/write.do' />");

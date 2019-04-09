@@ -45,7 +45,7 @@
 								<input type="text" name="BIRTH" id="BIRTH" value="${user.BIRTH}" class="int" placeholder="생년월일(예 : 1970-01-01)" />
 							</div>
 							<div class="col-6 col-12-xsmall">
-								<input type="email" name="E_MAIL" id="E_MAIL" value="${user.E_MAIL}" placeholder="E-MAIL" maxlength="100" />
+								<input type="email" name="USER_MAIL" id="USER_MAIL" value="${user.USER_MAIL}" placeholder="이메일" maxlength="100" />
 							</div>
 							<div class="col-6 col-12-xsmall">
 								<input type="text" numberOnly name="PHONE_NUMBER" id="PHONE_NUMBER" value="${user.PHONE_NUMBER}" class="int" placeholder="휴대전화" pattern="[0-9]{2,3}-[0-9]{3,4}-[0-9]{3,4}" maxlength="11" />
@@ -58,10 +58,10 @@
 								</select>
 							</div>
 							<div class="col-6 col-12-xsmall">
-								<input type="text" name="REGISTRATION_DATE" id="REGISTRATION_DATE" value="${user.REGISTRATION_DATE}" class="int" placeholder="등록일자(예 : 1970-01-01)" />
+								<input type="text" name="RGS_DT" id="RGS_DT" value="${user.RGS_DT}" class="int" placeholder="등록일자(예 : 1970-01-01)" />
 							</div>
 							<div class="col-6 col-12-xsmall">
-								<input type="text" numberOnly name="COUNTING" id="COUNTING" value="${user.COUNTING}" class="int" placeholder="등록횟수" maxlength="11" />
+								<input type="text" numberOnly name="RGS_CNT" id="RGS_CNT" value="${user.RGS_CNT}" class="int" placeholder="등록횟수" maxlength="11" />
 							</div>
 
 							<!-- Break -->
@@ -115,7 +115,7 @@
 		
 		 // 달력 생성
 	    $("#BIRTH").calendar();
-	    $("#REGISTRATION_DATE").calendar();
+	    $("#RGS_DT").calendar();
 	    
 		// USER_KEY CHECK
 		if(!gfn_isNull('${user.USER_KEY}')){
@@ -143,7 +143,7 @@
 		}else{
 			
 			 // 오늘날짜 입력
-			$("#REGISTRATION_DATE").val(new Date().toISOString().substring(0, 10));
+			$("#RGS_DT").val(new Date().toISOString().substring(0, 10));
 		}
 	});
 	
@@ -161,7 +161,7 @@
 		        
 		        switch ($(this).attr('name')) {
 				case "USER_AGE":
-				case "COUNTING":
+				case "RGS_CNT":
 					x = addCommas(x);
 					break;
 				case "PHONE_NUMBER":
@@ -192,7 +192,7 @@
 					alert("올바르지 않은 날짜입니다.");
 					return false;
 				}else{
-					sDate = $("#REGISTRATION_DATE").val();
+					sDate = $("#RGS_DT").val();
 					
 					if(!gfn_isNull(sDate)){
 						if(sDate.length != 10){
@@ -200,6 +200,15 @@
 							return false;
 						}
 					}
+				}
+			}
+			
+			var sEmail = $("#USER_MAIL").val();
+			if(!gfn_isNull(sEmail)){
+				var regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+				if(sEmail.match(regExp) == null) {
+					alert("올바르지 않은 이메일입니다.");
+					return false;
 				}
 			}
 			
@@ -253,7 +262,8 @@
 		alert("수정이 완료되었습니다.");
 		
 		window.opener.location.reload();
-		window.close();
+		//window.close();
+		window.open("about:blank","_self").close();
 	}
 	</script>
 	

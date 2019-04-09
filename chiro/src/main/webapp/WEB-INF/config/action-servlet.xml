@@ -28,4 +28,11 @@
 		<beans:property name="maxUploadSize" value="104857600" />
 	</beans:bean>
 	
+	<beans:bean class="org.springframework.web.servlet.view.BeanNameViewResolver">
+    	<beans:property name="order" value="1" />
+	</beans:bean>
+	
+	<beans:bean id="jsonView"
+		class="org.springframework.web.servlet.view.json.MappingJackson2JsonView" />
+	
 </beans:beans>

@@ -19,8 +19,8 @@ public class MyDAO extends AbstractDAO {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Map<String, Object>> srchMemberList(CommandMap map) throws Exception {
-		return (List<Map<String, Object>>) selectList("ch.srchMemberList", map);
+	public List<Map<String, Object>> srchMemberList(Map<String, Object> map) {
+		return (List<Map<String, Object>>) selectPagingList("ch.srchMemberList", map);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -53,5 +53,9 @@ public class MyDAO extends AbstractDAO {
 	public Object delNotice(String sStr) throws Exception{
 		return update("ch.delNotice", sStr);
 	}
-	
+
+	public Object updNotice(Map<String, Object> map) throws Exception {
+		return update("ch.updNotice", map);
+	}
+
 }

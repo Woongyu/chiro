@@ -30,6 +30,8 @@ public class Utlz {
 			return true;
 		}else if(sStr.trim().length() == 0){
 			return true;
+		}else if("undefined".equals(sStr)){
+			return true;
 		}else{
 			return false;
 		}
