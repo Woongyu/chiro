@@ -34,7 +34,7 @@
 		
 			<!-- Image -->
 			<div class="effect">
-				<img src="/images/icon_chiro.jpeg" onclick="fn_openMainPage();" style="cursor: pointer;"/>
+				<img src="/images/icon_chiro.jpeg" onclick="fn_goMain();" style="cursor: pointer;"/>
 			</div>
 			
 			<header class="major">
@@ -46,7 +46,7 @@
 				<li><span class="opener">회원관리</span>
 					<ul>
 						<li><a href="#this" id="side_join">회원등록</a></li>
-						<li><a href="#this" id="side_list">회원목록</a></li>
+						<li><a href="#this" id="side_userList">회원목록</a></li>
 					</ul>
 				</li>
 				<li><span class="opener">예약관리</span>
@@ -117,44 +117,44 @@
 	$(document).ready(function() {
 		$("#side_main").on("click", function(e) {
 			e.preventDefault();
-			fn_openMainPage();
+			fn_goMain();
 		});
 		
 		$("#side_join").on("click", function(e) {
 			e.preventDefault();
-			fn_openJoinPage();
+			fn_goJoin();
 		});
 		
-		$("#side_list").on("click", function(e) {
+		$("#side_userList").on("click", function(e) {
 			e.preventDefault();
-			fn_openListPage();
+			fn_goUserList();
 		});
 		
 		$("#side_notice").on("click", function(e) {
 			e.preventDefault();
-			fn_openNoticePage();
+			fn_goNotice();
 		});
 	});
 	
-	function fn_openMainPage() {
+	function fn_goMain() {
 		var comSubmit = new ComSubmit();
 		comSubmit.setUrl("<c:url value='/main.do' />");
 		comSubmit.submit();
 	}
 	
-	function fn_openJoinPage() {
+	function fn_goJoin() {
 		var comSubmit = new ComSubmit();
 		comSubmit.setUrl("<c:url value='/join.do' />");
 		comSubmit.submit();
 	}
 	
-	function fn_openListPage() {
+	function fn_goUserList() {
 		var comSubmit = new ComSubmit();
-		comSubmit.setUrl("<c:url value='/list.do' />");
+		comSubmit.setUrl("<c:url value='/userList.do' />");
 		comSubmit.submit();
 	}
 	
-	function fn_openNoticePage() {
+	function fn_goNotice() {
 		var comSubmit = new ComSubmit();
 		comSubmit.setUrl("<c:url value='/notice.do' />");
 		comSubmit.submit();

@@ -27,13 +27,13 @@ public class MyServiceImpl implements MyService {
 	}
 	
 	@Override
-	public List<Map<String, Object>> srchMemberList(Map<String, Object> map) throws Exception {
-		return myDAO.srchMemberList(map);
+	public List<Map<String, Object>> srchUserList(Map<String, Object> map) throws Exception {
+		return myDAO.srchUserList(map);
 	}
 	
 	@Override
-	public Map<String, Object> srchMemberDetail(String sStr) throws Exception {
-		return myDAO.srchMemberDetail(sStr);
+	public Map<String, Object> srchUserDetail(String sStr) throws Exception {
+		return myDAO.srchUserDetail(sStr);
 	}
 
 	@Override

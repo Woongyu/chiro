@@ -26,116 +26,91 @@ public class MyController {
 	// 메인
 	@GetMapping
 	@RequestMapping(value = "/main.do")
-	public String openMainPage() throws Exception {
+	public String goMain() throws Exception {
 		return "main";
 	}
 	
 	// 회원등록
 	@PostMapping(value = "/join.do")
-	public ModelAndView openJoinPage(CommandMap map) throws Exception {
+	public ModelAndView goJoin(CommandMap map) throws Exception {
 		ModelAndView mv = new ModelAndView("join");
-		if(map != null){
+		
+		if(!Utlz.isBlank(map.get("USER_KEY"))){
 			logger.info("join: " + map.toString());
-			
-			if(!Utlz.isBlank((String) map.get("USER_KEY"))){
-				mv.addObject("user", map.getMap());
-			}
+			mv.addObject("user", map.getMap());
 		}
-			
+		
 		return mv;
 	}
 	
 	// 회원목록
-	@RequestMapping(value = "/list.do")
-	public String openListPage() throws Exception {
-		return "memberList";
+	@RequestMapping(value = "/userList.do")
+	public String goUserList() throws Exception {
+		return "userList";
 	}
 	
 	// 회원목록(페이징)
-	@RequestMapping(value = "/listPage.do")
-	public ModelAndView openListPage(CommandMap map) throws Exception {
-		ModelAndView mv = new ModelAndView("jsonView");
-		if(Utlz.isBlank((String) map.get("PAGE_INDEX"))){
-			map.put("PAGE_INDEX", "1");
-		}
+	@PostMapping(value = "/userListPage.do")
+	public ModelAndView goUserListPage(CommandMap map) throws Exception {
+		logger.info("userListPage: " + map.toString());
 		
-		List<Map<String, Object>> list = myService.srchMemberList(map.getMap());
+		ModelAndView mv = new ModelAndView("jsonView");
+		List<Map<String, Object>> list = myService.srchUserList(map.getMap());
 		mv.addObject("list", list);
 		
 		if(list.size() > 0){
 			mv.addObject("TOTAL", list.get(0).get("TOTAL_COUNT"));
+			mv.addObject("RNUM", list.get(list.size() -1).get("RNUM"));
 		}else{
 			mv.addObject("TOTAL", 0);
+			mv.addObject("RNUM", 0);
 		}
 		return mv;
 	}
 	
 	// 회원등록(입력)
 	@PostMapping("/insUser.do")
-	public String insUser(CommandMap map) throws Exception {
-		
-		// MySql을 입력할 때 int, date 컬럼에 빈 값('')이 입력되면 에러가 발생한다.
-		if(Utlz.isBlank((String) map.get("USER_AGE"))){
-			map.remove("USER_AGE");
-		}
-		if(Utlz.isBlank((String) map.get("BIRTH"))){
-			map.remove("BIRTH");
-		}
-		if(Utlz.isBlank((String) map.get("RGS_DT"))){
-			map.remove("RGS_DT");
-		}
-		if(Utlz.isBlank((String) map.get("RGS_CNT"))){
-			map.remove("RGS_CNT");
-		}
+	public ModelAndView insUser(CommandMap map) throws Exception {
+		ModelAndView mv = new ModelAndView("jsonView");
 		
 		// 랜덤 키 값을 생성하여 쿼리 조회 시 복합키를 사용한다.
 		map.put("USER_KEY", Utlz.getSurrogateKey(11));
-		
 		logger.info("insUser: " + map.toString());
+		
 		int nCnt = (int) myService.insUser(map.getMap());
-		return (nCnt > 0 ? "redirect:/join.do" : "error");
+		mv.addObject("nCnt", nCnt);
+		return mv;
 	}
 	
 	// 회원등록(수정)
 	@PostMapping("/updUser.do")
-	public String updUser(CommandMap map) throws Exception {
-		
-		// MySql을 입력할 때 int, date 컬럼에 빈 값('')이 입력되면 에러가 발생한다.
-		if(Utlz.isBlank((String) map.get("USER_AGE"))){
-			map.remove("USER_AGE");
-		}
-		if(Utlz.isBlank((String) map.get("BIRTH"))){
-			map.remove("BIRTH");
-		}
-		if(Utlz.isBlank((String) map.get("RGS_DT"))){
-			map.remove("RGS_DT");
-		}
-		if(Utlz.isBlank((String) map.get("RGS_CNT"))){
-			map.remove("RGS_CNT");
-		}
-		
+	public ModelAndView updUser(CommandMap map) throws Exception {
+		ModelAndView mv = new ModelAndView("jsonView");
 		logger.info("updUser: " + map.toString());
+		
 		int nCnt = (int) myService.updUser(map.getMap());
-		return (nCnt > 0 ? "redirect:/join.do" : "error");
+		mv.addObject("nCnt", nCnt);
+		return mv;
 	}
 	
 	// 회원상세정보
-	@PostMapping("/detail.do")
-	public ModelAndView openMemberDetail(CommandMap map) throws Exception {
-		ModelAndView mv = new ModelAndView("memberDetail");
-		
-		logger.info("detail: " + (String) map.get("USER_KEY"));
-		mv.addObject("user", myService.srchMemberDetail((String) map.get("USER_KEY")));
+	@PostMapping("/userDetail.do")
+	public ModelAndView goUserDetail(CommandMap map) throws Exception {
+		ModelAndView mv = new ModelAndView("userDetail");
+		logger.info("userDetail: " + map.toString());
+		mv.addObject("user", myService.srchUserDetail((String) map.get("USER_KEY")));
 		return mv;
 	}
 	
 	// 회원삭제
 	@PostMapping("/delUser.do")
-	public String delUser(CommandMap map) throws Exception {
+	public ModelAndView delUser(CommandMap map) throws Exception {
+		ModelAndView mv = new ModelAndView("jsonView");
 		logger.info("delUser: " + map.toString());
 		
 		int nCnt = (int) myService.delUser((String) map.get("USER_KEY"));
-		return (nCnt > 0 ? "memberDetail" : "error");
+		mv.addObject("nCnt", nCnt);
+		return mv;
 	}
 	
 	// 공지사항
@@ -153,12 +128,9 @@ public class MyController {
 	public ModelAndView openWritePage(CommandMap map) throws Exception {
 		ModelAndView mv = new ModelAndView("write");
 		String sCommand = (String) map.get("command");
-		if(map != null){
+		if(!Utlz.isBlank(map.get("IDX"))){
 			logger.info("write: " + map.toString());
-			
-			if(!Utlz.isBlank((String) map.get("IDX"))){
-				mv.addObject("board", map.getMap());
-			}
+			mv.addObject("board", map.getMap());
 		}
 		
 		mv.addObject("command", sCommand);

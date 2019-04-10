@@ -11,9 +11,9 @@ public interface MyService {
 	
 	Object updUser(Map<String, Object> map) throws Exception;
 	
-	List<Map<String, Object>> srchMemberList(Map<String, Object> map) throws Exception;
+	List<Map<String, Object>> srchUserList(Map<String, Object> map) throws Exception;
 	
-	Map<String, Object> srchMemberDetail(String sStr) throws Exception;
+	Map<String, Object> srchUserDetail(String sStr) throws Exception;
 
 	Object delUser(String sStr) throws Exception;
 

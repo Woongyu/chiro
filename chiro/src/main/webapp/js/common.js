@@ -118,13 +118,13 @@ function ComAjax(opt_formId) {
 	};
 }
 
-/*
-divId : 페이징 태그가 그려질 div
-pageIndx : 현재 페이지 위치가 저장될 input 태그 id
-recordCount : 페이지당 레코드 수
-totalCount : 전체 조회 건수 
-eventName : 페이징 하단의 숫자 등의 버튼이 클릭되었을 때 호출될 함수 이름
-*/
+/**
+ * divId : 페이징 태그가 그려질 div
+ * pageIndx : 현재 페이지 위치가 저장될 input 태그 id
+ * recordCount : 페이지당 레코드 수
+ * totalCount : 전체 조회 건수 
+ * eventName : 페이징 하단의 숫자 등의 버튼이 클릭되었을 때 호출될 함수 이름
+ */
 var gfv_pageIndex = null;
 var gfv_eventName = null;
 function gfn_renderPaging(params){
@@ -157,19 +157,19 @@ function gfn_renderPaging(params){
 	
 	preStr += "<ul class='pagination' style='text-align: center;'>";
 	if(totalIndexCount > 10){ // 전체 인덱스가 10이 넘을 경우, 맨앞, 앞 태그 작성
-		preStr += "<li><a href='#this' class='button primary' onclick='_movePage(1)'>First</a></li>" +
-			"<li><a href='#this' class='button' onclick='_movePage("+prev+")'>Prev</a></li>";
+		preStr += "<li><a href='#this' class='button primary small' onclick='_movePage(1)'>First</a></li>" +
+			"<li><a href='#this' class='button small' onclick='_movePage("+prev+")'>Prev</a></li>";
 	}
 	else if(totalIndexCount <=10 && totalIndexCount > 1){ //전체 인덱스가 10보다 작을경우, 맨앞 태그 작성
-		preStr += "<li><a href='#this' class='button primary' onclick='_movePage(1)'>First</a></li>";
+		preStr += "<li><a href='#this' class='button primary small' onclick='_movePage(1)'>First</a></li>";
 	}
 	
 	if(totalIndexCount > 10){ //전체 인덱스가 10이 넘을 경우, 맨뒤, 뒤 태그 작성
-		postStr += "<li><a href='#this' class='button' onclick='_movePage("+next+")'>Next</a></li>" +
-			"<li><a href='#this' class='button primary' onclick='_movePage("+totalIndexCount+")'>End</a></li>";
+		postStr += "<li><a href='#this' class='button small' onclick='_movePage("+next+")'>Next</a></li>" +
+			"<li><a href='#this' class='button primary small' onclick='_movePage("+totalIndexCount+")'>End</a></li>";
 	}
 	else if(totalIndexCount <=10 && totalIndexCount > 1){ //전체 인덱스가 10보다 작을경우, 맨뒤 태그 작성
-		postStr += "<li><a href='#this' class='button primary' onclick='_movePage("+totalIndexCount+")'>End</a></li>";
+		postStr += "<li><a href='#this' class='button primary small' onclick='_movePage("+totalIndexCount+")'>End</a></li>";
 	}
 	
 	for(var i = first; i < (first+last); i ++){
@@ -196,7 +196,54 @@ function _movePage(value){
 	}
 }
 
-function gfn_readyAlert() {
-	alert("해당 기능은 준비중입니다.");
+/**
+ * fadeIn 효과를 이용한 알림 스크립트
+ */
+// Default settings
+var gfv_noticePopupTimer = setTimeout(function(){}, 1);
+var gfv_noticePopupDefaultOption =
+{
+		id: 'default',
+		message: '기본 메시지 입니다.',
+		padding: '20px 40px',
+		fade: 500,
+		duration: 1500,
+		beforeShow: function(){},
+};
+function gfn_alertPopup(options)
+{
+	// Set Options
+	var settings = $.extend({}, gfv_noticePopupDefaultOption, options);
+	$("div.noticePopup").attr("id", settings.id);
+	
+	var element = "div#"+settings.id+".noticePopup";
+	// Set Style
+	$(element).css("padding", settings.padding);
+	// Set Message
+	$(element+">div.noticeMessage").html(settings.message);
+	
+	// Set Position
+	var width = $(element).outerWidth();
+	var height = $(element).outerHeight();
+	$(element).css("margin-left", String(-width/2)+"px");
+	$(element).css("margin-top", String(-height/2)+"px");
+	
+	// Clear Animation
+	$(element).stop();
+	clearTimeout(gfv_noticePopupTimer);
+	$(element).css("display", "none");
+	
+	// Start Animation
+	$(element).fadeIn(settings.fade, function()
+	{
+		gfv_noticePopupTimer = setTimeout(function()
+		{
+			$(element).fadeOut(settings.fade);
+		}, settings.duration);
+	});
+}
+
+function gfn_readyAlert(){
+	gfn_alertPopup({message:"해당 기능은 준비중입니다."});
 	return false;
 }

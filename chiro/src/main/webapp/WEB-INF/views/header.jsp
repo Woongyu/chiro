@@ -26,16 +26,16 @@
 	$(document).ready(function() {
 		$("#head_main").on("click", function(e) {
 			e.preventDefault();
-			fn_openMainPage();
+			fn_goMain();
 		});
 		
 		$("a[name='icon_link']").on("click", function(e) {
 			e.preventDefault();
-			gfn_readyAlert();
+			gfn_readyAlert(); // TODO
 		});
 	});
 	
-	function fn_openMainPage() {
+	function fn_goMain() {
 		var comSubmit = new ComSubmit();
 		comSubmit.setUrl("<c:url value='/main.do' />");
 		comSubmit.submit();

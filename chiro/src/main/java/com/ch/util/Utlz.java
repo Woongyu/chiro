@@ -25,16 +25,23 @@ public class Utlz {
 	 * @param sStr
 	 * @return boolean
 	 */
-	public static boolean isBlank(String sStr){
+	public static boolean isBlank(Object oStr){
+		if(oStr == null){
+			return true;
+		}
+		
+		String sStr = oStr.toString();
 		if(sStr == null){
 			return true;
-		}else if(sStr.trim().length() == 0){
-			return true;
-		}else if("undefined".equals(sStr)){
-			return true;
-		}else{
-			return false;
 		}
+		if(sStr.trim().length() == 0){
+			return true;
+		}
+		if("undefined".equals(sStr)){
+			return true;
+		}
+		
+		return false;
 	}
 	
 	/**

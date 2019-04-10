@@ -30,7 +30,15 @@ p {
 					</header>
 					
 					<div class="box">
-						<p><c:out value="${exception.getCause()}" /></p>
+					<c:set var="error" value="${exception.getCause()}" />
+						<c:choose>
+							<c:when test="${empty error}">
+								<p>올바르지 않은 접근입니다.</p>
+							</c:when>
+							<c:otherwise>
+								<p><c:out value="${error}" /></p>
+							</c:otherwise>
+					</c:choose>
 					</div>
 					
 					<a href="/" class="button primary">GO HOME</a>

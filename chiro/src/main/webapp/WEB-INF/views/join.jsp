@@ -22,15 +22,17 @@
 				<!-- Content -->
 				<section>
 					<header class="main">
-						<h1>SIGN UP</h1>
+						<h1>회원등록</h1>
 					</header>
-
+					
 					<span class="image main">
 						<img src="/images/join_chiro01.jpg" alt="" style="box-shadow: 10px 10px 20px -5px rgba(0, 0, 0, 0.8);" />
 					</span>
-
+					
 					<!-- Form -->
-					<h2>Membership Application Form</h2>
+					<div class="my_info">
+						<h2>가입정보를 입력하세요.</h2>
+					</div>
 					
 					<form method="post" id="frm" name="frm" method="post" autocomplete="off">
 						<div class="row gtr-uniform">
@@ -63,7 +65,7 @@
 							<div class="col-6 col-12-xsmall">
 								<input type="text" numberOnly name="RGS_CNT" id="RGS_CNT" value="${user.RGS_CNT}" class="int" placeholder="등록횟수" maxlength="11" />
 							</div>
-
+							
 							<!-- Break -->
 							<div class="col-6 col-12-small">
 								<input type="checkbox" id="CHK01" name="CHK01" value="1">
@@ -81,17 +83,17 @@
 								<input type="checkbox" id="CHK04" name="CHK04" value="1">
 								<label for="CHK04">병력, 수술(성형포함), 복용제가 있으십니까?</label>
 							</div>
-
+							
 							<!-- Break -->
 							<div class="col-12">
 								<textarea name="OUTL_CTT" id="OUTL_CTT" placeholder="비고" rows="6" maxlength="3000" >${user.OUTL_CTT}</textarea>
 							</div>
-
+							
 							<!-- Break -->
 							<div class="col-12">
 								<ul class="actions">
-									<li><input type="submit" id="submit" value="REGISTER" class="button primary" /></li>
-									<li><input type="reset" value="RESET" /></li>
+									<li><input type="submit" id="btnSubmit" value="등록하기" class="button primary" /></li>
+									<li><input type="reset" value="초기화" /></li>
 								</ul>
 							</div>
 						</div>
@@ -102,7 +104,7 @@
 				</section>
 			</div>
 		</div>
-
+		
 		<!-- Sidebar -->
 		<div id="sidebar">
 			<jsp:include page="sideMenu.jsp" />
@@ -177,11 +179,11 @@
 		    $(this).val($(this).val().replace(/[^0-9]/g,""));
 		});
 		
-		$("#submit").on("click", function(e) {
+		$("#btnSubmit").on("click", function(e) {
 			e.preventDefault();
 			
 			if(gfn_isNull($("#USER_NAME").val())){
-				alert("이름은 필수입력 사항입니다.");
+				gfn_alertPopup({message:"이름은 필수입력 사항입니다."});
 				return false;
 			}
 			
@@ -189,14 +191,14 @@
 			sDate = $("#BIRTH").val();
 			if(!gfn_isNull(sDate)){
 				if(sDate.length != 10){
-					alert("올바르지 않은 날짜입니다.");
+					gfn_alertPopup({message:"올바르지 않은 날짜입니다."});
 					return false;
 				}else{
 					sDate = $("#RGS_DT").val();
 					
 					if(!gfn_isNull(sDate)){
 						if(sDate.length != 10){
-							alert("올바르지 않은 날짜입니다.");
+							gfn_alertPopup({message:"올바르지 않은 날짜입니다."});
 							return false;
 						}
 					}
@@ -207,15 +209,15 @@
 			if(!gfn_isNull(sEmail)){
 				var regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
 				if(sEmail.match(regExp) == null) {
-					alert("올바르지 않은 이메일입니다.");
+					gfn_alertPopup({message:"올바르지 않은 이메일입니다."});
 					return false;
 				}
 			}
 			
 			if(!gfn_isNull('${user.USER_KEY}')){
-				fn_updUser(); // 수정
+				fn_updUser();
 			}else{
-				fn_insUser(); // 입력
+				fn_insUser();
 			}
 		});
 	});
@@ -243,12 +245,28 @@
 		comAjax.ajax();
 	}
 	
-	function fn_insUserCallback(){
-		alert("등록이 완료되었습니다.");
-		
-		var comSubmit = new ComSubmit();
-		comSubmit.setUrl("<c:url value='list.do' />");
-		comSubmit.submit();
+	function fn_insUserCallback(data){
+		var nCnt = data.nCnt;
+		if(!gfn_isNull(nCnt)){
+			if(nCnt > 0){
+				gfn_alertPopup({message:"등록이 완료되었습니다."});
+				
+				var myTimer = setTimeout(function() {
+					var comSubmit = new ComSubmit();
+					comSubmit.setUrl("<c:url value='userList.do' />");
+					comSubmit.submit();
+					
+					clearTimeout(myTimer);
+				}, 1000);
+			}else{
+				gfn_alertPopup({message:"일시적인 오류가 발생하였습니다."});
+				return false;
+			}
+		}else{
+			var comSubmit = new ComSubmit();
+			comSubmit.setUrl("<c:url value='/error.do' />");
+			comSubmit.submit();
+		}
 	}
 	
 	function fn_updUser(){
@@ -258,12 +276,27 @@
 		comAjax.ajax();
 	}
 	
-	function fn_updUserCallback(){
-		alert("수정이 완료되었습니다.");
-		
-		window.opener.location.reload();
-		//window.close();
-		window.open("about:blank","_self").close();
+	function fn_updUserCallback(data){
+		var nCnt = data.nCnt;
+		if(!gfn_isNull(nCnt)){
+			if(nCnt > 0){
+				gfn_alertPopup({message:"수정이 완료되었습니다."});
+				
+				var myTimer = setTimeout(function() {
+					window.opener.location.reload();
+					window.open("about:blank","_self").close();
+					
+					clearTimeout(myTimer);
+				}, 1000);
+			}else{
+				gfn_alertPopup({message:"일시적인 오류가 발생하였습니다."});
+				return false;
+			}
+		}else{
+			var comSubmit = new ComSubmit();
+			comSubmit.setUrl("<c:url value='/error.do' />");
+			comSubmit.submit();
+		}
 	}
 	</script>
 	

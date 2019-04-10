@@ -4,6 +4,30 @@
 <title>카이로76</title>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<style type="text/css">
+.my_info {
+	box-shadow: 2.5px 2.5px 0px 2.5px #ffc107;
+	padding-left: 1.0em;
+	border-radius:0.5em;
+	-moz-border-radius: 0.5em;
+	-webkit-border-radius: 0.5em;
+	background: #FFEFBA;
+	background: -webkit-linear-gradient(to right, #FFFFFF, #FFEFBA);
+	background: linear-gradient(to right, #FFFFFF, #FFEFBA);
+}
+div.noticePopup {
+	z-index: 2000;
+	display: none;
+	position: fixed;
+	left: 50%;
+	top: 50%;
+	background-color: rgba(0,0,0,0.75);
+	border-radius: 3px;
+}
+div.noticePopup>div.noticeMessage {
+	color: white;
+}
+</style>
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 <link rel="stylesheet" type="text/css" href="<c:url value='/css/main.css'/>"/>
 <script src="<c:url value='/js/jquery.min.js'/>" charset="utf-8"></script>

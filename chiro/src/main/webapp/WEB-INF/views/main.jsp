@@ -94,7 +94,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
 							카이로프랙틱을 적극적으로 권하는 추세입니다. 카이로76은 카이로프랙틱을 통해 친절하고 시원하게, 그리고 보다 근본적인
 							방법으로 통증에서 벗어나실 수 있도록 도움을 드립니다.</p>
 						<ul class="actions">
-							<li><a href="#this" class="button big" id="join">회원등록</a></li>
+							<li><a href="#this" class="button big" id="btnJoin">회원등록</a></li>
 						</ul>
 					</div>
 					<span class="image object">
@@ -115,7 +115,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
 						강의와 임상실습 통해 기초 카이로프랙틱을 누구나 따라할 수 있도록 쉽게 교육하며 우리가 알지 못했던 인체의 균형과 치유법을 배우게 됩니다. 
 						나 자신과 내 가족의 건강을 지켜 줄 수 있을 뿐만 아니라 향후 무한한 비전이 있는 카이로프랙틱의 세계로 여러분을 초대합니다.</p>
 						<ul class="actions">
-							<li><a href="#this" class="button big" id="edu">둘러보기</a></li>
+							<li><a href="#this" class="button big" id="btnRecruit">둘러보기</a></li>
 						</ul>
 					</div>
 					<span class="image object">
@@ -172,18 +172,18 @@ google.maps.event.addDomListener(window, 'load', initialize);
 	<%@ include file="/WEB-INF/include/include-body.jspf"%>
 	<script type="text/javascript">
 	$(document).ready(function() {
-		$("#join").on("click", function(e) {
+		$("#btnJoin").on("click", function(e) {
 			e.preventDefault();
-			fn_openJoinPage();
+			fn_goJoin();
 		});
 		
-		$("#edu").on("click", function(e) {
+		$("#btnRecruit").on("click", function(e) {
 			e.preventDefault();
-			gfn_readyAlert();
+			gfn_readyAlert(); // TODO
 		});
 	});
 	
-	function fn_openJoinPage() {
+	function fn_goJoin() {
 		var comSubmit = new ComSubmit();
 		comSubmit.setUrl("<c:url value='/join.do' />");
 		comSubmit.submit();

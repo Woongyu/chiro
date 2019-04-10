@@ -26,12 +26,14 @@
 					</header>
 
 					<span class="image main">
-						<img src="/images/member_list01.png" alt="" style="box-shadow: 10px 10px 20px -5px rgba(0, 0, 0, 0.8);" />
+						<img src="/images/user_list01.png" alt="" style="box-shadow: 10px 10px 20px -5px rgba(0, 0, 0, 0.8);" />
 					</span>
 					
-					<br />
-					<h2>카이로76 회원의 상세 리스트를 확인합니다.</h2>
-					<br />
+					<div id="PAGE_CNT" style="float: right; padding-right: 1.0em; padding-top: 5px;"></div>
+					
+					<div class="my_info">
+						<h2>카이로76 회원의 상세 리스트를 확인합니다.</h2>
+					</div>
 					
 					<!-- Table -->
 					<div class="table-wrapper">
@@ -78,34 +80,31 @@
 	$(document).ready(function() {
 		
 		// 시작
-		fn_openListPage(1);
+		fn_goUserListPage(1);
 	});
 	
-	function fn_openMemberDetail(sUserKey){
+	function fn_goUserDetail(sUserKey){
 		var comSubmit = new ComSubmit();
 		comSubmit.addParam("USER_KEY", sUserKey);
-		comSubmit.setUrl("<c:url value='detail.do' />");
-		comSubmit.setCallback("fn_openMemberDetailCallback");
+		comSubmit.setUrl("<c:url value='userDetail.do' />");
 		comSubmit.openPopup("500", "600");
 	}
 	
-	function fn_openMemberDetailCallback(){
-		
-		// 팝업 호출 후 제거
-		$("#commonForm").empty();
-	}
-	
-	function fn_openListPage(pageNo) {
+	function fn_goUserListPage(pageNo) {
 		var comAjax = new ComAjax();
-		comAjax.setUrl("<c:url value='/listPage.do' />");
-		comAjax.setCallback("fn_openListPageCallback"); 
-		comAjax.addParam("PAGE_INDEX", pageNo);
+		comAjax.setUrl("<c:url value='/userListPage.do' />");
+		comAjax.setCallback("fn_goUserListPageCallback"); 
+		comAjax.addParam("PAGE_INDEX", (!gfn_isNull(pageNo) ? pageNo : 1));
 		comAjax.addParam("PAGE_ROW", 15);
 		comAjax.ajax();
 	}
 	
-	function fn_openListPageCallback(data){
+	function fn_goUserListPageCallback(data){
 		var total = data.TOTAL;
+		var rnum = data.RNUM;
+		$("#PAGE_CNT").empty();
+		$("#PAGE_CNT").append("<p><b>조회 : "+rnum+"건 / 전체 : "+total+"건</b></p>");
+		
 		var body = $("table>tbody");
 		body.empty();
 		
@@ -121,7 +120,7 @@
 				divId : "PAGE_NAVI",
 				pageIndex : "PAGE_INDEX",
 				totalCount : total,
-				eventName : "fn_openListPage"
+				eventName : "fn_goUserListPage"
 			};
 			
 			gfn_renderPaging(params);
@@ -177,7 +176,7 @@
 					return false;
 				}
 				
-				fn_openMemberDetail(sUserKey);
+				fn_goUserDetail(sUserKey);
 			});
 		}
 	}

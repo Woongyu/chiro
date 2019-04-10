@@ -25,7 +25,7 @@
 		]]>
 	</sql>
 	
-	<select id="srchMemberList" resultType="hashmap">
+	<select id="srchUserList" resultType="hashmap">
 		<include refid="ch.pagingPre"/>
 		
 		<![CDATA[
@@ -123,7 +123,7 @@
 		]]>
 	</update>
 	
-	<select id="srchMemberDetail" parameterType="string" resultType="hashmap">
+	<select id="srchUserDetail" parameterType="string" resultType="hashmap">
 		<![CDATA[
 			SELECT
 				T1.USER_KEY

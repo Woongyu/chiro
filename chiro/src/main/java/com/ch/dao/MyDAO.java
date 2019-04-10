@@ -19,13 +19,13 @@ public class MyDAO extends AbstractDAO {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Map<String, Object>> srchMemberList(Map<String, Object> map) {
-		return (List<Map<String, Object>>) selectPagingList("ch.srchMemberList", map);
+	public List<Map<String, Object>> srchUserList(Map<String, Object> map) {
+		return (List<Map<String, Object>>) selectPagingList("ch.srchUserList", map);
 	}
 	
 	@SuppressWarnings("unchecked")
-	public Map<String, Object> srchMemberDetail(String sStr) throws Exception {
-		return (Map<String, Object>) selectOne("ch.srchMemberDetail", sStr);
+	public Map<String, Object> srchUserDetail(String sStr) throws Exception {
+		return (Map<String, Object>) selectOne("ch.srchUserDetail", sStr);
 	}
 
 	public Object delUser(String sStr) throws Exception {
