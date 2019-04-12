@@ -5,28 +5,32 @@
 <head>
 <meta charset="UTF-8">
 <%@ include file="/WEB-INF/include/include-header.jspf"%>
-<title>공지사항</title>
+<title>게시판</title>
 <style type="text/css">
 .image.main img {
     box-shadow: 10px 10px 20px -5px rgba(0, 0, 0, 0.8);
 }
 .notice {
-	background: #ee9ca7;  /* fallback for old browsers */
-	background: -webkit-linear-gradient(to left, #ffdde1, #ee9ca7);  /* Chrome 10-25, Safari 5.1-6 */
-	background: linear-gradient(to left, #ffdde1, #ee9ca7); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+	background: #ee9ca7;
+	background: -webkit-linear-gradient(to left, #ffdde1, #ee9ca7);
+	background: linear-gradient(to left, #ffdde1, #ee9ca7);
 	font-weight: bold;
+}
+.title {
+	text-align: left;
+    padding-left: 1.0em;
 }
 </style>
 </head>
 <body class="is-preload">
-
+	
 	<!-- Wrapper -->
 	<div id="wrapper">
-	
+		
 		<!-- Main -->
 		<div id="main">
 			<div class="inner">
-			
+				
 				<!-- Header -->
 				<jsp:include page="header.jsp" />
 				
@@ -35,80 +39,34 @@
 					<header class="main">
 						<h1 id="board_h1"></h1>
 					</header>
-
+					
 					<span class="image main" id="image main"></span>
 					
-					<br />
-					<h2 id="board_h2"></h2>
-					<br />
+					<div id="PAGE_CNT" style="float: right;"></div>
+					
+					<div class="my_info">
+						<h2 id="board_h2"></h2>
+					</div>
 					
 					<!-- Table -->
 					<div class="table-wrapper">
-						<table class="alt" style="text-align: center">
+						<table class="alt" style="text-align: center; white-space: nowrap;">
 							<thead>
 								<tr>
 									<th scope="col" width="10%">번호</th>
 									<th scope="col" width="*">제목</th>
 									<th scope="col" width="10%">글쓴이</th>
-									<th scope="col" width="15%">날짜</th>
+									<th scope="col" width="15%">등록일</th>
 									<th scope="col" width="10%">조회</th>
 								</tr>
 							</thead>
 							<tbody>
-								<c:choose>
-									<c:when test="${fn:length(list) > 0}">
-										<c:forEach items="${list}" var="row">
-											<c:if test="${row.DEL_YN eq 'N'}">
-												<c:if test="${row.LEV eq '1'}">
-												<tr class="notice">
-														<td><img src="https://img.icons8.com/material-two-tone/24/000000/christmas-star.png"></td>
-														<td class="title">
-															<a href="#this" name="title">
-																${row.TITLE}
-															</a>
-															<input type="hidden" id="IDX" name="IDX" value="${row.IDX}">
-															<input type="hidden" id="DEL_YN" name="DEL_YN" value="${row.DEL_YN}">
-														</td>
-														<td>${row.NAME}</td>
-														<td>${row.PC_DT}</td>
-														<td>${row.HIT_CNT}</td>
-													</tr>
-												</c:if>
-												<c:if test="${row.LEV eq '2'}">
-												<tr>
-														<td>${row.IDX}</td>
-														<td class="title">
-															<a href="#this" name="title">
-																${row.TITLE}
-															</a>
-															<input type="hidden" id="IDX" name="IDX" value="${row.IDX}">
-															<input type="hidden" id="DEL_YN" name="DEL_YN" value="${row.DEL_YN}">
-														</td>
-														<td>${row.NAME}</td>
-														<td>${row.PC_DT}</td>
-														<td>${row.HIT_CNT}</td>
-													</tr>
-												</c:if>
-											</c:if>
-											<c:if test="${row.DEL_YN ne 'N'}">
-												<tr style="text-decoration: line-through;">
-													<td>${row.IDX}</td>
-													<td>${row.TITLE}</td>
-													<td>${row.NAME}</td>
-													<td>${row.PC_DT}</td>
-													<td>${row.HIT_CNT}</td>
-												</tr>
-											</c:if>
-										</c:forEach>
-									</c:when>
-									<c:otherwise>
-										<tr>
-											<td colspan="9">조회된 결과가 없습니다.</td>
-										</tr>
-									</c:otherwise>
-								</c:choose>
+								
 							</tbody>
 						</table>
+						
+						<div id="PAGE_NAVI"></div>
+						<input type="hidden" id="PAGE_INDEX" name="PAGE_INDEX"/>
 						
 						<div class="col-12">
 							<ul class="actions" style="float: right;">
@@ -135,52 +93,133 @@
 	<script type="text/javascript">
 	var sCommand = '${command}';
 	var img = document.createElement('img');
-	
-	$(function() {
+	$(document).ready(function() {
+		// 공지사항
 		if(sCommand == "notice"){
 			$("#board_h1").append("공지사항");
 			$("#board_h2").append("카이로76의 소식을 들려드립니다.");
 			img.src = '/images/board_notice01.png';
-		}else if(sCommand == "board"){
-			
 		}
 		
 		document.getElementById('image main').appendChild(img);
 		
-		$("#write").on("click", function(e) {
+		$("#btnWrite").on("click", function(e) {
 			e.preventDefault();
-			fn_openWritePage(sCommand);
+			fn_goWritePage(sCommand);
 		});
 		
-		$("a[name='title']").on("click", function(e) {
-			e.preventDefault();
-			var sIdx = $(this).parent().find("#IDX").val();
-			var sDelYn = $(this).parent().find("#DEL_YN").val();
-			if(sDelYn == "Y"){
-				alert("이미 삭제된 글입니다.");
-				return false;
-			}
-			
-			fn_openBoardDetail(sCommand, sIdx);
-		});
+		// 시작
+		fn_goBoardListPage(1);
 	});
 	
-	function fn_openBoardDetail(sCommand, sIdx){
+	function fn_goBoardListPage(pageNo) {
+		var comAjax = new ComAjax();
+		comAjax.setUrl("<c:url value='/boardListPage.do' />");
+		comAjax.setCallback("fn_goUserListPageCallback"); 
+		comAjax.addParam("BOARD_DVSN", sCommand);
+		comAjax.addParam("PAGE_INDEX", (!gfn_isNull(pageNo) ? pageNo : 1));
+		comAjax.addParam("PAGE_ROW", 15);
+		comAjax.ajax();
+	}
+	
+	function fn_goUserListPageCallback(data){
+		var total = data.TOTAL;
+		var rnum = data.RNUM;
+		
+		// 조회건수
+		$("#PAGE_CNT").empty();
+		$("#PAGE_CNT").append("<p><b style='color: #2196f3;'>조회 : "+rnum+"건 / 전체 : "+total+"건</b></p>");
+		
+		var body = $("table>tbody");
+		body.empty();
+		
+		if(total == 0){
+			var str =
+			"<tr>" + 
+			"<td colspan='9'>조회된 결과가 없습니다.</td>" + 
+			"</tr>";
+			
+			body.append(str);
+		}else{
+			var params = {
+				divId : "PAGE_NAVI",
+				pageIndex : "PAGE_INDEX",
+				totalCount : total,
+				eventName : "fn_goBoardListPage"
+			};
+			
+			gfn_renderPaging(params);
+			
+			var str = "";
+			$.each(data.list, function(key, value){
+				if(value.DEL_YN == "N"){
+					if(value.LEV == "1"){
+						str +=
+						"<tr class='notice'>" + 
+						"<td><img src='https://img.icons8.com/material-two-tone/24/000000/christmas-star.png'></td>" +
+						"<td class='title'>" + 
+						"<a href='#this' name='title'>" + value.TITLE + "</a>" + 
+						"<input type='hidden' id='BOARD_KEY' name='BOARD_KEY' value=" + value.BOARD_KEY + ">" +
+						"<input type='hidden' id='DEL_YN' name='DEL_YN' value=" + value.DEL_YN + ">" +
+						"</td>" +
+						"<td>" + value.NAME + "</td>" + 
+						"<td>" + value.PC_DT + "</td>" + 
+						"<td>" + value.HIT_CNT + "</td>" + 
+						"</tr>";
+					}else if(value.LEV == "2"){
+						str +=
+						"<tr>" +
+						"<td>" + value.BOARD_IDX + "</td>" + 
+						"<td class='title'>" + 
+						"<a href='#this' name='title'>" + value.TITLE + "</a>" + 
+						"<input type='hidden' id='BOARD_KEY' name='BOARD_KEY' value=" + value.BOARD_KEY + ">" +
+						"<input type='hidden' id='DEL_YN' name='DEL_YN' value=" + value.DEL_YN + ">" +
+						"</td>" +
+						"<td>" + value.NAME + "</td>" + 
+						"<td>" + value.PC_DT + "</td>" + 
+						"<td>" + value.HIT_CNT + "</td>" + 
+						"</tr>";
+					}
+				}else{
+					str +=
+					"<tr style='text-decoration: line-through;'>" + 
+					"<td>" + value.BOARD_IDX + "</td>" + 
+					"<td class='title'>" + value.TITLE + "</td>" + 
+					"<td>" + value.NAME + "</td>" + 
+					"<td>" + value.PC_DT + "</td>" + 
+					"<td>" + value.HIT_CNT + "</td>" + 
+					"</tr>";
+				}
+			});
+			
+			// CSS를 활용한 fadeIn 효과
+			body.stop(true).css({'opacity':0}).animate({'opacity':1}, 500);
+			body.append(str);
+			
+			// 페이징처리 후 동적으로 이벤트를 생성한다.
+			$("a[name='title']").on("click", function(e) {
+				e.preventDefault();
+				var sBoardKey = $(this).parent().find("#BOARD_KEY").val();
+				var sDelYn = $(this).parent().find("#DEL_YN").val();
+				if(sDelYn == "Y"){
+					gfn_alertPopup({message:"이미 삭제된 글입니다."});
+					return false;
+				}
+				
+				fn_goBoardDetail(sCommand, sBoardKey);
+			});
+		}
+	}
+	
+	function fn_goBoardDetail(sCommand, sBoardKey){
 		var comSubmit = new ComSubmit();
 		comSubmit.setUrl("<c:url value='post.do' />");
 		comSubmit.addParam("command", sCommand);
-		comSubmit.addParam("IDX", sIdx);
-		comSubmit.setCallback("fn_openBoardDetailCallback");
+		comSubmit.addParam("BOARD_KEY", sBoardKey);
 		comSubmit.submit();
 	}
 	
-	function fn_openBoardDetailCallback(){
-		
-		// 팝업 호출 후 제거
-		$("#commonForm").empty();
-	}
-	
-	function fn_openWritePage(sCommand) {
+	function fn_goWritePage(sCommand) {
 		// TODO 관리자 로그인 체크
 		var comSubmit = new ComSubmit();
 		comSubmit.addParam("command", sCommand);

@@ -32,7 +32,7 @@ public class MyServiceImpl implements MyService {
 	}
 	
 	@Override
-	public Map<String, Object> srchUserDetail(String sStr) throws Exception {
+	public List<Map<String, Object>> srchUserDetail(String sStr) throws Exception {
 		return myDAO.srchUserDetail(sStr);
 	}
 
@@ -42,8 +42,8 @@ public class MyServiceImpl implements MyService {
 	}
 
 	@Override
-	public List<Map<String, Object>> srchNoticeList(CommandMap map) throws Exception {
-		return myDAO.srchNoticeList(map);
+	public List<Map<String, Object>> srchBoardList(Map<String, Object> map) throws Exception {
+		return myDAO.srchBoardList(map);
 	}
 
 	@Override
@@ -52,8 +52,8 @@ public class MyServiceImpl implements MyService {
 	}
 
 	@Override
-	public void updNoticeHit(String sStr) throws Exception {
-		myDAO.updNoticeHit(sStr);
+	public void updBoardHit(String sStr) throws Exception {
+		myDAO.updBoardHit(sStr);
 	}
 
 	@Override
@@ -62,8 +62,8 @@ public class MyServiceImpl implements MyService {
 	}
 
 	@Override
-	public Object delNotice(String sStr) throws Exception {
-		return myDAO.delNotice(sStr);
+	public Object delBoard(String sStr) throws Exception {
+		return myDAO.delBoard(sStr);
 	}
 
 	@Override

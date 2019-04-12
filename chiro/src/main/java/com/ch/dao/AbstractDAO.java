@@ -72,7 +72,7 @@ public class AbstractDAO {
 			nPageRow = Integer.parseInt(strPageRow);
 		}
 		
-		// 오라클과 달리 MySql은 Limit가 1이 아닌 0부터 시작하는 것을 알았다.
+		// 오라클과 달리 MySql은 Limit가 1이 아닌 0부터 시작한다.
 		//map.put("START", (nPageIndex * nPageRow) + 1);
 		map.put("START", (nPageIndex * nPageRow));
 		//map.put("END", (nPageIndex * nPageRow) + nPageRow);

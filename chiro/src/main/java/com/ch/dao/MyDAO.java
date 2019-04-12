@@ -11,51 +11,51 @@ import com.ch.vo.CommandMap;
 public class MyDAO extends AbstractDAO {
 	
 	public Object insUser(Map<String, Object> map) throws Exception {
-		return insert("ch.insUser", map);
+		return insert("member.insUser", map);
 	}
 	
 	public Object updUser(Map<String, Object> map) {
-		return update("ch.updUser", map);
+		return update("member.updUser", map);
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List<Map<String, Object>> srchUserList(Map<String, Object> map) {
-		return (List<Map<String, Object>>) selectPagingList("ch.srchUserList", map);
+		return (List<Map<String, Object>>) selectPagingList("member.srchUserList", map);
 	}
 	
 	@SuppressWarnings("unchecked")
-	public Map<String, Object> srchUserDetail(String sStr) throws Exception {
-		return (Map<String, Object>) selectOne("ch.srchUserDetail", sStr);
+	public List<Map<String, Object>> srchUserDetail(String sStr) throws Exception {
+		return (List<Map<String, Object>>) selectList("member.srchUserDetail", sStr);
 	}
 
 	public Object delUser(String sStr) throws Exception {
-		return update("ch.delUser", sStr);
+		return update("member.delUser", sStr);
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Map<String, Object>> srchNoticeList(CommandMap map) throws Exception {
-		return (List<Map<String, Object>>) selectList("ch.srchNoticeList", map);
+	public List<Map<String, Object>> srchBoardList(Map<String, Object> map) throws Exception {
+		return (List<Map<String, Object>>) selectPagingList("board.srchBoardList", map);
 	}
 
 	public Object insNotice(Map<String, Object> map) throws Exception {
-		return insert("ch.insNotice", map);
+		return insert("board.insNotice", map);
 	}
 
-	public void updNoticeHit(String sStr) throws Exception{
-		update("ch.updNoticeHit", sStr);
+	public void updBoardHit(String sStr) throws Exception{
+		update("board.updBoardHit", sStr);
 	}
 
 	@SuppressWarnings("unchecked")
 	public Map<String, Object> srchBoardDetail(String sStr) throws Exception{
-		return (Map<String, Object>) selectOne("ch.srchBoardDetail", sStr);
+		return (Map<String, Object>) selectOne("board.srchBoardDetail", sStr);
 	}
 
-	public Object delNotice(String sStr) throws Exception{
-		return update("ch.delNotice", sStr);
+	public Object delBoard(String sStr) throws Exception{
+		return update("board.delBoard", sStr);
 	}
 
 	public Object updNotice(Map<String, Object> map) throws Exception {
-		return update("ch.updNotice", map);
+		return update("board.updNotice", map);
 	}
 
 }

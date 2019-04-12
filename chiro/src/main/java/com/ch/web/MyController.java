@@ -31,16 +31,9 @@ public class MyController {
 	}
 	
 	// 회원등록
-	@PostMapping(value = "/join.do")
-	public ModelAndView goJoin(CommandMap map) throws Exception {
-		ModelAndView mv = new ModelAndView("join");
-		
-		if(!Utlz.isBlank(map.get("USER_KEY"))){
-			logger.info("join: " + map.toString());
-			mv.addObject("user", map.getMap());
-		}
-		
-		return mv;
+	@RequestMapping(value = "/join.do")
+	public String goJoin(CommandMap map) throws Exception {
+		return "join";
 	}
 	
 	// 회원목록
@@ -65,6 +58,7 @@ public class MyController {
 			mv.addObject("TOTAL", 0);
 			mv.addObject("RNUM", 0);
 		}
+		
 		return mv;
 	}
 	
@@ -96,9 +90,11 @@ public class MyController {
 	// 회원상세정보
 	@PostMapping("/userDetail.do")
 	public ModelAndView goUserDetail(CommandMap map) throws Exception {
-		ModelAndView mv = new ModelAndView("userDetail");
+		ModelAndView mv = new ModelAndView("jsonView");
 		logger.info("userDetail: " + map.toString());
-		mv.addObject("user", myService.srchUserDetail((String) map.get("USER_KEY")));
+		
+		List<Map<String, Object>> list = myService.srchUserDetail((String) map.get("USER_KEY"));
+		mv.addObject("list", list);
 		return mv;
 	}
 	
@@ -113,23 +109,43 @@ public class MyController {
 		return mv;
 	}
 	
-	// 공지사항
-	@PostMapping(value = "/notice.do")
-	public ModelAndView openNoticePage(CommandMap map) throws Exception {
+	// 게시판
+	@PostMapping(value = "/board.do")
+	public ModelAndView goBoardPage(CommandMap map) throws Exception {
 		ModelAndView mv = new ModelAndView("board");
-		List<Map<String, Object>> list = myService.srchNoticeList(map);
+		logger.info("board: " + map.toString());
+		mv.addObject("command", (String) map.get("command"));
+		return mv;
+	}
+	
+	// 게시판(페이징)
+	@PostMapping(value = "/boardListPage.do")
+	public ModelAndView goBoardListPage(CommandMap map) throws Exception {
+		logger.info("boardListPage: " + map.toString());
+		
+		ModelAndView mv = new ModelAndView("jsonView");
+		List<Map<String, Object>> list = myService.srchBoardList(map.getMap());
 		mv.addObject("list", list);
-		mv.addObject("command", "notice");
+		
+		if(list.size() > 0){
+			mv.addObject("TOTAL", list.get(0).get("TOTAL_COUNT"));
+			mv.addObject("RNUM", list.get(list.size() -1).get("RNUM"));
+		}else{
+			mv.addObject("TOTAL", 0);
+			mv.addObject("RNUM", 0);
+		}
+		
 		return mv;
 	}
 	
 	// 글쓰기
 	@PostMapping(value = "/write.do")
-	public ModelAndView openWritePage(CommandMap map) throws Exception {
+	public ModelAndView goWritePage(CommandMap map) throws Exception {
 		ModelAndView mv = new ModelAndView("write");
 		String sCommand = (String) map.get("command");
-		if(!Utlz.isBlank(map.get("IDX"))){
-			logger.info("write: " + map.toString());
+		logger.info("write: " + map.toString());
+		
+		if(!Utlz.isBlank(map.get("BOARD_KEY"))){
 			mv.addObject("board", map.getMap());
 		}
 		
@@ -147,28 +163,25 @@ public class MyController {
 	
 	// 글읽기
 	@PostMapping("/post.do")
-	public ModelAndView openBoardDetail(CommandMap map) throws Exception {
+	public ModelAndView goBoardDetail(CommandMap map) throws Exception {
 		ModelAndView mv = new ModelAndView("boardDetail");
-		String sCommand = (String) map.get("command");
 		logger.info("post: " + map.toString());
 		
-		if("notice".equals(sCommand)){
-			myService.updNoticeHit((String) map.get("IDX"));
-			mv.addObject("board", myService.srchBoardDetail((String) map.get("IDX")));
-		}else{
-			// TODO 고객 게시판
-		}
-		
-		mv.addObject("command", sCommand);
+		myService.updBoardHit((String) map.get("BOARD_KEY"));
+		mv.addObject("board", myService.srchBoardDetail((String) map.get("BOARD_KEY")));
+		mv.addObject("command", (String) map.get("command"));
 		return mv;
 	}
 	
-	// 글삭제(공지사항)
-	@PostMapping("/delNotice.do")
-	public String delNotice(CommandMap map) throws Exception {
+	// 글삭제
+	@PostMapping("/delBoard.do")
+	public ModelAndView delBoard(CommandMap map) throws Exception {
+		ModelAndView mv = new ModelAndView("jsonView");
 		logger.info("delNotice: " + map.toString());
-		int nCnt = (int) myService.delNotice((String) map.get("IDX"));
-		return (nCnt > 0 ? "redirect:/post.do" : "error");
+		
+		int nCnt = (int) myService.delBoard((String) map.get("BOARD_KEY"));
+		mv.addObject("nCnt", nCnt);
+		return mv;
 	}
 	
 	// 글쓰기(수정)

@@ -26,7 +26,7 @@
 					</header>
 					
 					<span class="image main">
-						<img src="/images/join_chiro01.jpg" alt="" style="box-shadow: 10px 10px 20px -5px rgba(0, 0, 0, 0.8);" />
+						<img class="my_img" src="/images/join_chiro01.jpg" alt="" />
 					</span>
 					
 					<!-- Form -->
@@ -37,20 +37,19 @@
 					<form method="post" id="frm" name="frm" method="post" autocomplete="off">
 						<div class="row gtr-uniform">
 							<div class="col-6 col-12-xsmall">
-								<input type="text" name="USER_NAME" id="USER_NAME" value="${user.USER_NAME}" placeholder="이름" maxlength="100" />
-								<input type="hidden" id="USER_KEY" name="USER_KEY" value="${user.USER_KEY}">
+								<input type="text" name="USER_NAME" id="USER_NAME" placeholder="이름" maxlength="20" />
 							</div>
 							<div class="col-6 col-12-xsmall">
-								<input type="text" numberOnly name="USER_AGE" id="USER_AGE" value="${user.USER_AGE}" class="int" placeholder="나이" maxlength="11" />
+								<input type="text" numberOnly name="USER_AGE" id="USER_AGE" class="int" placeholder="나이" maxlength="3" />
 							</div>
 							<div class="col-6 col-12-xsmall">
-								<input type="text" name="BIRTH" id="BIRTH" value="${user.BIRTH}" class="int" placeholder="생년월일(예 : 1970-01-01)" />
+								<input type="text" name="BIRTH" id="BIRTH" class="int" placeholder="생년월일(예 : 1970-01-01)" />
 							</div>
 							<div class="col-6 col-12-xsmall">
-								<input type="email" name="USER_MAIL" id="USER_MAIL" value="${user.USER_MAIL}" placeholder="이메일" maxlength="100" />
+								<input type="email" name="USER_MAIL" id="USER_MAIL" placeholder="이메일" maxlength="64" />
 							</div>
 							<div class="col-6 col-12-xsmall">
-								<input type="text" numberOnly name="PHONE_NUMBER" id="PHONE_NUMBER" value="${user.PHONE_NUMBER}" class="int" placeholder="휴대전화" pattern="[0-9]{2,3}-[0-9]{3,4}-[0-9]{3,4}" maxlength="11" />
+								<input type="text" numberOnly name="PHONE_NUMBER" id="PHONE_NUMBER" class="int" placeholder="휴대전화" pattern="[0-9]{2,3}-[0-9]{3,4}-[0-9]{3,4}" maxlength="11" />
 							</div>
 							<div class="col-6 col-12-xsmall">
 								<select name="GENDER" id="GENDER">
@@ -60,10 +59,10 @@
 								</select>
 							</div>
 							<div class="col-6 col-12-xsmall">
-								<input type="text" name="RGS_DT" id="RGS_DT" value="${user.RGS_DT}" class="int" placeholder="등록일자(예 : 1970-01-01)" />
+								<input type="text" name="RGS_DT" id="RGS_DT" class="int" placeholder="등록일자(예 : 1970-01-01)" />
 							</div>
 							<div class="col-6 col-12-xsmall">
-								<input type="text" numberOnly name="RGS_CNT" id="RGS_CNT" value="${user.RGS_CNT}" class="int" placeholder="등록횟수" maxlength="11" />
+								<input type="text" numberOnly name="RGS_CNT" id="RGS_CNT" class="int" placeholder="등록횟수" maxlength="3" />
 							</div>
 							
 							<!-- Break -->
@@ -86,7 +85,7 @@
 							
 							<!-- Break -->
 							<div class="col-12">
-								<textarea name="OUTL_CTT" id="OUTL_CTT" placeholder="비고" rows="6" maxlength="3000" >${user.OUTL_CTT}</textarea>
+								<textarea name="OUTL_CTT" id="OUTL_CTT" placeholder="비고" rows="6" maxlength="3000" ></textarea>
 							</div>
 							
 							<!-- Break -->
@@ -114,45 +113,16 @@
 	<%@ include file="/WEB-INF/include/include-body.jspf"%>
 	<script type="text/javascript">
 	$(function(){
-		
 		 // 달력 생성
 	    $("#BIRTH").calendar();
 	    $("#RGS_DT").calendar();
 	    
-		// USER_KEY CHECK
-		if(!gfn_isNull('${user.USER_KEY}')){
-			$("H1").append("(UPDATE)"); // header
-			$("#submit").val("MODIFY"); // 입력 --> 수정
-			
-			// 성별
-		    var sGender = '${user.GENDER}';
-		    sGender = (sGender == "남성" ? "M" : (!gfn_isNull(sGender) ? "W" : ""));
-			$("#GENDER").val(sGender).prop("selected", true);
-			
-			// 체크박스
-			if('${user.CHK01}' == '1'){
-				$("#CHK01").prop("checked", true);
-			}
-			if('${user.CHK02}' == '1'){
-				$("#CHK02").prop("checked", true);
-			}
-			if('${user.CHK03}' == '1'){
-				$("#CHK03").prop("checked", true);
-			}
-			if('${user.CHK04}' == '1'){
-				$("#CHK04").prop("checked", true);
-			}
-		}else{
-			
-			 // 오늘날짜 입력
-			$("#RGS_DT").val(new Date().toISOString().substring(0, 10));
-		}
-	});
-	
-	$(function(){
+	    // 오늘날짜 입력
+		$("#RGS_DT").val(new Date().toISOString().substring(0, 10));
+	    
 		$("input:text[numberOnly]").on("focus", function() {
 		    var x = $(this).val();
-		    x = removeCommas(x);
+		    x = gfn_removeCommas(x);
 		    $(this).val(x);
 		}).on("focusout", function() {
 		    var x = $(this).val();
@@ -164,10 +134,10 @@
 		        switch ($(this).attr('name')) {
 				case "USER_AGE":
 				case "RGS_CNT":
-					x = addCommas(x);
+					x = gfn_addCommas(x);
 					break;
 				case "PHONE_NUMBER":
-					x = addMinus(x);
+					x = gfn_addMinus(x);
 					break;
 				default:
 					break;
@@ -182,23 +152,28 @@
 		$("#btnSubmit").on("click", function(e) {
 			e.preventDefault();
 			
-			if(gfn_isNull($("#USER_NAME").val())){
+			var sName = $("#USER_NAME").val();
+			if(gfn_isNull(sName)){
 				gfn_alertPopup({message:"이름은 필수입력 사항입니다."});
 				return false;
+			}else{
+				var regExp = /^[가-힣]{2,4}|[a-zA-Z]{2,10}\s[a-zA-Z]{2,10}$/;
+				if(sName.match(regExp) == null) {
+					gfn_alertPopup({message:"올바르지 않은 이름입니다."});
+					return false;
+				}
 			}
-			
-			var sDate;
-			sDate = $("#BIRTH").val();
+
+			var sDate = $("#BIRTH").val();
 			if(!gfn_isNull(sDate)){
 				if(sDate.length != 10){
-					gfn_alertPopup({message:"올바르지 않은 날짜입니다."});
+					gfn_alertPopup({message:"올바르지 않은 생년월일입니다."});
 					return false;
 				}else{
 					sDate = $("#RGS_DT").val();
-					
 					if(!gfn_isNull(sDate)){
 						if(sDate.length != 10){
-							gfn_alertPopup({message:"올바르지 않은 날짜입니다."});
+							gfn_alertPopup({message:"올바르지 않은 등록일자입니다."});
 							return false;
 						}
 					}
@@ -214,29 +189,10 @@
 				}
 			}
 			
-			if(!gfn_isNull('${user.USER_KEY}')){
-				fn_updUser();
-			}else{
-				fn_insUser();
-			}
+			// 입력
+			fn_insUser();
 		});
 	});
-	
-	// 3자리 단위마다 콤마 생성
-	function addCommas(x) {
-		return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-	}
-	
-	// 전화번호 정규식
-	function addMinus(x) {
-		return x.toString().replace(/(^02.{0}|^01.{1}|[0-9]{3})([0-9]+)([0-9]{4})/, "$1-$2-$3");
-	}
-	
-	// 모든 콤마 제거
-	function removeCommas(x) {
-		if(!x || x.length == 0) return "";
-		else return x.split(",").join("");
-	}
 	
 	function fn_insUser(){
 		var comAjax = new ComAjax("frm");
@@ -249,42 +205,13 @@
 		var nCnt = data.nCnt;
 		if(!gfn_isNull(nCnt)){
 			if(nCnt > 0){
-				gfn_alertPopup({message:"등록이 완료되었습니다."});
+				gfn_alertPopup({message:"등록이 완료되었습니다."
+					, fade:250, duration:500});
 				
 				var myTimer = setTimeout(function() {
 					var comSubmit = new ComSubmit();
 					comSubmit.setUrl("<c:url value='userList.do' />");
 					comSubmit.submit();
-					
-					clearTimeout(myTimer);
-				}, 1000);
-			}else{
-				gfn_alertPopup({message:"일시적인 오류가 발생하였습니다."});
-				return false;
-			}
-		}else{
-			var comSubmit = new ComSubmit();
-			comSubmit.setUrl("<c:url value='/error.do' />");
-			comSubmit.submit();
-		}
-	}
-	
-	function fn_updUser(){
-		var comAjax = new ComAjax("frm");
-		comAjax.setUrl("<c:url value='/updUser.do' />");
-		comAjax.setCallback("fn_updUserCallback");
-		comAjax.ajax();
-	}
-	
-	function fn_updUserCallback(data){
-		var nCnt = data.nCnt;
-		if(!gfn_isNull(nCnt)){
-			if(nCnt > 0){
-				gfn_alertPopup({message:"수정이 완료되었습니다."});
-				
-				var myTimer = setTimeout(function() {
-					window.opener.location.reload();
-					window.open("about:blank","_self").close();
 					
 					clearTimeout(myTimer);
 				}, 1000);

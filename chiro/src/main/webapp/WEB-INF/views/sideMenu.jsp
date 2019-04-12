@@ -156,7 +156,8 @@
 	
 	function fn_goNotice() {
 		var comSubmit = new ComSubmit();
-		comSubmit.setUrl("<c:url value='/notice.do' />");
+		comSubmit.setUrl("<c:url value='/board.do' />");
+		comSubmit.addParam("command", "notice");
 		comSubmit.submit();
 	}
 	</script>

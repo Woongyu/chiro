@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC
+"-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="board">
+	
+	<select id="srchBoardList" parameterType="hashmap" resultType="hashmap">
+		<include refid="ch.pagingPre"/>
+		
+		<![CDATA[
+			SELECT
+				A.LEV
+			  , A.BOARD_IDX
+			  , A.BOARD_KEY
+			  , A.PARENT_KEY
+			  , A.TITLE
+			  , A.NAME
+			  , A.CONTENTS
+			  , A.HIT_CNT
+			  , A.CHK_INFO
+			  , A.DEL_YN
+			  , A.PC_DT
+			FROM
+			(
+				SELECT
+					'1' AS LEV
+				  , T1.BOARD_IDX
+				  , T1.BOARD_KEY
+				  , T1.PARENT_KEY
+				  , T1.TITLE
+				  , (CASE WHEN  T1.USER_KEY <> '' THEN
+				  	(
+				  		SELECT
+				  			T2.USER_NAME
+				  		FROM TB_MEMBER T2
+				  		WHERE 1 = 1
+				  		AND T1.USER_KEY = T2.USER_KEY
+				  	) ELSE T1.NAME END) AS NAME
+				  , T1.CONTENTS
+				  , T1.HIT_CNT
+				  , T1.CHK_INFO
+				  , T1.DEL_YN
+				  , DATE_FORMAT(T1.PC_DT, '%Y-%m-%d') AS PC_DT
+				FROM TB_BOARD T1
+				WHERE 1 = 1
+				AND T1.CHK_INFO = '1'
+				AND T1.DEL_YN = 'N'
+				AND T1.BOARD_DVSN = #{BOARD_DVSN}
+				
+				UNION
+				
+				SELECT
+					'2' AS LEV
+				  , T1.BOARD_IDX
+				  , T1.BOARD_KEY
+				  , T1.PARENT_KEY
+				  , T1.TITLE
+				  , (CASE WHEN  T1.USER_KEY <> '' THEN
+				  	(
+				  		SELECT
+				  			T2.USER_NAME
+				  		FROM TB_MEMBER T2
+				  		WHERE 1 = 1
+				  		AND T1.USER_KEY = T2.USER_KEY
+				  	) ELSE T1.NAME END) AS NAME
+				  , T1.CONTENTS
+				  , T1.HIT_CNT
+				  , T1.CHK_INFO
+				  , T1.DEL_YN
+				  , DATE_FORMAT(T1.PC_DT, '%Y-%m-%d') AS PC_DT
+				FROM TB_BOARD T1
+				WHERE 1 = 1
+				AND T1.BOARD_DVSN = #{BOARD_DVSN}
+			) A
+			WHERE 1 = 1
+			ORDER BY
+				A.LEV ASC
+			  , A.BOARD_IDX DESC
+		]]>
+		
+		<include refid="ch.pagingPost"/> 
+	</select>
+	
+	<insert id="insNotice" parameterType="hashmap">
+		<![CDATA[
+			INSERT INTO TB_BOARD_NOTICE
+			(
+				IDX
+			  , USER_KEY
+			  , TITLE
+			  , NAME
+			  , CONTENTS
+			  , HIT_CNT
+			  , CHK_INFO
+			  , LUPD_CNT
+			  , DEL_YN
+			  , PC_DT
+			  , PC_TS
+			 )
+			 VALUES
+			 (
+			 	NULL
+			  , #{USER_KEY}
+			  , #{TITLE}
+			  , #{NAME}
+			  , #{CONTENTS}
+			  , 1
+			  , IFNULL(#{CHK_INFO}, '0')
+			  , 1
+			  , 'N'
+			  , DATE_FORMAT(now(), '%Y-%m-%d')
+			  , CURRENT_TIMESTAMP
+			 )
+		]]>
+	</insert>
+	
+	<update id="updBoardHit" parameterType="string">
+		<![CDATA[
+			UPDATE TB_BOARD
+			SET
+				HIT_CNT = IFNULL(HIT_CNT, 0) + 1
+			WHERE 1 = 1
+			AND BOARD_KEY = #{BOARD_KEY}
+		]]>
+	</update>
+	
+	<select id="srchBoardDetail" parameterType="string" resultType="hashmap">
+		<![CDATA[
+			SELECT
+				(CASE WHEN  T1.USER_KEY <> '' THEN
+			  	(
+			  		SELECT
+			  			T2.USER_NAME
+			  		FROM TB_MEMBER T2
+			  		WHERE 1 = 1
+			  		AND T1.USER_KEY = T2.USER_KEY
+			  	) ELSE T1.NAME END) AS NAME
+			  , T1.BOARD_KEY
+			  , T1.USER_KEY
+			  , T1.BOARD_PWD
+			  , T1.CHK_INFO
+			  , T1.TITLE
+			  , T1.CONTENTS
+			  , DATE_FORMAT(T1.PC_DT, '%Y-%m-%d') AS PC_DT
+			FROM TB_BOARD T1
+			WHERE 1 = 1
+			AND T1.BOARD_KEY = #{BOARD_KEY}
+		]]>
+	</select>
+	
+	<!-- 논리삭제 -->
+	<update id="delBoard" parameterType="string">
+		<![CDATA[
+			UPDATE TB_BOARD
+			SET
+				LUPD_CNT = IFNULL(LUPD_CNT, 0) + 1
+			  , DEL_YN = 'Y'
+			  , PC_TS = CURRENT_TIMESTAMP
+			WHERE 1 = 1
+			AND BOARD_KEY = #{BOARD_KEY}
+			AND DEL_YN = 'N'
+		]]>
+	</update>
+	
+	<update id="updNotice" parameterType="hashmap">
+		<![CDATA[
+			UPDATE TB_BOARD_NOTICE
+			SET
+				USER_KEY = #{USER_KEY}
+			  , TITLE = #{TITLE}
+			  , NAME = #{NAME}
+			  , CONTENTS = #{CONTENTS}
+			  , CHK_INFO = IFNULL(#{CHK_INFO}, '0')
+			  , LUPD_CNT = IFNULL(LUPD_CNT, 0) + 1
+			  , PC_TS = CURRENT_TIMESTAMP
+			WHERE 1 = 1
+			AND IDX = #{IDX}
+			AND DEL_YN = 'N'
+		]]>
+	</update>
+	
+</mapper>

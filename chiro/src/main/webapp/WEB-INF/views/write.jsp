@@ -25,6 +25,10 @@
 						<h1>글쓰기</h1>
 					</header>
 					
+					<span class="image main">
+						<img class="my_img" src="/images/board_write01.png" alt="" />
+					</span>
+					
 					<!-- Form -->
 					<form method="post" id="frm" name="frm" method="post" autocomplete="off">
 						<div class="row gtr-uniform">

@@ -2032,7 +2032,8 @@ ul.pagination li:last-child {
 
 @media screen and (max-width: 480px) {
 	ul.pagination li:nth-child(n+2):nth-last-child(n+2) {
-		display: none;
+		/*  display: none; */
+		display: inline-block;
 	}
 	ul.pagination li:first-child {
 		padding-right: 0;

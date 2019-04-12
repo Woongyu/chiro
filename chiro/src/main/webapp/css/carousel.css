@@ -1,6 +1,4 @@
-body{
-	margin: 0px;
-}
+@CHARSET "UTF-8";
 
 #carousel_section{
 	width: 100%;
@@ -47,6 +45,7 @@ body{
     background: #fff; /* 배경색과 같은 색 */
     transform: rotate(-30deg);
 }
+
 /* 왼쪽 위 */
 #carousel_section:before {
     box-shadow: 0 10px 8px -12px rgba(0, 0, 0, 0.8);
@@ -56,6 +55,7 @@ body{
     left: -26px;
  
 }
+
 /* 오른쪽 아래 */
 #carousel_section:after {
     box-shadow: 0 -10px 10px -10px rgba(0, 0, 0, 0.7);

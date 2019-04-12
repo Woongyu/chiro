@@ -13,19 +13,19 @@ public interface MyService {
 	
 	List<Map<String, Object>> srchUserList(Map<String, Object> map) throws Exception;
 	
-	Map<String, Object> srchUserDetail(String sStr) throws Exception;
+	List<Map<String, Object>> srchUserDetail(String sStr) throws Exception;
 
 	Object delUser(String sStr) throws Exception;
 
-	List<Map<String, Object>> srchNoticeList(CommandMap map) throws Exception;
+	List<Map<String, Object>> srchBoardList(Map<String, Object> map) throws Exception;
 
 	Object insNotice(Map<String, Object> map) throws Exception;
 
-	void updNoticeHit(String sStr) throws Exception;
+	void updBoardHit(String sStr) throws Exception;
 
 	Map<String, Object> srchBoardDetail(String sStr) throws Exception;
 
-	Object delNotice(String sStr) throws Exception;
+	Object delBoard(String sStr) throws Exception;
 
 	Object updNotice(Map<String, Object> map) throws Exception;
 

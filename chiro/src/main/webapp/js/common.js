@@ -1,3 +1,5 @@
+"use strict";
+
 function gfn_isNull(str) {
 	var chkStr = new String(str);
 	
@@ -59,7 +61,7 @@ function ComSubmit(opt_formId) {
 		frm.method = "post";
 		frm.target = "commonForm";
 		window.open('', "commonForm", "width= "+ w + ",height=" + h + ",left=" + l + ",top=" + t
-				+ ", scrollbars = no, location = no, toolbar = no, menubar = no, status = no");
+				+ ", scrollbars=no, location=no, toolbar=no, menubar=no, status=no, toolbar=no");
 		frm.submit();
 		
 		// 호출 후 콜백
@@ -155,20 +157,20 @@ function gfn_renderPaging(params){
 	var prev = (parseInt((currentIndex-1)/10)*10) - 9 > 0 ? (parseInt((currentIndex-1)/10)*10) - 9 : 1;
 	var next = (parseInt((currentIndex-1)/10)+1) * 10 + 1 < totalIndexCount ? (parseInt((currentIndex-1)/10)+1) * 10 + 1 : totalIndexCount;
 	
-	preStr += "<ul class='pagination' style='text-align: center;'>";
+	preStr += "<ul class='pagination' style='text-align: center; white-space: nowrap;'>";
 	if(totalIndexCount > 10){ // 전체 인덱스가 10이 넘을 경우, 맨앞, 앞 태그 작성
 		preStr += "<li><a href='#this' class='button primary small' onclick='_movePage(1)'>First</a></li>" +
 			"<li><a href='#this' class='button small' onclick='_movePage("+prev+")'>Prev</a></li>";
 	}
-	else if(totalIndexCount <=10 && totalIndexCount > 1){ //전체 인덱스가 10보다 작을경우, 맨앞 태그 작성
+	else if(totalIndexCount <=10 && totalIndexCount > 1){ // 전체 인덱스가 10보다 작을경우, 맨앞 태그 작성
 		preStr += "<li><a href='#this' class='button primary small' onclick='_movePage(1)'>First</a></li>";
 	}
 	
-	if(totalIndexCount > 10){ //전체 인덱스가 10이 넘을 경우, 맨뒤, 뒤 태그 작성
+	if(totalIndexCount > 10){ // 전체 인덱스가 10이 넘을 경우, 맨뒤, 뒤 태그 작성
 		postStr += "<li><a href='#this' class='button small' onclick='_movePage("+next+")'>Next</a></li>" +
 			"<li><a href='#this' class='button primary small' onclick='_movePage("+totalIndexCount+")'>End</a></li>";
 	}
-	else if(totalIndexCount <=10 && totalIndexCount > 1){ //전체 인덱스가 10보다 작을경우, 맨뒤 태그 작성
+	else if(totalIndexCount <=10 && totalIndexCount > 1){ // 전체 인덱스가 10보다 작을경우, 맨뒤 태그 작성
 		postStr += "<li><a href='#this' class='button primary small' onclick='_movePage("+totalIndexCount+")'>End</a></li>";
 	}
 	
@@ -241,6 +243,64 @@ function gfn_alertPopup(options)
 			$(element).fadeOut(settings.fade);
 		}, settings.duration);
 	});
+}
+
+var gfv_modalDefaultOption =
+{
+		modal : 'myModal',
+		btn : 'myBtn'
+};
+function ComModal(options) {
+	// Set Options
+	var settings = $.extend({}, gfv_modalDefaultOption, options);
+	
+	// Get the modal
+	var modal = document.getElementById(settings.modal);
+	
+	// Get the button that opens the modal
+	var btn = document.getElementById(settings.btn);
+	
+	// Get the <span> element that closes the modal
+	var span = document.getElementsByClassName("close")[0];
+	
+	// When the user clicks the button, open the modal 
+	/*
+	btn.onclick = function() {
+		modal.style.display = "block";
+	}
+	*/
+	
+	// When the user clicks on <span> (x), close the modal
+	span.onclick = function() {
+		modal.style.display = "none";
+	}
+	
+	// When the user clicks anywhere outside of the modal, close it
+	window.onclick = function(event) {
+		if(event.target == modal){
+			modal.style.display = "none";
+		}
+	}
+	
+	this.block = function block() {
+		modal.style.display = "block";
+	};
+}
+
+// 3자리 단위마다 콤마 생성
+function gfn_addCommas(x) {
+	return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+// 전화번호 정규식
+function gfn_addMinus(x) {
+	return x.toString().replace(/(^02.{0}|^01.{1}|[0-9]{3})([0-9]+)([0-9]{4})/, "$1-$2-$3");
+}
+
+// 모든 콤마 제거
+function gfn_removeCommas(x) {
+	if(!x || x.length == 0) return "";
+	else return x.split(",").join("");
 }
 
 function gfn_readyAlert(){

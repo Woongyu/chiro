@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC
+"-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="member">
+	
+	<select id="srchUserList" resultType="hashmap">
+		<include refid="ch.pagingPre"/>
+		
+		<![CDATA[
+			SELECT
+				T1.USER_KEY
+			  , T1.USER_IDX
+			  , IFNULL(T1.USER_NAME, '') AS USER_NAME
+			  , IFNULL(T1.USER_AGE, '') AS USER_AGE
+			  , IFNULL(DATE_FORMAT(T1.BIRTH, '%Y-%m-%d'), '') AS BIRTH
+			  , IFNULL(T1.USER_MAIL, '') AS USER_MAIL
+			  , IFNULL(T1.PHONE_NUMBER, '') AS PHONE_NUMBER
+			  , (CASE T1.GENDER WHEN 'M' THEN '남성' WHEN 'W' THEN '여성' ELSE '' END) AS GENDER
+			  , IFNULL(DATE_FORMAT(T1.RGS_DT, '%Y-%m-%d'), '') AS RGS_DT
+			  , T1.RGS_CNT
+			  , DATE_FORMAT(T1.PC_TS, '%Y-%m-%d %H:%i:%s') AS PC_TS
+			  , T1.DEL_YN
+			FROM TB_MEMBER T1
+			WHERE 1 = 1
+			ORDER BY
+				T1.USER_IDX DESC
+		]]>
+		
+		<include refid="ch.pagingPost"/> 
+	</select>
+	
+	<insert id="insUser" parameterType="hashmap">
+		<![CDATA[
+			INSERT INTO TB_MEMBER
+			(
+				USER_IDX
+			  , USER_KEY
+			  , USER_NAME
+			  , USER_AGE
+			  , BIRTH
+			  , USER_MAIL
+			  , PHONE_NUMBER
+			  , GENDER
+			  , RGS_DT
+			  , RGS_CNT
+			  , OUTL_CTT
+			  , CHK01
+			  , CHK02
+			  , CHK03
+			  , CHK04
+			  , DEL_YN
+			  , LUPD_CNT
+			  , PC_TS
+			 )
+			 VALUES
+			 (
+			 	NULL
+			  , #{USER_KEY}
+			  , #{USER_NAME}
+			  , #{USER_AGE}
+			  , DATE_FORMAT(IFNULL(#{BIRTH}, now()), '%Y-%m-%d')
+			  , #{USER_MAIL}
+			  , #{PHONE_NUMBER}
+			  , #{GENDER}
+			  , DATE_FORMAT(IFNULL(#{RGS_DT}, now()), '%Y-%m-%d')
+			  , IFNULL(#{RGS_CNT}, 1)
+			  , #{OUTL_CTT}
+			  , IFNULL(#{CHK01}, '0')
+			  , IFNULL(#{CHK02}, '0')
+			  , IFNULL(#{CHK03}, '0')
+			  , IFNULL(#{CHK04}, '0')
+			  , 'N'
+			  , 1
+			  , CURRENT_TIMESTAMP
+			 )
+		]]>
+	</insert>
+	
+	<update id="updUser" parameterType="hashmap">
+		<![CDATA[
+			UPDATE TB_MEMBER
+			SET
+				USER_NAME = #{USER_NAME}
+			  , USER_AGE = #{USER_AGE}
+			  , BIRTH = DATE_FORMAT(IFNULL(#{BIRTH}, now()), '%Y-%m-%d')
+			  , USER_MAIL = #{USER_MAIL}
+			  , PHONE_NUMBER = #{PHONE_NUMBER}
+			  , GENDER = #{GENDER}
+			  , RGS_DT = DATE_FORMAT(IFNULL(#{RGS_DT}, now()), '%Y-%m-%d')
+			  , RGS_CNT = IFNULL(#{RGS_CNT}, 1)
+			  , OUTL_CTT = #{OUTL_CTT}
+			  , CHK01 = IFNULL(#{CHK01}, '0')
+			  , CHK02 = IFNULL(#{CHK02}, '0')
+			  , CHK03 = IFNULL(#{CHK03}, '0')
+			  , CHK04 = IFNULL(#{CHK04}, '0')
+			  , LUPD_CNT = IFNULL(LUPD_CNT, 0) + 1
+			  , PC_TS = CURRENT_TIMESTAMP
+			WHERE 1 = 1
+			AND USER_KEY = #{USER_KEY}
+			AND DEL_YN = 'N'
+		]]>
+	</update>
+	
+	<select id="srchUserDetail" parameterType="hashmap" resultType="hashmap">
+		<![CDATA[
+			SELECT
+				T1.USER_KEY
+			  , T1.USER_NAME
+			  , T1.USER_AGE
+			  , DATE_FORMAT(T1.BIRTH, '%Y-%m-%d') AS BIRTH
+			  , T1.USER_MAIL
+			  , T1.PHONE_NUMBER
+			  , T1.GENDER
+			  , DATE_FORMAT(PC_TS, '%Y-%m-%d %H:%i:%s') AS PC_TS
+			  , DATE_FORMAT(T1.RGS_DT, '%Y-%m-%d') AS RGS_DT
+			  , T1.RGS_CNT
+			  , T1.CHK01
+			  , T1.CHK02
+			  , T1.CHK03
+			  , T1.CHK04
+			  , T1.OUTL_CTT
+			  , T1.DEL_YN
+			FROM TB_MEMBER T1
+			WHERE 1 = 1
+			AND T1.USER_KEY = #{USER_KEY}
+		]]>
+	</select>
+	
+	<!-- 논리삭제 -->
+	<update id="delUser" parameterType="string">
+		<![CDATA[
+			UPDATE TB_MEMBER
+			SET
+				LUPD_CNT = IFNULL(LUPD_CNT, 0) + 1
+			  , DEL_YN = 'Y'
+			  , PC_TS = CURRENT_TIMESTAMP
+			WHERE 1 = 1
+			AND USER_KEY = #{USER_KEY}
+			AND DEL_YN = 'N'
+		]]>
+	</update>
+	
+</mapper>

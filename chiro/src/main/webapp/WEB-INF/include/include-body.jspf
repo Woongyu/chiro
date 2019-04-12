@@ -3,3 +3,26 @@
 <div id="" class="noticePopup">
 	<div class="noticeMessage"></div>
 </div>
+<script type="text/javascript">
+var oMyInfo = $('.my_info');
+if(oMyInfo.length > 0){
+	var gradient = "linear-gradient(to right,";
+	var colors =
+	[
+		'#FFFFFF, #FFEFBA'
+	  , '#f3b4bc, #ffdde1'
+	  , '#d0c4ea, #e9e4f0'
+	  , '#d9a7c7, #fffcdc'
+	  , '#4ac29a, #bdfff3'
+	  , '#fffc00, #ffffff'
+	  , '#a1ffce, #faffd1'
+	  , '#ee9ca7, #ffdde1'
+	  , '#ed4264, #ffedbc'
+	  , '#2bc0e4, #eaecc6'
+	  , '#9796f0, #fbc7d4'
+	  , '#ff6e7f, #bfe9ff'
+	];
+	gradient += colors[Math.floor(Math.random() * colors.length)] + ')';
+	oMyInfo.stop(true).css({'background':gradient, 'opacity':0}).animate({'opacity':1}, 1000);
+}
+</script>
