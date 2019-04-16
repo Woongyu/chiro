@@ -47,8 +47,13 @@ public class MyServiceImpl implements MyService {
 	}
 
 	@Override
-	public Object insNotice(Map<String, Object> map) throws Exception {
-		return myDAO.insNotice(map);
+	public Object insBoard(Map<String, Object> map) throws Exception {
+		return myDAO.insBoard(map);
+	}
+	
+	@Override
+	public Object updBoard(Map<String, Object> map) throws Exception {
+		return myDAO.updBoard(map);
 	}
 
 	@Override
@@ -64,11 +69,6 @@ public class MyServiceImpl implements MyService {
 	@Override
 	public Object delBoard(String sStr) throws Exception {
 		return myDAO.delBoard(sStr);
-	}
-
-	@Override
-	public Object updNotice(Map<String, Object> map) throws Exception {
-		return myDAO.updNotice(map);
 	}
 
 }

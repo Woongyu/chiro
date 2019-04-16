@@ -37,8 +37,8 @@ public class MyDAO extends AbstractDAO {
 		return (List<Map<String, Object>>) selectPagingList("board.srchBoardList", map);
 	}
 
-	public Object insNotice(Map<String, Object> map) throws Exception {
-		return insert("board.insNotice", map);
+	public Object insBoard(Map<String, Object> map) throws Exception {
+		return insert("board.insBoard", map);
 	}
 
 	public void updBoardHit(String sStr) throws Exception{
@@ -54,8 +54,8 @@ public class MyDAO extends AbstractDAO {
 		return update("board.delBoard", sStr);
 	}
 
-	public Object updNotice(Map<String, Object> map) throws Exception {
-		return update("board.updNotice", map);
+	public Object updBoard(Map<String, Object> map) throws Exception {
+		return update("board.updBoard", map);
 	}
 
 }

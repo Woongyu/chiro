@@ -42,7 +42,7 @@
 			</header>
 			<ul>
 				<li><a href="#this" id="side_main">메인</a></li>
-				<li><a href="#thid" id="side_notice">공지사항</a></li>
+				<li><a href="#this" id="side_notice">공지사항</a></li>
 				<li><span class="opener">회원관리</span>
 					<ul>
 						<li><a href="#this" id="side_join">회원등록</a></li>
@@ -55,7 +55,7 @@
 						<li><a href="#">예약조회</a></li>
 					</ul>
 				</li>
-				<li><a href="#this">고객 게시판</a></li>
+				<li><a href="#this" id="side_customer">고객 게시판</a></li>
 				<li><span class="opener">건강상식</span>
 					<ul>
 						<li><a href="#">냉온찜질의 올바른 사용법</a></li>
@@ -134,6 +134,11 @@
 			e.preventDefault();
 			fn_goNotice();
 		});
+		
+		$("#side_customer").on("click", function(e) {
+			e.preventDefault();
+			fn_goCustomer();
+		});
 	});
 	
 	function fn_goMain() {
@@ -157,7 +162,14 @@
 	function fn_goNotice() {
 		var comSubmit = new ComSubmit();
 		comSubmit.setUrl("<c:url value='/board.do' />");
-		comSubmit.addParam("command", "notice");
+		comSubmit.addParam("COMMAND", "notice");
+		comSubmit.submit();
+	}
+	
+	function fn_goCustomer() {
+		var comSubmit = new ComSubmit();
+		comSubmit.setUrl("<c:url value='/board.do' />");
+		comSubmit.addParam("COMMAND", "customer");
 		comSubmit.submit();
 	}
 	</script>

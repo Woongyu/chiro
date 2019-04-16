@@ -17,7 +17,7 @@
 			<div class="inner">
 			
 				<!-- Header -->
-				<jsp:include page="header.jsp" />
+				<jsp:include page="../frame/header.jsp" />
 				
 				<!-- Content -->
 				<section>
@@ -90,7 +90,7 @@
 		
 		<!-- Sidebar -->
 		<div id="sidebar">
-			<jsp:include page="sideMenu.jsp" />
+			<jsp:include page="../frame/sideMenu.jsp" />
 		</div>
 		
 	</div>
@@ -190,7 +190,7 @@
 				var sUserKey = $(this).parent().find("#USER_KEY").val();
 				var sDelYn = $(this).parent().find("#DEL_YN").val();
 				if(sDelYn == "Y"){
-					alert("이미 삭제된 회원입니다.");
+					gfn_alertPopup({message:"이미 삭제된 회원입니다."});
 					return false;
 				}
 				
@@ -288,7 +288,7 @@
 		$("select[name='GENDER']").val(sGender).prop("selected", true);
 		
 		// 체크박스 로직
-		$('input:checkbox').each(function() {
+		$("input:checkbox").each(function() {
 			if(this.value == "1"){
 				this.checked = true;
 			}

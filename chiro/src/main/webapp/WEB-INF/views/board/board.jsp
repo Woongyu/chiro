@@ -11,9 +11,9 @@
     box-shadow: 10px 10px 20px -5px rgba(0, 0, 0, 0.8);
 }
 .notice {
-	background: #ee9ca7;
-	background: -webkit-linear-gradient(to left, #ffdde1, #ee9ca7);
-	background: linear-gradient(to left, #ffdde1, #ee9ca7);
+	background: #f7e0a3;
+	background: -webkit-linear-gradient(to right, #fff, #f7e0a3);
+	background: linear-gradient(to right, #fff, #f7e0a3);
 	font-weight: bold;
 }
 .title {
@@ -32,7 +32,7 @@
 			<div class="inner">
 				
 				<!-- Header -->
-				<jsp:include page="header.jsp" />
+				<jsp:include page="../frame/header.jsp" />
 				
 				<!-- Content -->
 				<section>
@@ -53,7 +53,7 @@
 						<table class="alt" style="text-align: center; white-space: nowrap;">
 							<thead>
 								<tr>
-									<th scope="col" width="10%">번호</th>
+									<th scope="col" width="10%">글번호</th>
 									<th scope="col" width="*">제목</th>
 									<th scope="col" width="10%">글쓴이</th>
 									<th scope="col" width="15%">등록일</th>
@@ -70,7 +70,7 @@
 						
 						<div class="col-12">
 							<ul class="actions" style="float: right;">
-								<li><a href="#this" class="button big" id="write">글쓰기</a></li>
+								<li><a href="#this" class="button big" id="btnWrite">글쓰기</a></li>
 							</ul>
 						</div>
 						
@@ -84,21 +84,32 @@
 		
 		<!-- Sidebar -->
 		<div id="sidebar">
-			<jsp:include page="sideMenu.jsp" />
+			<jsp:include page="../frame/sideMenu.jsp" />
 		</div>
 		
 	</div>
 	
 	<%@ include file="/WEB-INF/include/include-body.jspf"%>
 	<script type="text/javascript">
-	var sCommand = '${command}';
+	var sCommand = '${COMMAND}';
 	var img = document.createElement('img');
 	$(document).ready(function() {
-		// 공지사항
-		if(sCommand == "notice"){
+		
+		switch (sCommand) {
+		case "notice": // 공지사항
 			$("#board_h1").append("공지사항");
 			$("#board_h2").append("카이로76의 소식을 들려드립니다.");
-			img.src = '/images/board_notice01.png';
+			img.src = '/images/board_pic01.png';
+			break;
+			
+		case "customer": // 고객 게시판
+			$("#board_h1").append("고객 게시판");
+			$("#board_h2").append("문의사항을 자유롭게 남겨주세요.");
+			img.src = '/images/board_pic02.png';
+			break;
+
+		default:
+			break;
 		}
 		
 		document.getElementById('image main').appendChild(img);
@@ -115,14 +126,14 @@
 	function fn_goBoardListPage(pageNo) {
 		var comAjax = new ComAjax();
 		comAjax.setUrl("<c:url value='/boardListPage.do' />");
-		comAjax.setCallback("fn_goUserListPageCallback"); 
+		comAjax.setCallback("fn_goBoardListPageCallback"); 
 		comAjax.addParam("BOARD_DVSN", sCommand);
 		comAjax.addParam("PAGE_INDEX", (!gfn_isNull(pageNo) ? pageNo : 1));
 		comAjax.addParam("PAGE_ROW", 15);
 		comAjax.ajax();
 	}
 	
-	function fn_goUserListPageCallback(data){
+	function fn_goBoardListPageCallback(data){
 		var total = data.TOTAL;
 		var rnum = data.RNUM;
 		
@@ -214,7 +225,7 @@
 	function fn_goBoardDetail(sCommand, sBoardKey){
 		var comSubmit = new ComSubmit();
 		comSubmit.setUrl("<c:url value='post.do' />");
-		comSubmit.addParam("command", sCommand);
+		comSubmit.addParam("COMMAND", sCommand);
 		comSubmit.addParam("BOARD_KEY", sBoardKey);
 		comSubmit.submit();
 	}
@@ -222,7 +233,7 @@
 	function fn_goWritePage(sCommand) {
 		// TODO 관리자 로그인 체크
 		var comSubmit = new ComSubmit();
-		comSubmit.addParam("command", sCommand);
+		comSubmit.addParam("COMMAND", sCommand);
 		comSubmit.setUrl("<c:url value='/write.do' />");
 		comSubmit.submit();
 	}

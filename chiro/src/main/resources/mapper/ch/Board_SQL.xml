@@ -81,17 +81,21 @@
 		<include refid="ch.pagingPost"/> 
 	</select>
 	
-	<insert id="insNotice" parameterType="hashmap">
+	<insert id="insBoard" parameterType="hashmap">
 		<![CDATA[
-			INSERT INTO TB_BOARD_NOTICE
+			INSERT INTO TB_BOARD
 			(
-				IDX
+				BOARD_IDX
+			  , BOARD_KEY
+			 , 	PARENT_KEY
 			  , USER_KEY
 			  , TITLE
 			  , NAME
+			  , BOARD_PWD
 			  , CONTENTS
 			  , HIT_CNT
 			  , CHK_INFO
+			  , BOARD_DVSN
 			  , LUPD_CNT
 			  , DEL_YN
 			  , PC_DT
@@ -100,12 +104,16 @@
 			 VALUES
 			 (
 			 	NULL
+			  , #{BOARD_KEY}
+			  , #{PARENT_KEY}
 			  , #{USER_KEY}
 			  , #{TITLE}
 			  , #{NAME}
+			  , IFNULL(#{BOARD_PWD}, '0000')
 			  , #{CONTENTS}
 			  , 1
 			  , IFNULL(#{CHK_INFO}, '0')
+			  , #{COMMAND}
 			  , 1
 			  , 'N'
 			  , DATE_FORMAT(now(), '%Y-%m-%d')
@@ -113,6 +121,22 @@
 			 )
 		]]>
 	</insert>
+	
+	<update id="updBoard" parameterType="hashmap">
+		<![CDATA[
+			UPDATE TB_BOARD
+			SET
+				TITLE = #{TITLE}
+			  , NAME = #{NAME}
+			  , CONTENTS = #{CONTENTS}
+			  , CHK_INFO = IFNULL(#{CHK_INFO}, '0')
+			  , LUPD_CNT = IFNULL(LUPD_CNT, 0) + 1
+			  , PC_TS = CURRENT_TIMESTAMP
+			WHERE 1 = 1
+			AND BOARD_KEY = #{BOARD_KEY}
+			AND DEL_YN = 'N'
+		]]>
+	</update>
 	
 	<update id="updBoardHit" parameterType="string">
 		<![CDATA[
@@ -158,23 +182,6 @@
 			  , PC_TS = CURRENT_TIMESTAMP
 			WHERE 1 = 1
 			AND BOARD_KEY = #{BOARD_KEY}
-			AND DEL_YN = 'N'
-		]]>
-	</update>
-	
-	<update id="updNotice" parameterType="hashmap">
-		<![CDATA[
-			UPDATE TB_BOARD_NOTICE
-			SET
-				USER_KEY = #{USER_KEY}
-			  , TITLE = #{TITLE}
-			  , NAME = #{NAME}
-			  , CONTENTS = #{CONTENTS}
-			  , CHK_INFO = IFNULL(#{CHK_INFO}, '0')
-			  , LUPD_CNT = IFNULL(LUPD_CNT, 0) + 1
-			  , PC_TS = CURRENT_TIMESTAMP
-			WHERE 1 = 1
-			AND IDX = #{IDX}
 			AND DEL_YN = 'N'
 		]]>
 	</update>

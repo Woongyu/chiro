@@ -8,7 +8,7 @@
 .my_info {
 	box-shadow: 2.5px 2.5px 0px 2.5px #ffc10750;
 	padding-left: 1.0em;
-	border-radius:0.5em;
+	border-radius: 0.5em;
 	-moz-border-radius: 0.5em;
 	-webkit-border-radius: 0.5em;
 	background: #FFEFBA;

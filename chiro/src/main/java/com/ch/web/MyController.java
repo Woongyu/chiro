@@ -27,19 +27,19 @@ public class MyController {
 	@GetMapping
 	@RequestMapping(value = "/main.do")
 	public String goMain() throws Exception {
-		return "main";
+		return "frame/main";
 	}
 	
 	// 회원등록
 	@RequestMapping(value = "/join.do")
 	public String goJoin(CommandMap map) throws Exception {
-		return "join";
+		return "member/join";
 	}
 	
 	// 회원목록
 	@RequestMapping(value = "/userList.do")
 	public String goUserList() throws Exception {
-		return "userList";
+		return "member/userList";
 	}
 	
 	// 회원목록(페이징)
@@ -112,9 +112,9 @@ public class MyController {
 	// 게시판
 	@PostMapping(value = "/board.do")
 	public ModelAndView goBoardPage(CommandMap map) throws Exception {
-		ModelAndView mv = new ModelAndView("board");
+		ModelAndView mv = new ModelAndView("board/board");
 		logger.info("board: " + map.toString());
-		mv.addObject("command", (String) map.get("command"));
+		mv.addObject("COMMAND", (String) map.get("COMMAND"));
 		return mv;
 	}
 	
@@ -141,35 +141,52 @@ public class MyController {
 	// 글쓰기
 	@PostMapping(value = "/write.do")
 	public ModelAndView goWritePage(CommandMap map) throws Exception {
-		ModelAndView mv = new ModelAndView("write");
-		String sCommand = (String) map.get("command");
+		ModelAndView mv = new ModelAndView("board/write");
+		String sCommand = (String) map.get("COMMAND");
 		logger.info("write: " + map.toString());
 		
 		if(!Utlz.isBlank(map.get("BOARD_KEY"))){
 			mv.addObject("board", map.getMap());
 		}
 		
-		mv.addObject("command", sCommand);
+		mv.addObject("COMMAND", sCommand);
 		return mv;
 	}
 	
-	// 글쓰기(공지사항)
-	@PostMapping("/insNotice.do")
-	public String insNotice(CommandMap map) throws Exception {
-		logger.info("insNotice: " + map.toString());
-		int nCnt = (int) myService.insNotice(map.getMap());
-		return (nCnt > 0 ? "redirect:/write.do" : "error");
+	// 글쓰기(입력)
+	@PostMapping("/insBoard.do")
+	public ModelAndView insBoard(CommandMap map) throws Exception {
+		ModelAndView mv = new ModelAndView("jsonView");
+		
+		// 랜덤 키 값을 생성하여 쿼리 조회 시 복합키를 사용한다.
+		map.put("BOARD_KEY", Utlz.getSurrogateKey(11));
+		logger.info("insBoard: " + map.toString());
+		
+		int nCnt = (int) myService.insBoard(map.getMap());
+		mv.addObject("nCnt", nCnt);
+		return mv;
+	}
+	
+	// 글쓰기(수정)
+	@PostMapping("/updBoard.do")
+	public ModelAndView updBoard(CommandMap map) throws Exception {
+		ModelAndView mv = new ModelAndView("jsonView");
+		logger.info("updBoard: " + map.toString());
+		
+		int nCnt = (int) myService.updBoard(map.getMap());
+		mv.addObject("nCnt", nCnt);
+		return mv;
 	}
 	
 	// 글읽기
 	@PostMapping("/post.do")
 	public ModelAndView goBoardDetail(CommandMap map) throws Exception {
-		ModelAndView mv = new ModelAndView("boardDetail");
+		ModelAndView mv = new ModelAndView("board/boardDetail");
 		logger.info("post: " + map.toString());
 		
 		myService.updBoardHit((String) map.get("BOARD_KEY"));
 		mv.addObject("board", myService.srchBoardDetail((String) map.get("BOARD_KEY")));
-		mv.addObject("command", (String) map.get("command"));
+		mv.addObject("COMMAND", (String) map.get("COMMAND"));
 		return mv;
 	}
 	
@@ -177,18 +194,22 @@ public class MyController {
 	@PostMapping("/delBoard.do")
 	public ModelAndView delBoard(CommandMap map) throws Exception {
 		ModelAndView mv = new ModelAndView("jsonView");
-		logger.info("delNotice: " + map.toString());
+		logger.info("delBoard: " + map.toString());
 		
 		int nCnt = (int) myService.delBoard((String) map.get("BOARD_KEY"));
 		mv.addObject("nCnt", nCnt);
 		return mv;
 	}
 	
-	// 글쓰기(수정)
-	@PostMapping("/updNotice.do")
-	public String updNotice(CommandMap map) throws Exception {
-		logger.info("updNotice: " + map.toString());
-		int nCnt = (int) myService.updNotice(map.getMap());
-		return (nCnt > 0 ? "redirect:/write.do" : "error");
+	// 댓글등록(입력)
+	@PostMapping("/insComment.do")
+	public ModelAndView insComment(CommandMap map) throws Exception {
+		// TODO 댓글 등록하기
+		ModelAndView mv = new ModelAndView("jsonView");
+		logger.info("insComment: " + map.toString());
+		
+		int nCnt = (int) myService.insBoard(map.getMap());
+		mv.addObject("nCnt", nCnt);
+		return mv;
 	}
 }

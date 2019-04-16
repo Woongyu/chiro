@@ -17,7 +17,7 @@
 			<div class="inner">
 			
 				<!-- Header -->
-				<jsp:include page="header.jsp" />
+				<jsp:include page="../frame/header.jsp" />
 				
 				<!-- Content -->
 				<section>
@@ -106,7 +106,7 @@
 		
 		<!-- Sidebar -->
 		<div id="sidebar">
-			<jsp:include page="sideMenu.jsp" />
+			<jsp:include page="../frame/sideMenu.jsp" />
 		</div>
 	</div>
 	

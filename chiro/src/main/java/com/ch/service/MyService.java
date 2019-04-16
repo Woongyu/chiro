@@ -19,14 +19,14 @@ public interface MyService {
 
 	List<Map<String, Object>> srchBoardList(Map<String, Object> map) throws Exception;
 
-	Object insNotice(Map<String, Object> map) throws Exception;
+	Object insBoard(Map<String, Object> map) throws Exception;
 
+	Object updBoard(Map<String, Object> map) throws Exception;
+	
 	void updBoardHit(String sStr) throws Exception;
 
 	Map<String, Object> srchBoardDetail(String sStr) throws Exception;
 
 	Object delBoard(String sStr) throws Exception;
-
-	Object updNotice(Map<String, Object> map) throws Exception;
 
 }
