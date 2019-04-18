@@ -34,7 +34,7 @@
 						<h2>가입정보를 입력하세요.</h2>
 					</div>
 					
-					<form method="post" id="frm" name="frm" method="post" autocomplete="off">
+					<form method="post" id="frm" name="frm" autocomplete="off">
 						<div class="row gtr-uniform">
 							<div class="col-6 col-12-xsmall">
 								<input type="text" name="USER_NAME" id="USER_NAME" placeholder="이름" maxlength="20" />
@@ -113,6 +113,9 @@
 	<%@ include file="/WEB-INF/include/include-body.jspf"%>
 	<script type="text/javascript">
 	$(function(){
+		$("#member").addClass('active');
+		$("#side_join").css({'font-weight':'bold', 'font-size':'1.2em'});
+		
 		 // 달력 생성
 	    $("#BIRTH").calendar();
 	    $("#RGS_DT").calendar();

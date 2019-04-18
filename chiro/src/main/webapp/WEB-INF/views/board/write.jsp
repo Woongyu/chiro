@@ -30,7 +30,7 @@
 					</span>
 					
 					<!-- Form -->
-					<form method="post" id="frm" name="frm" method="post" autocomplete="off">
+					<form method="post" id="frm" name="frm" autocomplete="off">
 						<div class="row gtr-uniform">
 							<div class="col-12-xsmall">
 								<input type="text" name="NAME" id="NAME" value="${board.NAME}" placeholder="작성자" maxlength="30" />

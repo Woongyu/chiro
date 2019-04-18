@@ -5,59 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <%@ include file="/WEB-INF/include/include-header.jspf"%>
-<title>게시판</title>
-<style type="text/css">
-.image.main img {
-    box-shadow: 10px 10px 20px -5px rgba(0, 0, 0, 0.8);
-}
-.notice {
-	background: #f7e0a3;
-	background: -webkit-linear-gradient(to right, #fff, #f7e0a3);
-	background: linear-gradient(to right, #fff, #f7e0a3);
-	font-weight: bold;
-}
-.title {
-	text-align: left;
-    padding-left: 1.0em;
-}
-#search div {
-	text-decoration: none;
-	position: relative;
-}
-#search div:before {
-	-moz-osx-font-smoothing: grayscale;
-	-webkit-font-smoothing: antialiased;
-	font-family: FontAwesome;
-	font-style: normal;
-	font-weight: normal;
-	text-transform: none !important;
-}
-#search div:before {
-	-moz-transform: scaleX(-1);
-	-webkit-transform: scaleX(-1);
-	-ms-transform: scaleX(-1);
-	transform: scaleX(-1);
-	color: #7f888f;
-	content: '\f002';
-	cursor: default;
-	display: block;
-	font-size: 1.5em;
-	height: 2em;
-	line-height: 2em;
-	opacity: 0.325;
-	position: absolute;
-	right: 0;
-	text-align: center;
-	top: 0;
-	width: 2em;
-}
-#search div input[type="text"] {
-	padding-right: 2.75em;
-}
-.highlight {
-	background-color: yellow;
-}
-</style>
+<title>냉온찜질의 올바른 사용법</title>
 </head>
 <body class="is-preload">
 	
@@ -74,50 +22,48 @@
 				<!-- Content -->
 				<section>
 					<header class="main">
-						<h1 id="board_h1"></h1>
+						<h1>냉온찜질의 올바른 사용법</h1>
 					</header>
 					
-					<span class="image main" id="image main"></span>
+					<span class="image main">
+						<img class="my_img" src="/images/health_pic02.jpg" alt="" />
+					</span>
 					
-					<div id="PAGE_CNT" style="float: right;"></div>
-					
-					<div class="my_info">
-						<h2 id="board_h2"></h2>
+					<h2>온찜질의 올바른 이해</h2>
+					<div class="box">
+						<p>온찜질(Hot pack)은 혈관을 확장시고 혈류량를 증가시켜
+						손상된 조직을 빠르게 재생시키고 대사작용을 활성화하기 때문에,
+						주로 근육이완이나 환부에 효과적이며 만성적인 질환에 사용됩니다.</p>
 					</div>
 					
-					<!-- Table -->
-					<div class="table-wrapper">
-						<table class="alt" style="text-align: center; white-space: nowrap;">
-							<thead>
-								<tr>
-									<th scope="col" width="10%">글번호</th>
-									<th scope="col" width="*">제목</th>
-									<th scope="col" width="10%">글쓴이</th>
-									<th scope="col" width="15%">등록일</th>
-									<th scope="col" width="10%">조회</th>
-								</tr>
-							</thead>
-							<tbody>
-								
-							</tbody>
-						</table>
-						
-						<div id="PAGE_NAVI"></div>
-						<input type="hidden" id="PAGE_INDEX" name="PAGE_INDEX"/>
-						
-						<div class="col-12">
-							<ul class="actions" style="float: right;">
-								<li>
-									<section id="search" class="alt">
-										<div>
-											<input type="text" name="BOARD_LIKE" id="BOARD_LIKE" placeholder="검색" maxlength="30" />
-										</div>
-									</section>
-								</li>
-								<li><a href="#this" class="button big" id="btnWrite">글쓰기</a></li>
-							</ul>
-						</div>
-						
+					<h2>냉찜질의 정확한 사용법</h2>
+					<div class="box">
+						<p>냉찜질은 발목을 접질리거나 허리통증 등 관절의 급성질환에 주로 사용됩니다. 
+						뼈를 둘러싼 인대와 근육을 빠르게 수축시켜(늘어난 인대를 복구시키므로!)
+						염증으로 생기는 2차감염을 막아주고, 제열효과와 붓기를 빼주어 통증을 완화시켜줍니다.
+						그뿐 아니라 목, 허리, 무릎, 발목에 자칫 가해질 수 있는 신경압박으로 부터도
+						보호할수 있게 됩니다. 단, 늘어난 인대는 48시간 안에 응급처리 되어야만
+						복구되므로 신속한 대처가 필요합니다.</p>
+					</div>
+					
+					<span class="image main">
+						<img class="my_img" src="/images/health_pic03.jpg" alt="" />
+					</span>
+					
+					<h2>냉찜질의 장점 요약</h2>
+					<div class="box">
+						<p>1. 붓기를 가라 앉히고<br />
+						2. 늘어난 인대를 복구 시키며<br />
+						3. 혈류저하로 염증을 막아주고(소염효과)<br />
+						4. 열을 낮춰주며(제열효과)<br />
+						5. 통증을 완화시켜줍니다.(진통효과)</p>
+					</div>
+					
+					<h2>이것만은 꼭 기억하세요!</h2>
+					<div class="box">
+						<p>※ 통증발생 후 48시간 안에 얼음팩(아이싱)을 해주어야 합니다.<br />
+						※ 환부에 직접 대지마시고 얼음팩을 얇은 수건으로 감싸야 합니다.(피부괴사방지)<br />
+						※ 10~20분을 넘지 않도록 하며(동상방지), 통증이 사라질때까지 꾸준히 대주세요.</p>
 					</div>
 					
 					<hr class="major" />
@@ -138,6 +84,9 @@
 	var sCommand = '${COMMAND}';
 	var img = document.createElement('img');
 	$(document).ready(function() {
+		$("#health").addClass('active');
+		$("#side_useOfPack").css({'font-weight':'bold', 'font-size':'1.2em'});
+		
 		switch (sCommand) {
 		case "notice": // 공지사항
 			$("#board_h1").append("공지사항");
@@ -154,8 +103,6 @@
 		default:
 			break;
 		}
-		
-		document.getElementById('image main').appendChild(img);
 		
 		$("#btnWrite").on("click", function(e) {
 			e.preventDefault();

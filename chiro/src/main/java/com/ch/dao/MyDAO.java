@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
+import com.ch.util.Utlz;
 import com.ch.vo.CommandMap;
 
 @Repository("myDAO")
@@ -34,7 +35,11 @@ public class MyDAO extends AbstractDAO {
 
 	@SuppressWarnings("unchecked")
 	public List<Map<String, Object>> srchBoardList(Map<String, Object> map) throws Exception {
-		return (List<Map<String, Object>>) selectPagingList("board.srchBoardList", map);
+		if(!Utlz.isBlank((String) map.get("BOARD_LIKE"))){
+			return (List<Map<String, Object>>) selectPagingList("board.srchBoardLike", map);
+		}else{
+			return (List<Map<String, Object>>) selectPagingList("board.srchBoardList", map);
+		}
 	}
 
 	public Object insBoard(Map<String, Object> map) throws Exception {
@@ -56,6 +61,15 @@ public class MyDAO extends AbstractDAO {
 
 	public Object updBoard(Map<String, Object> map) throws Exception {
 		return update("board.updBoard", map);
+	}
+
+	public Object insComment(Map<String, Object> map) throws Exception {
+		return insert("board.insComment", map);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Map<String, Object>> srchCommentList(String sStr) throws Exception{
+		return (List<Map<String, Object>>) selectList("board.srchCommentList", sStr);
 	}
 
 }

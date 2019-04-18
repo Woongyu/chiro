@@ -71,4 +71,14 @@ public class MyServiceImpl implements MyService {
 		return myDAO.delBoard(sStr);
 	}
 
+	@Override
+	public Object insComment(Map<String, Object> map) throws Exception {
+		return myDAO.insComment(map);
+	}
+
+	@Override
+	public List<Map<String, Object>> srchCommentList(String sStr) throws Exception {
+		return myDAO.srchCommentList(sStr);
+	}
+
 }

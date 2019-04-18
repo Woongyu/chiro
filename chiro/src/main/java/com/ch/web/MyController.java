@@ -135,6 +135,11 @@ public class MyController {
 			mv.addObject("RNUM", 0);
 		}
 		
+		String sBoardLike = (String) map.get("BOARD_LIKE");
+		if(!Utlz.isBlank(sBoardLike)){
+			mv.addObject("BOARD_LIKE", sBoardLike);
+		}
+		
 		return mv;
 	}
 	
@@ -182,10 +187,15 @@ public class MyController {
 	@PostMapping("/post.do")
 	public ModelAndView goBoardDetail(CommandMap map) throws Exception {
 		ModelAndView mv = new ModelAndView("board/boardDetail");
+		String sBoardKey = (String) map.get("BOARD_KEY");
 		logger.info("post: " + map.toString());
 		
-		myService.updBoardHit((String) map.get("BOARD_KEY"));
-		mv.addObject("board", myService.srchBoardDetail((String) map.get("BOARD_KEY")));
+		myService.updBoardHit(sBoardKey);
+		mv.addObject("board", myService.srchBoardDetail(sBoardKey));
+		
+		// 댓글 리스트
+		List<Map<String, Object>> list = myService.srchCommentList(sBoardKey);
+		mv.addObject("comment", list);
 		mv.addObject("COMMAND", (String) map.get("COMMAND"));
 		return mv;
 	}
@@ -204,12 +214,17 @@ public class MyController {
 	// 댓글등록(입력)
 	@PostMapping("/insComment.do")
 	public ModelAndView insComment(CommandMap map) throws Exception {
-		// TODO 댓글 등록하기
 		ModelAndView mv = new ModelAndView("jsonView");
 		logger.info("insComment: " + map.toString());
 		
-		int nCnt = (int) myService.insBoard(map.getMap());
+		int nCnt = (int) myService.insComment(map.getMap());
 		mv.addObject("nCnt", nCnt);
 		return mv;
+	}
+	
+	// 냉온찜질의 올바른 사용법
+	@RequestMapping(value = "/useOfPack.do")
+	public String goUseOfPack(CommandMap map) throws Exception {
+		return "health/useOfPack";
 	}
 }

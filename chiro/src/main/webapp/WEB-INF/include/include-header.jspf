@@ -44,3 +44,4 @@ div.noticePopup>div.noticeMessage {
 <script src="<c:url value='//code.jquery.com/ui/1.11.4/jquery-ui.min.js'/>" charset="utf-8"></script>
 <link rel="stylesheet" type="text/css" href="<c:url value='//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css'/>"/>
 <link rel="stylesheet" type="text/css" href="<c:url value='/css/modal.css'/>"/>
+<script src="<c:url value='/js/jquery.highlight-5.js'/>" charset="utf-8"></script>

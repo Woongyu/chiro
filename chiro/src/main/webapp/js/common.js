@@ -129,6 +129,7 @@ function ComAjax(opt_formId) {
  */
 var gfv_pageIndex = null;
 var gfv_eventName = null;
+var gfn_searchLike = null
 function gfn_renderPaging(params){
 	var divId = params.divId; // 페이징이 그려질 div id
 	gfv_pageIndex = params.pageIndex; // 현재 위치가 저장될 input 태그
@@ -145,12 +146,13 @@ function gfn_renderPaging(params){
 	}
 	var totalIndexCount = Math.ceil(totalCount / recordCount); // 전체 인덱스 수
 	gfv_eventName = params.eventName;
+	gfn_searchLike = params.searchLike;
 	
 	$("#"+divId).empty();
+	
 	var preStr = "";
 	var postStr = "";
 	var str = "";
-	
 	var first = (parseInt((currentIndex-1) / 10) * 10) + 1;
 	//var last = (parseInt(totalIndexCount/10) == parseInt(currentIndex/10)) ? totalIndexCount%10 : 10;
 	var last = (parseInt(totalIndexCount/10) < parseInt(currentIndex)/10) ? totalIndexCount%10 : 10;
@@ -190,11 +192,20 @@ function gfn_renderPaging(params){
 function _movePage(value){
 	$("#"+gfv_pageIndex).val(value);
 	
-	if(typeof(gfv_eventName) == "function"){
-		gfv_eventName(value);
-	}
-	else {
-		eval(gfv_eventName + "(value);");
+	if(!gfn_isNull(gfn_searchLike)){
+		if(typeof(gfv_eventName) == "function"){
+			gfv_eventName(value, gfn_searchLike);
+		}
+		else {
+			eval(gfv_eventName + "(value, gfn_searchLike);");
+		}
+	}else{
+		if(typeof(gfv_eventName) == "function"){
+			gfv_eventName(value);
+		}
+		else {
+			eval(gfv_eventName + "(value);");
+		}
 	}
 }
 

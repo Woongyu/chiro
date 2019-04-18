@@ -108,6 +108,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
 							<h1>
 								기초반 연수생<br />
 								모집안내
+								<img src='/images/icons8-training-48.png' />
 							</h1>
 							<h2>"약물이나 수술 없는 임상 카이로프랙틱학의 정수로 여러분을 모십니다."</h2>
 						</header>
@@ -127,6 +128,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
 					<div class="content">
 						<header>
 							<h1>
+								<img src='/images/icons8-room-48.png' />
 								카이로76 공덕센터 내부전경
 							</h1>
 						</header>
@@ -145,7 +147,8 @@ google.maps.event.addDomListener(window, 'load', initialize);
 					<div class="content">
 						<header>
 							<h1>
-								카이로76 위치(Google Maps)
+								<img src='/images/icons8-place-marker-48.png' />
+								카이로76 위치(공덕역 10번 출구)
 							</h1>
 						</header>
 						<div id="map-canvas" style="width: 100%; height: 400px"></div>

@@ -43,7 +43,7 @@
 					</span>
 					
 					<!-- Form -->
-					<form method="post" id="frm" name="frm" method="post" autocomplete="off">
+					<form method="post" id="frm" name="frm" autocomplete="off">
 						<div class="row gtr-uniform">
 							<div class="col-12-xsmall">
 								<input type="text" readonly="readonly" name="NAME" id="NAME" value="${board.NAME}" placeholder="작성자" />
@@ -125,7 +125,7 @@
 								<ul class="actions" style="float: right;">
 									<li><input type="submit" id="btnModify" value="수정" class="button primary" /></li>
 									<li><input type="submit" id="btnDelete" value="삭제" class="button" /></li>
-									<li><a href="#this" class="button big" id="btnCancel">목록</a></li>
+									<li><a href="#this" class="button big" id="btnBoardList">목록</a></li>
 									<li><a href="#this" class="button big" id="btnWrite">글쓰기</a></li>
 								</ul>
 							</div>
@@ -216,9 +216,13 @@
 			}
 		});
 		
-		$("#btnCancel").on("click", function(e) { // 목록
+		$("#btnBoardList").on("click", function(e) { // 목록
 			e.preventDefault();
-			window.history.back();
+			
+			var comSubmit = new ComSubmit();
+			comSubmit.setUrl("<c:url value='/board.do' />");
+			comSubmit.addParam("COMMAND", sCommand);
+			comSubmit.submit();
 		});
 		
 		$("#btnWrite").on("click", function(e) { // 글쓰기
@@ -243,7 +247,6 @@
 			
 			fn_insComment({name: sCommentName
 				, contents: sCommentContents, key: $("#BOARD_KEY").val()});
-			}
 		});
 	});
 	
@@ -300,14 +303,11 @@
 		var nCnt = data.nCnt;
 		if(!gfn_isNull(nCnt)){
 			if(nCnt > 0){
-				gfn_alertPopup({message:"등록이 완료되었습니다."
+				gfn_alertPopup({message:"댓글이 등록되었습니다."
 					, fade:250, duration:500});
 				
 				var myTimer = setTimeout(function() {
-					var comSubmit = new ComSubmit();
-					comSubmit.setUrl("<c:url value='/board.do' />");
-					comSubmit.addParam("COMMAND", sCommand);
-					comSubmit.submit();
+					location.reload();
 					
 					clearTimeout(myTimer);
 				}, 1000);

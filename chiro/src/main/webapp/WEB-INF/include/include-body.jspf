@@ -26,3 +26,29 @@ if(oMyInfo.length > 0){
 	oMyInfo.stop(true).css({'background':gradient, 'opacity':0}).animate({'opacity':1}, 1000);
 }
 </script>
+<style>
+a.top {
+	position: fixed;
+	right: 5%;
+	bottom: 25px;
+	display: none;
+	border-bottom: none;
+}
+</style>
+<script>
+$(document).ready( function() {
+	$(window).scroll( function() {
+    	if($(this).scrollTop() > 350) {
+    		$('.top').fadeIn();
+    	}else{
+    		$('.top').fadeOut();
+    	}
+    });
+	
+	$('.top').click( function() {
+		$('html, body').animate({scrollTop:0}, 400);
+		return false;
+	});
+});
+</script>
+<a href="#" class="top"><img src='/images/icons8-send-letter-48.png' /></a>

@@ -43,10 +43,12 @@
 			<ul>
 				<li><a href="#this" id="side_main">메인</a></li>
 				<li><a href="#this" id="side_notice">공지사항</a></li>
-				<li><span class="opener">회원관리</span>
+				<li><span id="member" class="opener">회원관리</span>
 					<ul>
 						<li><a href="#this" id="side_join">회원등록</a></li>
 						<li><a href="#this" id="side_userList">회원목록</a></li>
+						<li><a href="#this">추가횟수구매</a></li>
+						<li><a href="#this">계정부여</a></li>
 					</ul>
 				</li>
 				<li><span class="opener">예약관리</span>
@@ -56,9 +58,9 @@
 					</ul>
 				</li>
 				<li><a href="#this" id="side_customer">고객 게시판</a></li>
-				<li><span class="opener">건강상식</span>
+				<li><span id="health" class="opener">건강상식</span>
 					<ul>
-						<li><a href="#">냉온찜질의 올바른 사용법</a></li>
+						<li><a href="#this" id="side_useOfPack">냉온찜질의 올바른 사용법</a></li>
 						<li><a href="#">어깨통증과 바른자세</a></li>
 						<li><a href="#">장요근과 허리통증</a></li>
 					</ul>
@@ -139,6 +141,11 @@
 			e.preventDefault();
 			fn_goCustomer();
 		});
+		
+		$("#side_useOfPack").on("click", function(e) {
+			e.preventDefault();
+			fn_goUseOfPack();
+		});
 	});
 	
 	function fn_goMain() {
@@ -170,6 +177,12 @@
 		var comSubmit = new ComSubmit();
 		comSubmit.setUrl("<c:url value='/board.do' />");
 		comSubmit.addParam("COMMAND", "customer");
+		comSubmit.submit();
+	}
+	
+	function fn_goUseOfPack() {
+		var comSubmit = new ComSubmit();
+		comSubmit.setUrl("<c:url value='/useOfPack.do' />");
 		comSubmit.submit();
 	}
 	</script>

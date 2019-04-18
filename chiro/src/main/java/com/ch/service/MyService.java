@@ -29,4 +29,8 @@ public interface MyService {
 
 	Object delBoard(String sStr) throws Exception;
 
+	Object insComment(Map<String, Object> map) throws Exception;
+
+	List<Map<String, Object>> srchCommentList(String sStr) throws Exception;
+
 }

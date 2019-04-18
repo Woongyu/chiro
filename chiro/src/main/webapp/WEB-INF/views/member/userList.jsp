@@ -74,7 +74,7 @@
 							</div>
 							<div class="modal-body">
 							
-							<form method="post" id="frm" name="frm" method="post" autocomplete="off">
+							<form method="post" id="frm" name="frm" autocomplete="off">
 								<div class="row gtr-uniform">
 									
 								</div>
@@ -98,6 +98,8 @@
 	<%@ include file="/WEB-INF/include/include-body.jspf"%>
 	<script type="text/javascript">
 	$(document).ready(function() {
+		$("#member").addClass('active');
+		$("#side_userList").css({'font-weight':'bold', 'font-size':'1.2em'});
 		
 		// 시작
 		fn_goUserListPage(1);

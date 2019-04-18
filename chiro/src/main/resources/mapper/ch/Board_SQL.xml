@@ -12,8 +12,17 @@
 				A.LEV
 			  , A.BOARD_IDX
 			  , A.BOARD_KEY
-			  , A.PARENT_KEY
-			  , A.TITLE
+			  , A.PARENT_IDX
+			  , CONCAT(A.TITLE,
+			  (
+				SELECT
+					CASE WHEN COUNT(*) > 0 THEN CONCAT(' (', COUNT(*), ')')
+					ELSE ''
+					END
+                FROM TB_COMMENT B
+                WHERE 1 = 1
+                AND B.BOARD_KEY = A.BOARD_KEY
+			  )) AS TITLE
 			  , A.NAME
 			  , A.CONTENTS
 			  , A.HIT_CNT
@@ -26,7 +35,7 @@
 					'1' AS LEV
 				  , T1.BOARD_IDX
 				  , T1.BOARD_KEY
-				  , T1.PARENT_KEY
+				  , T1.PARENT_IDX
 				  , T1.TITLE
 				  , (CASE WHEN  T1.USER_KEY <> '' THEN
 				  	(
@@ -53,7 +62,7 @@
 					'2' AS LEV
 				  , T1.BOARD_IDX
 				  , T1.BOARD_KEY
-				  , T1.PARENT_KEY
+				  , T1.PARENT_IDX
 				  , T1.TITLE
 				  , (CASE WHEN  T1.USER_KEY <> '' THEN
 				  	(
@@ -81,13 +90,95 @@
 		<include refid="ch.pagingPost"/> 
 	</select>
 	
+	<select id="srchBoardLike" parameterType="hashmap" resultType="hashmap">
+		<include refid="ch.pagingPre"/>
+		
+		<![CDATA[
+			SELECT
+				A.BOARD_IDX
+			  , A.BOARD_KEY
+			  , A.PARENT_IDX
+			  , CONCAT(A.TITLE,
+			  (
+				SELECT
+					CASE WHEN COUNT(*) > 0 THEN CONCAT(' (', COUNT(*), ')')
+					ELSE ''
+					END
+                FROM TB_COMMENT B
+                WHERE 1 = 1
+                AND B.BOARD_KEY = A.BOARD_KEY
+			  )) AS TITLE
+			  , A.NAME
+			  , A.CONTENTS
+			  , A.HIT_CNT
+			  , A.CHK_INFO
+			  , A.DEL_YN
+			  , A.PC_DT
+			FROM
+			(
+				SELECT
+					T1.BOARD_IDX
+				  , T1.BOARD_KEY
+				  , T1.PARENT_IDX
+				  , T1.TITLE
+				  , (CASE WHEN  T1.USER_KEY <> '' THEN
+				  	(
+				  		SELECT
+				  			T2.USER_NAME
+				  		FROM TB_MEMBER T2
+				  		WHERE 1 = 1
+				  		AND T1.USER_KEY = T2.USER_KEY
+				  	) ELSE T1.NAME END) AS NAME
+				  , T1.CONTENTS
+				  , T1.HIT_CNT
+				  , T1.CHK_INFO
+				  , T1.DEL_YN
+				  , DATE_FORMAT(T1.PC_DT, '%Y-%m-%d') AS PC_DT
+				FROM TB_BOARD T1
+				WHERE 1 = 1
+				AND T1.BOARD_DVSN = #{BOARD_DVSN}
+				AND T1.TITLE LIKE CONCAT('%', #{BOARD_LIKE}, '%')
+				
+				UNION
+				
+				SELECT
+					T1.BOARD_IDX
+				  , T1.BOARD_KEY
+				  , T1.PARENT_IDX
+				  , T1.TITLE
+				  , (CASE WHEN  T1.USER_KEY <> '' THEN
+				  	(
+				  		SELECT
+				  			T2.USER_NAME
+				  		FROM TB_MEMBER T2
+				  		WHERE 1 = 1
+				  		AND T1.USER_KEY = T2.USER_KEY
+				  	) ELSE T1.NAME END) AS NAME
+				  , T1.CONTENTS
+				  , T1.HIT_CNT
+				  , T1.CHK_INFO
+				  , T1.DEL_YN
+				  , DATE_FORMAT(T1.PC_DT, '%Y-%m-%d') AS PC_DT
+				FROM TB_BOARD T1
+				WHERE 1 = 1
+				AND T1.BOARD_DVSN = #{BOARD_DVSN}
+				AND T1.NAME LIKE CONCAT('%', #{BOARD_LIKE}, '%')
+			) A
+			WHERE 1 = 1
+			ORDER BY
+				A.BOARD_IDX DESC
+		]]>
+		
+		<include refid="ch.pagingPost"/> 
+	</select>
+	
 	<insert id="insBoard" parameterType="hashmap">
 		<![CDATA[
 			INSERT INTO TB_BOARD
 			(
 				BOARD_IDX
 			  , BOARD_KEY
-			 , 	PARENT_KEY
+			  , PARENT_IDX
 			  , USER_KEY
 			  , TITLE
 			  , NAME
@@ -105,7 +196,7 @@
 			 (
 			 	NULL
 			  , #{BOARD_KEY}
-			  , #{PARENT_KEY}
+			  , IFNULL(#{PARENT_IDX}, 0)
 			  , #{USER_KEY}
 			  , #{TITLE}
 			  , #{NAME}
@@ -185,5 +276,58 @@
 			AND DEL_YN = 'N'
 		]]>
 	</update>
+	
+	<!-- 코멘트 -->
+	<select id="srchCommentList" parameterType="hashmap" resultType="hashmap">
+		<![CDATA[
+			SELECT
+				T1.COMMENT_IDX
+			  , T1.BOARD_KEY
+			  , T1.SQNO
+			  , T1.COMMENT_NAME
+			  , T1.COMMENT_CONTENTS
+			  , DATE_FORMAT(T1.PC_DT, '%Y-%m-%d') AS PC_DT
+			FROM TB_COMMENT T1
+			WHERE 1 = 1
+			AND T1.BOARD_KEY = #{BOARD_KEY}
+			ORDER BY
+				T1.SQNO ASC
+		]]>
+	</select>
+	
+	<insert id="insComment" parameterType="hashmap">
+		<![CDATA[
+			INSERT INTO TB_COMMENT
+			(
+				COMMENT_IDX
+			  , BOARD_KEY
+			  , SQNO
+			  , COMMENT_NAME
+			  , COMMENT_CONTENTS
+			  , LUPD_CNT
+			  , DEL_YN
+			  , PC_DT
+			  , PC_TS
+			 )
+			 VALUES
+			 (
+			 	NULL
+			  , #{BOARD_KEY}
+			  , (
+			  		SELECT
+			  			IFNULL(MAX(SQNO), 0) + 1
+			  		FROM TB_COMMENT T1
+			  		WHERE 1 = 1
+			  		AND T1.BOARD_KEY = #{BOARD_KEY}
+			    )
+			  , #{COMMENT_NAME}
+			  , #{COMMENT_CONTENTS}
+			  , 1
+			  , 'N'
+			  , DATE_FORMAT(now(), '%Y-%m-%d')
+			  , CURRENT_TIMESTAMP
+			 )
+		]]>
+	</insert>
 	
 </mapper>
