@@ -182,7 +182,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
 		
 		$("#btnRecruit").on("click", function(e) {
 			e.preventDefault();
-			gfn_readyAlert(); // TODO
+			fn_goRecruitment();
 		});
 	});
 	

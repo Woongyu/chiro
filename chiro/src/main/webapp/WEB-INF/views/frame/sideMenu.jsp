@@ -61,17 +61,17 @@
 				<li><span id="health" class="opener">건강상식</span>
 					<ul>
 						<li><a href="#this" id="side_useOfPack">냉온찜질의 올바른 사용법</a></li>
-						<li><a href="#">어깨통증과 바른자세</a></li>
-						<li><a href="#">장요근과 허리통증</a></li>
+						<li><a href="#this" id="side_shoulderPain">어깨통증과 바른자세</a></li>
+						<li><a href="#this" id="side_backache">장요근과 허리통증</a></li>
 					</ul>
 				</li>
-				<li><span class="opener">카이로 프로그램</span>
+				<li><span id="recruit" class="opener">카이로 프로그램</span>
 					<ul>
-						<li><a href="#">기초반 연수생 모집안내</a></li>
-						<li><a href="#">교육 및 과정</a></li>
+						<li><a href="#this" id="side_recruitment">기초반 연수생 모집안내</a></li>
+						<li><a href="#this" id="side_program">교육 및 과정</a></li>
 					</ul>
 				</li>
-				<li><a href="#this">이벤트</a></li>
+				<li><a href="#this" id="side_event">이벤트</a></li>
 			</ul>
 		</nav>
 
@@ -146,6 +146,31 @@
 			e.preventDefault();
 			fn_goUseOfPack();
 		});
+		
+		$("#side_shoulderPain").on("click", function(e) {
+			e.preventDefault();
+			fn_goShoulderPain();
+		});
+		
+		$("#side_backache").on("click", function(e) {
+			e.preventDefault();
+			fn_goBackache();
+		});
+		
+		$("#side_recruitment").on("click", function(e) {
+			e.preventDefault();
+			fn_goRecruitment();
+		});
+		
+		$("#side_program").on("click", function(e) {
+			e.preventDefault();
+			fn_goProgram();
+		});
+		
+		$("#side_event").on("click", function(e) {
+			e.preventDefault();
+			fn_goEvent();
+		});
 	});
 	
 	function fn_goMain() {
@@ -183,6 +208,36 @@
 	function fn_goUseOfPack() {
 		var comSubmit = new ComSubmit();
 		comSubmit.setUrl("<c:url value='/useOfPack.do' />");
+		comSubmit.submit();
+	}
+	
+	function fn_goShoulderPain() {
+		var comSubmit = new ComSubmit();
+		comSubmit.setUrl("<c:url value='/shoulderPain.do' />");
+		comSubmit.submit();
+	}
+	
+	function fn_goBackache() {
+		var comSubmit = new ComSubmit();
+		comSubmit.setUrl("<c:url value='/backache.do' />");
+		comSubmit.submit();
+	}
+	
+	function fn_goRecruitment() {
+		var comSubmit = new ComSubmit();
+		comSubmit.setUrl("<c:url value='/recruitment.do' />");
+		comSubmit.submit();
+	}
+	
+	function fn_goProgram() {
+		var comSubmit = new ComSubmit();
+		comSubmit.setUrl("<c:url value='/program.do' />");
+		comSubmit.submit();
+	}
+	
+	function fn_goEvent() {
+		var comSubmit = new ComSubmit();
+		comSubmit.setUrl("<c:url value='/event.do' />");
 		comSubmit.submit();
 	}
 	</script>

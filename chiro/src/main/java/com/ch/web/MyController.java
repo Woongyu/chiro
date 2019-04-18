@@ -227,4 +227,34 @@ public class MyController {
 	public String goUseOfPack(CommandMap map) throws Exception {
 		return "health/useOfPack";
 	}
+	
+	// 기초반 연수생 모집안내
+	@RequestMapping(value = "/shoulderPain.do")
+	public String goShoulderPain(CommandMap map) throws Exception {
+		return "health/shoulderPain";
+	}
+	
+	// 장요근과 허리통증
+	@RequestMapping(value = "/backache.do")
+	public String goBackache(CommandMap map) throws Exception {
+		return "health/backache";
+	}
+	
+	// 장요근과 허리통증
+	@RequestMapping(value = "/recruitment.do")
+	public String goRecruitment(CommandMap map) throws Exception {
+		return "recruit/recruitment";
+	}
+	
+	// 교육 및 과정
+	@RequestMapping(value = "/program.do")
+	public String goProgram(CommandMap map) throws Exception {
+		return "recruit/program";
+	}
+	
+	// 이벤트
+	@RequestMapping(value = "/event.do")
+	public String goEvent(CommandMap map) throws Exception {
+		return "event/event";
+	}
 }
