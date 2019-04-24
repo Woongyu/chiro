@@ -200,7 +200,7 @@
 			  , #{USER_KEY}
 			  , #{TITLE}
 			  , #{NAME}
-			  , IFNULL(#{BOARD_PWD}, '0000')
+			  , #{BOARD_PWD}
 			  , #{CONTENTS}
 			  , 1
 			  , IFNULL(#{CHK_INFO}, '0')
@@ -252,7 +252,6 @@
 			  	) ELSE T1.NAME END) AS NAME
 			  , T1.BOARD_KEY
 			  , T1.USER_KEY
-			  , T1.BOARD_PWD
 			  , T1.CHK_INFO
 			  , T1.TITLE
 			  , T1.CONTENTS
@@ -276,6 +275,16 @@
 			AND DEL_YN = 'N'
 		]]>
 	</update>
+	
+	<select id="chkBoardPwd" parameterType="string" resultType="string">
+		<![CDATA[
+			SELECT
+				T1.BOARD_PWD
+			FROM TB_BOARD T1
+			WHERE 1 = 1
+			AND T1.BOARD_KEY = #{BOARD_KEY}
+		]]>
+	</select>
 	
 	<!-- 코멘트 -->
 	<select id="srchCommentList" parameterType="hashmap" resultType="hashmap">

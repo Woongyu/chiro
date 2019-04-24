@@ -39,7 +39,6 @@
 							</div>
 							<div class="col-12-xsmall BOARD_PWD">
 								<input type="password" id="BOARD_PWD" name="BOARD_PWD" placeholder="비밀번호" maxlength="4" />
-								<input type="hidden" id="TMP_BOARD_PWD" name="TMP_BOARD_PWD" value="${board.BOARD_PWD}" />
 							</div>
 							<div class="col-12">
 								<input type="text" name="TITLE" id="TITLE" value="${board.TITLE}" placeholder="제목" maxlength="100" />
@@ -51,7 +50,7 @@
 							
 							<!-- Break -->
 							<div class="col-12">
-								<textarea name="CONTENTS" id="CONTENTS" placeholder="내용" rows="10" maxlength="4000" >${board.CONTENTS}</textarea>
+								<textarea name="CONTENTS" id="CONTENTS" placeholder="내용" rows="10" maxlength="4000" onkeyup="fn_onKeyup(this, 240);">${board.CONTENTS}</textarea>
 							</div>
 
 							<!-- Break -->
@@ -131,6 +130,16 @@
 				return false;
 			}
 			
+			if(gfn_isNull($("#TITLE").val())){
+				gfn_alertPopup({message:"제목을 입력하세요."});
+				return false;
+			}
+			
+			if(gfn_isNull($("#CONTENTS").val())){
+				gfn_alertPopup({message:"내용을 입력하세요."});
+				return false;
+			}
+			
 			if(sCommand != "notice"){
 				var sBoardPwd = $("#BOARD_PWD").val();
 				if(gfn_isNull(sBoardPwd)){
@@ -148,33 +157,49 @@
 					return false;
 				}
 				
-				var sTmpBoardPwd = $("#TMP_BOARD_PWD").val();
 				if(!gfn_isNull(sBoardKey)){
-					if(sBoardPwd != sTmpBoardPwd){
-						gfn_alertPopup({message:"비밀번호가 올바르지 않습니다."});
-						return false;
-					}
+					fn_chkBoardPwd();
 				}
 			}
 			
-			if(gfn_isNull($("#TITLE").val())){
-				gfn_alertPopup({message:"제목을 입력하세요."});
-				return false;
-			}
-			
-			if(gfn_isNull($("#CONTENTS").val())){
-				gfn_alertPopup({message:"내용을 입력하세요."});
-				return false;
-			}
-			
-			if(!gfn_isNull(sBoardKey)){
-				fn_updBoard();
-			}else{
-				fn_insBoard();
+			if(gfn_isNull(sBoardKey)){
+				fn_insBoard(); // 입력
 			}
 		});
+		
+		// 자동개행
+		var oContents = $("#CONTENTS");
+		oContents.css('height', oContents.prop('scrollHeight')+5)
 	});
 	
+	function fn_chkBoardPwd(){
+		var comAjax = new ComAjax("frm");
+		comAjax.setUrl("<c:url value='/chkBoardPwd.do' />");
+		comAjax.setCallback("fn_chkBoardPwdCallback");
+		comAjax.ajax();
+	}
+	
+	function fn_chkBoardPwdCallback(data){
+		var bTf = data.bTf;
+		if(!gfn_isNull(bTf)){
+			if(bTf == true){
+				fn_updBoard(); // 수정
+			}else{
+				gfn_alertPopup({message:"비밀번호가 올바르지 않습니다."});
+				return false;
+			}
+		}else{
+			var comSubmit = new ComSubmit();
+			comSubmit.setUrl("<c:url value='/error.do' />");
+			comSubmit.submit();
+		}
+	}
+	
+	function fn_onKeyup(obj, bSize) {
+		obj.style.height = "1px"; // 초기화
+		obj.style.height = (obj.scrollHeight >= bSize) ? obj.scrollHeight+5+"px" : bSize+"px";
+	}
+
 	function fn_insBoard(){
 		var comAjax = new ComAjax("frm");
 		comAjax.setUrl("<c:url value='/insBoard.do' />");

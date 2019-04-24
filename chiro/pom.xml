@@ -213,7 +213,14 @@
 			<artifactId>jackson-core</artifactId>
 			<version>2.6.4</version>
 		</dependency>
-
+		<!--비밀번호 암호화 -->
+		<!-- https://mvnrepository.com/artifact/org.mindrot/jbcrypt -->
+		<dependency>
+		    <groupId>org.mindrot</groupId>
+		    <artifactId>jbcrypt</artifactId>
+		    <version>0.4</version>
+		</dependency>
+	
 	</dependencies>
 	<build>
 		<plugins>

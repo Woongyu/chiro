@@ -33,4 +33,8 @@ public interface MyService {
 
 	List<Map<String, Object>> srchCommentList(String sStr) throws Exception;
 
+	Map<String, Object> srchLogin(Map<String, Object> map) throws Exception;
+
+	Object chkBoardPwd(String sStr) throws Exception;
+
 }

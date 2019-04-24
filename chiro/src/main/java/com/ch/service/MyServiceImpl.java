@@ -81,4 +81,14 @@ public class MyServiceImpl implements MyService {
 		return myDAO.srchCommentList(sStr);
 	}
 
+	@Override
+	public Map<String, Object> srchLogin(Map<String, Object> map) throws Exception {
+		return myDAO.srchLogin(map);
+	}
+
+	@Override
+	public Object chkBoardPwd(String sStr) throws Exception {
+		return myDAO.chkBoardPwd(sStr);
+	}
+
 }

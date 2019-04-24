@@ -18,6 +18,12 @@
 	background: -webkit-linear-gradient(to right, #f7797d, #FBD786, #C6FFDD);
 	background: linear-gradient(to right, #f7797d, #FBD786, #C6FFDD);
 }
+#BOARD_PWD {
+	margin-top: 1.0em;
+}
+#btnConfirm {
+	margin-bottom: 1.0em;
+}
 </style>
 </head>
 <body class="is-preload">
@@ -49,7 +55,6 @@
 								<input type="text" readonly="readonly" name="NAME" id="NAME" value="${board.NAME}" placeholder="작성자" />
 								<input type="hidden" id="BOARD_KEY" name="BOARD_KEY" value="${board.BOARD_KEY}">
 								<input type="hidden" id="USER_KEY" name="USER_KEY" value="${board.USER_KEY}">
-								<input type="hidden" id="BOARD_PWD" name="BOARD_PWD" value="${board.BOARD_PWD}" />
 								<input type="hidden" id="CHK_INFO" name="CHK_INFO" value="${board.CHK_INFO}">
 							</div>
 							<div class="col-12-xsmall">
@@ -145,7 +150,7 @@
 							<div class="modal-body">
 								<div class="row gtr-uniform">
 									<div class="col-12">
-										<input type="password" id="TMP_BOARD_PWD" name="TMP_BOARD_PWD" maxlength="4" />
+										<input type="password" id="BOARD_PWD" name="BOARD_PWD" maxlength="4" />
 									</div>
 									<div class="col-12-xsmall">
 										<ul class="actions">
@@ -191,7 +196,7 @@
 					return false;
 				}
 			}else{
-				$("#TMP_BOARD_PWD").val("");
+				$("#BOARD_PWD").val("");
 				var comModal = new ComModal();
 				comModal.block();
 			}
@@ -200,20 +205,13 @@
 		$("#btnConfirm").on("click", function(e) {
 			e.preventDefault();
 			
-			var sTmpBoardPwd = $("#TMP_BOARD_PWD").val();
-			if(!gfn_isNull(sTmpBoardPwd)){
-				if(sTmpBoardPwd != $("#BOARD_PWD").val()){
-					gfn_alertPopup({message:"비밀번호가 올바르지 않습니다."});
-					return false;
-				}
-				
-				if(confirm("정말 삭제하시겠습니까?")){
-					// TODO 삭제 시 관리자 체크 or 숨김처리
-					fn_delBoard();
-				}else{
-					return false;
-				}
+			var sBoardPwd = $("#BOARD_PWD").val();
+			if(gfn_isNull(sBoardPwd)){
+				gfn_alertPopup({message:"비밀번호를 입력하세요."});
+				return false;
 			}
+			
+			fn_chkBoardPwd(sBoardPwd);
 		});
 		
 		$("#btnBoardList").on("click", function(e) { // 목록
@@ -248,6 +246,10 @@
 			fn_insComment({name: sCommentName
 				, contents: sCommentContents, key: $("#BOARD_KEY").val()});
 		});
+		
+		// 자동개행
+		var oContents = $("#CONTENTS");
+		oContents.css('height', oContents.prop('scrollHeight')+5);
 	});
 	
 	function fn_goWritePage(sCommand, obj) {
@@ -313,6 +315,35 @@
 				}, 1000);
 			}else{
 				gfn_alertPopup({message:"일시적인 오류가 발생하였습니다."});
+				return false;
+			}
+		}else{
+			var comSubmit = new ComSubmit();
+			comSubmit.setUrl("<c:url value='/error.do' />");
+			comSubmit.submit();
+		}
+	}
+	
+	function fn_chkBoardPwd(sBoardPwd){
+		var comAjax = new ComAjax("frm");
+		comAjax.setUrl("<c:url value='/chkBoardPwd.do' />");
+		comAjax.addParam("BOARD_PWD", sBoardPwd);
+		comAjax.setCallback("fn_chkBoardPwdCallback");
+		comAjax.ajax();
+	}
+	
+	function fn_chkBoardPwdCallback(data){
+		var bTf = data.bTf;
+		if(!gfn_isNull(bTf)){
+			if(bTf == true){
+				if(confirm("정말 삭제하시겠습니까?")){
+					// TODO 삭제 시 관리자 체크 or 숨김처리
+					fn_delBoard();
+				}else{
+					return false;
+				}
+			}else{
+				gfn_alertPopup({message:"비밀번호가 올바르지 않습니다."});
 				return false;
 			}
 		}else{

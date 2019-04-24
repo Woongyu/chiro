@@ -4,12 +4,18 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ch.service.MyService;
@@ -17,6 +23,7 @@ import com.ch.util.Utlz;
 import com.ch.vo.CommandMap;
 
 @Controller
+@SessionAttributes("loginInfo")
 public class MyController {
 	Logger logger = Logger.getLogger(this.getClass());
 
@@ -30,9 +37,34 @@ public class MyController {
 		return "frame/main";
 	}
 	
+	// 로그인
+	@PostMapping(value = "/login.do")
+	public ModelAndView goLogin(CommandMap map, Model model) throws Exception {
+		ModelAndView mv = new ModelAndView("jsonView");
+		logger.info("login: " + map.toString());
+		
+		Map<String, Object> login = myService.srchLogin(map.getMap());
+		int nCnt = Integer.parseInt(String.valueOf(login.get("CNT")));
+		if(nCnt > 0){
+			model.addAttribute("loginInfo", login);
+		}
+		
+		mv.addObject("nCnt", nCnt);
+		return mv;
+	}
+	
+	// 로그아웃
+	@RequestMapping(value = "/logout.do")
+	public String goLogout(SessionStatus status) throws Exception {
+		
+		// SessionStatus는 @SessionAttributes의 세션을 만료시킨다.
+		status.setComplete();
+		return (status.isComplete() ? "redirect:/main.do" : "redirect:/error.do");
+	}
+	
 	// 회원등록
 	@RequestMapping(value = "/join.do")
-	public String goJoin(CommandMap map) throws Exception {
+	public String goJoin() throws Exception {
 		return "member/join";
 	}
 	
@@ -165,8 +197,11 @@ public class MyController {
 		
 		// 랜덤 키 값을 생성하여 쿼리 조회 시 복합키를 사용한다.
 		map.put("BOARD_KEY", Utlz.getSurrogateKey(11));
-		logger.info("insBoard: " + map.toString());
-		
+		String hashedPw = (String) map.get("BOARD_PWD");
+		hashedPw = BCrypt.hashpw((!Utlz.isBlank(hashedPw) ? hashedPw : "0000")
+			, BCrypt.gensalt());
+		map.replace("BOARD_PWD", hashedPw);
+        
 		int nCnt = (int) myService.insBoard(map.getMap());
 		mv.addObject("nCnt", nCnt);
 		return mv;
@@ -200,6 +235,19 @@ public class MyController {
 		return mv;
 	}
 	
+	// 글체크
+	@PostMapping("/chkBoardPwd.do")
+	public ModelAndView chkBoardPwd(CommandMap map) throws Exception {
+		ModelAndView mv = new ModelAndView("jsonView");
+		logger.info("chkBoardPwd: " + map.toString());
+		
+		String hashedPw = (String) map.get("BOARD_PWD");
+		String sBoardKey = (String) map.get("BOARD_KEY");
+		boolean bTf = BCrypt.checkpw(hashedPw, (String) myService.chkBoardPwd(sBoardKey));
+		mv.addObject("bTf", bTf);
+		return mv;
+	}
+	
 	// 글삭제
 	@PostMapping("/delBoard.do")
 	public ModelAndView delBoard(CommandMap map) throws Exception {
@@ -224,37 +272,37 @@ public class MyController {
 	
 	// 냉온찜질의 올바른 사용법
 	@RequestMapping(value = "/useOfPack.do")
-	public String goUseOfPack(CommandMap map) throws Exception {
+	public String goUseOfPack() throws Exception {
 		return "health/useOfPack";
 	}
 	
 	// 기초반 연수생 모집안내
 	@RequestMapping(value = "/shoulderPain.do")
-	public String goShoulderPain(CommandMap map) throws Exception {
+	public String goShoulderPain() throws Exception {
 		return "health/shoulderPain";
 	}
 	
 	// 장요근과 허리통증
 	@RequestMapping(value = "/backache.do")
-	public String goBackache(CommandMap map) throws Exception {
+	public String goBackache() throws Exception {
 		return "health/backache";
 	}
 	
 	// 장요근과 허리통증
 	@RequestMapping(value = "/recruitment.do")
-	public String goRecruitment(CommandMap map) throws Exception {
+	public String goRecruitment() throws Exception {
 		return "recruit/recruitment";
 	}
 	
 	// 교육 및 과정
 	@RequestMapping(value = "/program.do")
-	public String goProgram(CommandMap map) throws Exception {
+	public String goProgram() throws Exception {
 		return "recruit/program";
 	}
 	
 	// 이벤트
 	@RequestMapping(value = "/event.do")
-	public String goEvent(CommandMap map) throws Exception {
+	public String goEvent() throws Exception {
 		return "event/event";
 	}
 }

@@ -15,7 +15,10 @@
 		</argument-resolvers>
 	</annotation-driven>
 	
-	<!-- <resources location="/WEB-INF/images/" mapping="/images/**" /> -->
+	<resources location="/css/" mapping="/css/**" />
+	<resources location="/fonts/" mapping="/fonts/**" />
+	<resources location="/images/" mapping="/images/**" />
+	<resources location="/js/" mapping="/js/**" />
 	
 	<beans:bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">

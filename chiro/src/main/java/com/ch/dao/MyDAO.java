@@ -15,7 +15,7 @@ public class MyDAO extends AbstractDAO {
 		return insert("member.insUser", map);
 	}
 	
-	public Object updUser(Map<String, Object> map) {
+	public Object updUser(Map<String, Object> map) throws Exception {
 		return update("member.updUser", map);
 	}
 	
@@ -46,16 +46,16 @@ public class MyDAO extends AbstractDAO {
 		return insert("board.insBoard", map);
 	}
 
-	public void updBoardHit(String sStr) throws Exception{
+	public void updBoardHit(String sStr) throws Exception {
 		update("board.updBoardHit", sStr);
 	}
 
 	@SuppressWarnings("unchecked")
-	public Map<String, Object> srchBoardDetail(String sStr) throws Exception{
+	public Map<String, Object> srchBoardDetail(String sStr) throws Exception {
 		return (Map<String, Object>) selectOne("board.srchBoardDetail", sStr);
 	}
 
-	public Object delBoard(String sStr) throws Exception{
+	public Object delBoard(String sStr) throws Exception {
 		return update("board.delBoard", sStr);
 	}
 
@@ -68,8 +68,17 @@ public class MyDAO extends AbstractDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Map<String, Object>> srchCommentList(String sStr) throws Exception{
+	public List<Map<String, Object>> srchCommentList(String sStr) throws Exception {
 		return (List<Map<String, Object>>) selectList("board.srchCommentList", sStr);
+	}
+
+	@SuppressWarnings("unchecked")
+	public Map<String, Object> srchLogin(Map<String, Object> map) throws Exception {
+		return (Map<String, Object>) selectOne("ch.srchLogin", map);
+	}
+
+	public Object chkBoardPwd(String sStr) throws Exception {
+		return selectOne("board.chkBoardPwd", sStr);
 	}
 
 }

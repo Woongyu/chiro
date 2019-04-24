@@ -3,6 +3,9 @@ package com.ch.vo;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import com.ch.util.Utlz;
+
 import java.util.Set;
 
 public class CommandMap {
@@ -55,7 +58,15 @@ public class CommandMap {
 	public int size() {
 		return map.size();
 	}
-
+	
+	public void replace(String key, Object value) {
+		if(Utlz.isBlank(get(key))){
+			put(key, value);
+		}else{
+			map.replace(key, value);
+		}
+	}
+	
 	@Override
 	public String toString() {
 		return "Map [" + map.toString() + "]";

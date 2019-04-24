@@ -259,7 +259,8 @@ function gfn_alertPopup(options)
 var gfv_modalDefaultOption =
 {
 		modal : 'myModal',
-		btn : 'myBtn'
+		btn : 'myBtn',
+		close : 'close'
 };
 function ComModal(options) {
 	// Set Options
@@ -272,7 +273,13 @@ function ComModal(options) {
 	var btn = document.getElementById(settings.btn);
 	
 	// Get the <span> element that closes the modal
-	var span = document.getElementsByClassName("close")[0];
+	//var span = document.getElementsByClassName("close")[0];
+	var span = null;
+	if(gfn_isNull(options)){
+		span = document.getElementsByClassName("close")[0];
+	}else{
+		span = document.getElementById(settings.close);
+	}
 	
 	// When the user clicks the button, open the modal 
 	/*

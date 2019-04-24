@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ page session="true" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,6 +16,16 @@
 .effect img {
 	width: 100%;
     border-radius: 50%;
+}
+#login > * {
+	float: right;
+	font-style: italic;
+}
+#USER_NAME {
+	margin-top: 1.0em;
+}
+#btnLogin {
+	margin-bottom: 1.0em;
 }
 </style>
 </head>
@@ -35,6 +46,16 @@
 			<!-- Image -->
 			<div class="effect">
 				<img src="/images/icon_chiro.jpeg" onclick="fn_goMain();" style="cursor: pointer;"/>
+			</div>
+			
+			<div id="login" style="padding-bottom: 1.5em;">
+				<c:if test="${empty sessionScope.loginInfo.USER_KEY}">
+					<a href="#this" id="side_login">로그인</a>
+				</c:if>
+				<c:if test="${not empty sessionScope.loginInfo.USER_KEY}">
+					<strong>'${sessionScope.loginInfo.USER_NAME}' 님 환영합니다.</strong><br />
+					<a href="#this" id="side_logout">로그아웃</a>
+				</c:if>
 			</div>
 			
 			<header class="major">
@@ -73,6 +94,31 @@
 				</li>
 				<li><a href="#this" id="side_event">이벤트</a></li>
 			</ul>
+			
+			<!-- The Modal -->
+			<div id="myLogin" class="modal">
+				<!-- Modal content -->
+				<div class="modal-content" style="max-width: 350px;">
+					<div class="modal-header">
+						<span class="close" id="loginClose">&times;</span>
+						<h3 style="margin-top: 0.8em;">로그인을 하세요.</h3>
+					</div>
+					<div class="modal-body">
+						<div class="row gtr-uniform">
+							<div class="col-12">
+								<input type="text" id="USER_NAME" name="USER_NAME" placeholder="이름" maxlength="20" />
+							</div>
+							<div class="col-12">
+								<input type="password" id="USER_PWD" name="USER_PWD" placeholder="비밀번호" maxlength="30" />
+							</div>
+							<div class="col-12-xsmall">
+								<a href="#this" id="btnLogin" class="button primary" style="background-color: #4caf50;">로그인</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
 		</nav>
 
 		<!-- Section -->
@@ -171,7 +217,71 @@
 			e.preventDefault();
 			fn_goEvent();
 		});
+		
+		$("#side_login").on("click", function(e) { // 로그인
+			e.preventDefault();
+			
+			// 초기화
+			$("#USER_NAME").val("");
+			$("#USER_PWD").val("");
+			
+			var comModal = new ComModal({modal: "myLogin", close: "loginClose"});
+			comModal.block();
+		});
+		
+		$("#side_logout").on("click", function(e) { // 로그아웃
+			e.preventDefault();
+			fn_goLogout();
+		});
+		
+		$("#btnLogin").on("click", function(e) {
+			e.preventDefault();
+			
+			var id = $("#USER_NAME").val();
+			var pwd = $("#USER_PWD").val();
+			if(gfn_isNull(id)){
+				gfn_alertPopup({message:"아이디를 입력하세요."});
+				return false;
+			}
+			
+			if(gfn_isNull(pwd)){
+				gfn_alertPopup({message:"비밀번호를 입력하세요."});
+				return false;
+			}
+			
+			fn_goLogin({id: id, pwd: pwd});
+		});
 	});
+	
+	function fn_goLogin(params){
+		var comAjax = new ComAjax();
+		comAjax.setUrl("<c:url value='/login.do' />");
+		comAjax.addParam("USER_NAME", params.id);
+		comAjax.addParam("USER_PWD", params.pwd);
+		comAjax.setCallback("fn_goLoginCallback");
+		comAjax.ajax();
+	}
+	
+	function fn_goLoginCallback(data){
+		var nCnt = data.nCnt;
+		if(!gfn_isNull(nCnt)){
+			if(nCnt > 0){
+				gfn_alertPopup({message:"로그인 되었습니다."
+					, fade:250, duration:500});
+				
+				var myTimer = setTimeout(function() {
+					location.reload();
+				}, 1000);
+			}else{
+				gfn_alertPopup({message:"로그인이 올바르지 않습니다."});
+				return false;
+			}
+		}else{
+			var comSubmit = new ComSubmit();
+			comSubmit.setUrl("<c:url value='/error.do' />");
+			comSubmit.submit();
+		}
+	}
 	
 	function fn_goMain() {
 		var comSubmit = new ComSubmit();
@@ -239,6 +349,17 @@
 		var comSubmit = new ComSubmit();
 		comSubmit.setUrl("<c:url value='/event.do' />");
 		comSubmit.submit();
+	}
+	
+	function fn_goLogout() {
+		gfn_alertPopup({message:"로그아웃을 시도합니다."
+			, fade:250, duration:500});
+		
+		var myTimer = setTimeout(function() {
+			var comSubmit = new ComSubmit();
+			comSubmit.setUrl("<c:url value='/logout.do' />");
+			comSubmit.submit();
+		}, 1000);
 	}
 	</script>
 </body>

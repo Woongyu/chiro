@@ -25,4 +25,20 @@
 			WHERE AAA.RNUM LIMIT #{START}, #{END}
 		]]>
 	</sql>
+	
+	<select id="srchLogin" parameterType="hashmap" resultType="hashmap">
+		<![CDATA[
+			SELECT
+				COUNT(*) AS CNT
+			  , MAX(T2.USER_KEY) AS USER_KEY
+			  , MAX(T1.USER_NAME) AS USER_NAME
+			  , MAX(T2.USER_AUTH) AS USER_AUTH
+			FROM TB_MEMBER T1
+			, TB_ACCOUNT T2
+			WHERE 1 = 1
+			AND T1.USER_KEY = T2.USER_KEY
+			AND T1.USER_NAME = #{USER_NAME}
+			AND T2.USER_PWD = #{USER_PWD}
+		]]>
+	</select>
 </mapper>
