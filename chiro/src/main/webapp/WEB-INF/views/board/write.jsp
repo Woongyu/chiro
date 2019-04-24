@@ -6,6 +6,7 @@
 <meta charset="UTF-8">
 <%@ include file="/WEB-INF/include/include-header.jspf"%>
 <title>글쓰기</title>
+<script type="text/javascript" src="/resources/editor/js/HuskyEZCreator.js" charset="utf-8"></script>
 </head>
 <body class="is-preload">
 
@@ -30,7 +31,7 @@
 					</span>
 					
 					<!-- Form -->
-					<form method="post" id="frm" name="frm" autocomplete="off">
+					<form method="post" id="frm" name="frm" autocomplete="off" enctype="multipart/form-data">
 						<div class="row gtr-uniform">
 							<div class="col-12-xsmall">
 								<input type="text" name="NAME" id="NAME" value="${board.NAME}" placeholder="작성자" maxlength="30" />
@@ -79,7 +80,24 @@
 	<script type="text/javascript">
 	var sCommand = '${COMMAND}';
 	var sBoardKey = '${board.BOARD_KEY}';
+	var obj = []; // 전역변수
+	
 	$(function(){
+		// 스마트에디터 프레임생성
+		nhn.husky.EZCreator.createInIFrame({
+			oAppRef: obj,
+			elPlaceHolder: "CONTENTS",
+			sSkinURI: "/resources/editor/SmartEditor2Skin.html",
+			htParams : {
+				// 툴바 사용 여부
+				bUseToolbar : true,            
+				// 입력창 크기 조절바 사용 여부
+				bUseVerticalResizer : true,    
+				// 모드 탭(Editor | HTML | TEXT) 사용 여부
+				bUseModeChanger : true,
+			}
+		});
+		
 		if(!gfn_isNull(sBoardKey)){
 			$("H1").append("(UPDATE)"); // header
 			$("#btnSubmit").val("수정하기");
@@ -124,6 +142,9 @@
 			
 		$("#btnSubmit").on("click", function(e) { // 입력
 			e.preventDefault();
+			
+			// id가 smarteditor인 textarea에 에디터에서 대입
+            obj.getById["CONTENTS"].exec("UPDATE_CONTENTS_FIELD", []);
 			
 			if(gfn_isNull($("#NAME").val())){
 				gfn_alertPopup({message:"작성자를 입력하세요."});

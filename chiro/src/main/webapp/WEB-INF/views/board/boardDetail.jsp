@@ -25,6 +25,7 @@
 	margin-bottom: 1.0em;
 }
 </style>
+<script type="text/javascript" src="/resources/editor/js/HuskyEZCreator.js" charset="utf-8"></script>
 </head>
 <body class="is-preload">
 
@@ -66,7 +67,9 @@
 							
 							<!-- Break -->
 							<div class="col-12">
-								<textarea readonly="readonly" name="CONTENTS" id="CONTENTS" placeholder="내용" rows="10">${board.CONTENTS}</textarea>
+								<div class="box">
+									<p>${board.CONTENTS}</p>
+								</div>
 							</div>
 							
 							<!-- Comment -->
@@ -246,16 +249,13 @@
 			fn_insComment({name: sCommentName
 				, contents: sCommentContents, key: $("#BOARD_KEY").val()});
 		});
-		
-		// 자동개행
-		var oContents = $("#CONTENTS");
-		oContents.css('height', oContents.prop('scrollHeight')+5);
 	});
 	
 	function fn_goWritePage(sCommand, obj) {
 		// TODO 관리자 로그인 체크
 		var comSubmit = new ComSubmit((!gfn_isNull(obj) ? obj : ""));
 		comSubmit.addParam("COMMAND", sCommand);
+		comSubmit.addParam("CONTENTS", '${board.CONTENTS}');
 		comSubmit.setUrl("<c:url value='/write.do' />");
 		comSubmit.submit();
 	}
@@ -296,7 +296,7 @@
 		comAjax.setUrl("<c:url value='/insComment.do' />");
 		comAjax.addParam("BOARD_KEY", params.key);
 		comAjax.addParam("COMMENT_NAME", params.name);
-		comAjax.addParam("COMMENT_CONTENTS", params.contents);
+		comAjax.addParam("COMMENT_CONTENTS", params.k);
 		comAjax.setCallback("fn_insCommentCallback");
 		comAjax.ajax();
 	}
