@@ -222,8 +222,10 @@
 						"<tr class='notice'>" + 
 						"<td><img src='/images/christmas-star.png' /></td>" +
 						"<td class='title'>" + 
-						"<a href='#this' name='title'>" + value.TITLE + "</a>" + 
+						"<a href=post/"+value.BOARD_IDX+" name='title'>" + value.TITLE + "</a>" + 
 						"<input type='hidden' id='BOARD_KEY' name='BOARD_KEY' value=" + value.BOARD_KEY + ">" +
+						"<input type='hidden' id='BOARD_IDX' name='BOARD_IDX' value=" + value.BOARD_IDX + ">" +
+						"<input type='hidden' id='BOARD_DVSN' name='BOARD_DVSN' value=" + value.BOARD_DVSN + ">" +
 						"<input type='hidden' id='DEL_YN' name='DEL_YN' value=" + value.DEL_YN + ">" +
 						"</td>" +
 						"<td>" + value.NAME + "</td>" + 
@@ -235,8 +237,10 @@
 						"<tr>" +
 						"<td>" + value.BOARD_IDX + "</td>" + 
 						"<td class='title'>" + 
-						"<a href='#this' name='title'>" + value.TITLE + "</a>" + 
+						"<a href=post/"+value.BOARD_IDX+" name='title'>" + value.TITLE + "</a>" + 
 						"<input type='hidden' id='BOARD_KEY' name='BOARD_KEY' value=" + value.BOARD_KEY + ">" +
+						"<input type='hidden' id='BOARD_IDX' name='BOARD_IDX' value=" + value.BOARD_IDX + ">" +
+						"<input type='hidden' id='BOARD_DVSN' name='BOARD_DVSN' value=" + value.BOARD_DVSN + ">" +
 						"<input type='hidden' id='DEL_YN' name='DEL_YN' value=" + value.DEL_YN + ">" +
 						"</td>" +
 						"<td>" + value.NAME + "</td>" + 
@@ -271,22 +275,26 @@
 			$("a[name='title']").on("click", function(e) {
 				e.preventDefault();
 				var sBoardKey = $(this).parent().find("#BOARD_KEY").val();
+				var sBoardIdx = $(this).parent().find("#BOARD_IDX").val();
+				var sBoardDvsn = $(this).parent().find("#BOARD_DVSN").val();
 				var sDelYn = $(this).parent().find("#DEL_YN").val();
 				if(sDelYn == "Y"){
 					gfn_alertPopup({message:"이미 삭제된 글입니다."});
 					return false;
 				}
 				
-				fn_goBoardDetail(sCommand, sBoardKey);
+				fn_goPost({sBoardKey: sBoardKey
+					, sBoardIdx: sBoardIdx, sBoardDvsn: sBoardDvsn});
 			});
 		}
 	}
 	
-	function fn_goBoardDetail(sCommand, sBoardKey){
+	function fn_goPost(params){
 		var comSubmit = new ComSubmit();
-		comSubmit.setUrl("<c:url value='post.do' />");
-		comSubmit.addParam("COMMAND", sCommand);
-		comSubmit.addParam("BOARD_KEY", sBoardKey);
+		comSubmit.setUrl("<c:url value='post/"+params.sBoardIdx+""+"' />");
+		//comSubmit.addParam("COMMAND", params.sBoardDvsn);
+		//comSubmit.addParam("BOARD_KEY", params.sBoardKey);
+		//comSubmit.addParam("BOARD_IDX", params.sBoardIdx);
 		comSubmit.submit();
 	}
 	

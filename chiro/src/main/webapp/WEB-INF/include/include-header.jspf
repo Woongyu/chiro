@@ -1,9 +1,22 @@
+<%@page import="java.util.Map"%>
 <%@ page pageEncoding="UTF-8"%>
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <title>카이로76</title>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%
+	@SuppressWarnings("unchecked")
+	Map<String, Object> loginInfo = (Map<String, Object>) session.getAttribute("loginInfo");
+	String sUserKey = "";
+	String sUserName = "";
+	String sUserAuth = "";
+	if(loginInfo != null){
+		sUserKey = (String) loginInfo.get("USER_KEY");
+		sUserName = (String) loginInfo.get("USER_NAME");
+		sUserAuth = (String) loginInfo.get("USER_AUTH");
+	}
+%>
 <style type="text/css">
 .my_info {
 	box-shadow: 2.5px 2.5px 0px 2.5px #ffc10750;

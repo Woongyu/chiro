@@ -25,7 +25,7 @@ public interface MyService {
 	
 	void updBoardHit(String sStr) throws Exception;
 
-	Map<String, Object> srchBoardDetail(String sStr) throws Exception;
+	Map<String, Object> srchPost(String sStr) throws Exception;
 
 	Object delBoard(String sStr) throws Exception;
 

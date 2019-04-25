@@ -29,6 +29,7 @@
 			  , A.CHK_INFO
 			  , A.DEL_YN
 			  , A.PC_DT
+			  , A.BOARD_DVSN
 			FROM
 			(
 				SELECT
@@ -50,6 +51,7 @@
 				  , T1.CHK_INFO
 				  , T1.DEL_YN
 				  , DATE_FORMAT(T1.PC_DT, '%Y-%m-%d') AS PC_DT
+				  , T1.BOARD_DVSN
 				FROM TB_BOARD T1
 				WHERE 1 = 1
 				AND T1.CHK_INFO = '1'
@@ -77,6 +79,7 @@
 				  , T1.CHK_INFO
 				  , T1.DEL_YN
 				  , DATE_FORMAT(T1.PC_DT, '%Y-%m-%d') AS PC_DT
+				  , T1.BOARD_DVSN
 				FROM TB_BOARD T1
 				WHERE 1 = 1
 				AND T1.BOARD_DVSN = #{BOARD_DVSN}
@@ -235,11 +238,11 @@
 			SET
 				HIT_CNT = IFNULL(HIT_CNT, 0) + 1
 			WHERE 1 = 1
-			AND BOARD_KEY = #{BOARD_KEY}
+			AND BOARD_IDX = #{BOARD_IDX}
 		]]>
 	</update>
 	
-	<select id="srchBoardDetail" parameterType="string" resultType="hashmap">
+	<select id="srchPost" parameterType="string" resultType="hashmap">
 		<![CDATA[
 			SELECT
 				(CASE WHEN  T1.USER_KEY <> '' THEN
@@ -256,9 +259,16 @@
 			  , T1.TITLE
 			  , T1.CONTENTS
 			  , DATE_FORMAT(T1.PC_DT, '%Y-%m-%d') AS PC_DT
+			  , T1.BOARD_DVSN
+			  , T1.BOARD_IDX
 			FROM TB_BOARD T1
 			WHERE 1 = 1
-			AND T1.BOARD_KEY = #{BOARD_KEY}
+			AND
+			(
+				T1.BOARD_IDX = #{BOARD_IDX}
+				OR
+				T1.BOARD_KEY = #{BOARD_KEY}
+			)
 		]]>
 	</select>
 	

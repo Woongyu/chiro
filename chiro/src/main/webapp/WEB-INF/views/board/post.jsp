@@ -64,6 +64,14 @@
 							<div class="col-12">
 								<input type="text" readonly="readonly" name="TITLE" id="TITLE" value="${board.TITLE}" placeholder="제목" />
 							</div>
+							<div class="col-12">
+								<div class="box" style="text-align: right; background-color: #fffbbe;">
+									<img src='/images/icons8-link-48.png' width='12px;' />
+									<strong>링크 : <a href="${pageContext.request.contextPath}/post/${board.BOARD_IDX}">
+										<%=request.getScheme() %>://<%=request.getServerName()%>:<%=request.getServerPort()%>/post/${board.BOARD_IDX}
+									</a></strong>
+								</div>
+							</div>
 							
 							<!-- Break -->
 							<div class="col-12">
@@ -184,7 +192,7 @@
 		$("#btnModify").on("click", function(e) { // 수정
 			e.preventDefault();
 			// TODO 수정 시 관리자 체크 or 숨김처리
-			fn_goWritePage(sCommand, "frm");
+			fn_goWritePage("frm");
 		});
 		
 		$("#btnDelete").on("click", function(e) { // 삭제
@@ -228,7 +236,7 @@
 		
 		$("#btnWrite").on("click", function(e) { // 글쓰기
 			e.preventDefault();
-			fn_goWritePage(sCommand);
+			fn_goWritePage();
 		});
 		
 		$("#btnComment").on("click", function(e) { // 댓글
@@ -251,11 +259,10 @@
 		});
 	});
 	
-	function fn_goWritePage(sCommand, obj) {
+	function fn_goWritePage(obj) {
 		// TODO 관리자 로그인 체크
 		var comSubmit = new ComSubmit((!gfn_isNull(obj) ? obj : ""));
 		comSubmit.addParam("COMMAND", sCommand);
-		comSubmit.addParam("CONTENTS", '${board.CONTENTS}');
 		comSubmit.setUrl("<c:url value='/write.do' />");
 		comSubmit.submit();
 	}
@@ -296,7 +303,7 @@
 		comAjax.setUrl("<c:url value='/insComment.do' />");
 		comAjax.addParam("BOARD_KEY", params.key);
 		comAjax.addParam("COMMENT_NAME", params.name);
-		comAjax.addParam("COMMENT_CONTENTS", params.k);
+		comAjax.addParam("COMMENT_CONTENTS", params.contents);
 		comAjax.setCallback("fn_insCommentCallback");
 		comAjax.ajax();
 	}

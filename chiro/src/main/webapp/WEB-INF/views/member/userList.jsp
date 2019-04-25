@@ -5,6 +5,22 @@
 <head>
 <meta charset="UTF-8">
 <%@ include file="/WEB-INF/include/include-header.jspf"%>
+<script type="text/javascript">
+$(document).ready(function() {
+	if(!gfn_isAdmin(<%= sUserAuth %>)){
+		gfn_alertPopup({message:"해당 메뉴에 대한 권한이 없습니다."
+			, fade:125, duration:250});
+		
+		var myTimer = setTimeout(function() {
+			var comSubmit = new ComSubmit();
+			comSubmit.setUrl("<c:url value='main.do' />");
+			comSubmit.submit();
+			
+			clearTimeout(myTimer);
+		}, 500);
+	}
+});
+</script>
 <title>회원목록</title>
 </head>
 <body class="is-preload">

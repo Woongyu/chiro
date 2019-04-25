@@ -81,10 +81,10 @@ google.maps.event.addDomListener(window, 'load', initialize);
 				<section id="banner">
 					<div class="content">
 						<header>
-							<h1>
+							<h1 style="color: #0c084c;">
 								Hi, Welcome to<br /> Chiropractic.
 							</h1>
-							<h2>"카이로76은 카이로프랙틱을 통해 근본적인 방법으로 통증에서 벗어나실 수 있도록 도움을 드립니다."</h2>
+							<h2 style="color: #00b7a8;">"카이로76은 카이로프랙틱을 통해 근본적인 방법으로 통증에서 벗어나실 수 있도록 도움을 드립니다."</h2>
 						</header>
 						<p>카이로프랙틱은 미국에서 약 100년 전에 체계화된 기초 치유요법으로, 미국 외 많은 나라에서 제3 의학으로
 							각광받는 진료 학문입니다. 미국에서는 이미 오래 전부터 1차 진료기관으로 상용화된 의술입니다. 현대인의 70% 이상이
@@ -105,12 +105,12 @@ google.maps.event.addDomListener(window, 'load', initialize);
 				<section id="banner">
 					<div class="content">
 						<header>
-							<h1>
+							<h1 style="color: #0c084c;">
 								기초반 연수생<br />
 								모집안내
 								<img src='/images/icons8-training-48.png' />
 							</h1>
-							<h2>"약물이나 수술 없는 임상 카이로프랙틱학의 정수로 여러분을 모십니다."</h2>
+							<h2 style="color: #00b7a8;">"약물이나 수술 없는 임상 카이로프랙틱학의 정수로 여러분을 모십니다."</h2>
 						</header>
 						<p>약물이나 수술 없이 요통, 두통, 목, 어깨의 만성통증을 근본적으로 치유하는 임상 카이로프랙틱학의 정수로 여러분을 모십니다. 
 						강의와 임상실습 통해 기초 카이로프랙틱을 누구나 따라할 수 있도록 쉽게 교육하며 우리가 알지 못했던 인체의 균형과 치유법을 배우게 됩니다. 
@@ -127,10 +127,10 @@ google.maps.event.addDomListener(window, 'load', initialize);
 				<section id="banner">
 					<div class="content">
 						<header>
-							<h1>
-								<img src='/images/icons8-room-48.png' />
+							<h2 style="color: #096386;">
+								<img src='/images/icons8-room-48.png' width="16px;" />
 								카이로76 공덕센터 내부전경
-							</h1>
+							</h2>
 						</header>
 						<div id="carousel_section">
 							<ul id="picList">
@@ -146,10 +146,10 @@ google.maps.event.addDomListener(window, 'load', initialize);
 				<section id="banner">
 					<div class="content">
 						<header>
-							<h1>
-								<img src='/images/icons8-place-marker-48.png' />
+							<h2 style="color: #096386;">
+								<img src='/images/icons8-place-marker-48.png' width="16px;" />
 								카이로76 위치(공덕역 10번 출구)
-							</h1>
+							</h2>
 						</header>
 						<div id="map-canvas" style="width: 100%; height: 400px"></div>
 					</div>

@@ -62,8 +62,8 @@ public class MyServiceImpl implements MyService {
 	}
 
 	@Override
-	public Map<String, Object> srchBoardDetail(String sStr) throws Exception {
-		return myDAO.srchBoardDetail(sStr);
+	public Map<String, Object> srchPost(String sStr) throws Exception {
+		return myDAO.srchPost(sStr);
 	}
 
 	@Override

@@ -16,6 +16,7 @@ import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -49,10 +50,10 @@ public class MyController {
 		ModelAndView mv = new ModelAndView("jsonView");
 		logger.info("login: " + map.toString());
 		
-		Map<String, Object> login = myService.srchLogin(map.getMap());
-		int nCnt = Integer.parseInt(String.valueOf(login.get("CNT")));
+		Map<String, Object> loginInfo = myService.srchLogin(map.getMap());
+		int nCnt = Integer.parseInt(String.valueOf(loginInfo.get("CNT")));
 		if(nCnt > 0){
-			model.addAttribute("loginInfo", login);
+			model.addAttribute("loginInfo", loginInfo);
 		}
 		
 		mv.addObject("nCnt", nCnt);
@@ -231,7 +232,7 @@ public class MyController {
 		logger.info("write: " + map.toString());
 		
 		if(!Utlz.isBlank(map.get("BOARD_KEY"))){
-			mv.addObject("board", map.getMap());
+			mv.addObject("board", myService.srchPost((String) map.get("BOARD_KEY")));
 		}
 		
 		mv.addObject("COMMAND", sCommand);
@@ -268,20 +269,24 @@ public class MyController {
 	}
 	
 	// 글읽기
-	@PostMapping("/post.do")
-	public ModelAndView goBoardDetail(CommandMap map) throws Exception {
-		ModelAndView mv = new ModelAndView("board/boardDetail");
-		String sBoardKey = (String) map.get("BOARD_KEY");
-		logger.info("post: " + map.toString());
+	@RequestMapping(value = "/post/{idx}")
+	public ModelAndView goPost(@PathVariable("idx") Long nIdx) throws Exception {
+		ModelAndView mv = new ModelAndView("board/post");
+		logger.info("post: " + nIdx);
 		
-		myService.updBoardHit(sBoardKey);
-		mv.addObject("board", myService.srchBoardDetail(sBoardKey));
-		
-		// 댓글 리스트
-		List<Map<String, Object>> list = myService.srchCommentList(sBoardKey);
-		mv.addObject("comment", list);
-		mv.addObject("COMMAND", (String) map.get("COMMAND"));
-		return mv;
+		Map<String, Object> srchPost = myService.srchPost(String.valueOf(nIdx));
+		if(srchPost != null){
+			myService.updBoardHit(String.valueOf(nIdx));
+			mv.addObject("board", srchPost);
+			
+			// 댓글 리스트
+			List<Map<String, Object>> list = myService.srchCommentList((String) srchPost.get("BOARD_KEY"));
+			mv.addObject("comment", list);
+			mv.addObject("COMMAND", (String) srchPost.get("BOARD_DVSN"));
+			return mv;
+		}else{
+			return new ModelAndView("error");
+		}
 	}
 	
 	// 글체크

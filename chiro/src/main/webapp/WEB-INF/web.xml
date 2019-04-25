@@ -39,8 +39,9 @@
 	<servlet-mapping>
 		<servlet-name>action</servlet-name>
 		<url-pattern>*.do</url-pattern>
+		<url-pattern>/post/*</url-pattern>
 	</servlet-mapping>
-
+	
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>classpath*:config/spring/context-*.xml</param-value>

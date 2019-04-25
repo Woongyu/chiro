@@ -51,8 +51,8 @@ public class MyDAO extends AbstractDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	public Map<String, Object> srchBoardDetail(String sStr) throws Exception {
-		return (Map<String, Object>) selectOne("board.srchBoardDetail", sStr);
+	public Map<String, Object> srchPost(String sStr) throws Exception {
+		return (Map<String, Object>) selectOne("board.srchPost", sStr);
 	}
 
 	public Object delBoard(String sStr) throws Exception {

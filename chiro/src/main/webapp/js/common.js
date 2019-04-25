@@ -1,5 +1,18 @@
 "use strict";
 
+var gfv_authAdmin = "0";
+function gfn_isAdmin(sStr) {
+	if(gfn_isNull(sStr)){
+		return false;
+	}
+	
+	if(sStr != gfv_authAdmin){
+		return false;
+	}
+	
+	return true;
+}
+
 function gfn_isNull(str) {
 	var chkStr = new String(str);
 	
@@ -22,7 +35,7 @@ function gfn_isNull(str) {
 	return false;
 }
 
-var gfv_SubmitCallback = "";
+var gfv_submitCallback = "";
 function ComSubmit(opt_formId) {
 	this.formId = gfn_isNull(opt_formId) == true ? "commonForm" : opt_formId;
 	this.url = "";
@@ -43,7 +56,7 @@ function ComSubmit(opt_formId) {
 	};
 	
 	this.setCallback = function setCallback(callBack) {
-		gfv_SubmitCallback = callBack;
+		gfv_submitCallback = callBack;
 	};
 	
 	this.submit = function submit() {
@@ -65,8 +78,8 @@ function ComSubmit(opt_formId) {
 		frm.submit();
 		
 		// 호출 후 콜백
-		if(!gfn_isNull(gfv_SubmitCallback)){
-			eval(gfv_SubmitCallback+"();");
+		if(!gfn_isNull(gfv_submitCallback)){
+			eval(gfv_submitCallback+"();");
 		}
 	};
 }
