@@ -194,8 +194,8 @@
 	var sCommand = '${COMMAND}';
 	
 	$(function(){
-		$("#frm").keydown(function (e) {
-			if(e.keyCode == "13") {
+		$("#frm").keydown(function (event) {
+			if(event.keyCode == "13") {
 				if(window.event) {
 					event.preventDefault();
 					return;

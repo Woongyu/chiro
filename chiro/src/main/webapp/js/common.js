@@ -340,7 +340,7 @@ function gfn_readyAlert() {
 }
 
 function gfn_authAlert() {
-	return gfn_alertPopup({message:"해당 메뉴에 대한 권한이 없습니다."
+	return gfn_alertPopup({message:"해당 기능에 대한 권한이 없습니다."
 		, fade:125, duration:250});
 }
 
