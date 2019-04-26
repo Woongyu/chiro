@@ -7,9 +7,15 @@
 <%@ include file="/WEB-INF/include/include-header.jspf"%>
 <title>글읽기</title>
 <style type="text/css">
-.contents {
+.comment_name {
+	text-align: left;
+}
+.comment_contents {
 	text-align: left;
     padding-left: 1.0em;
+}
+.comment_pc_dt {
+	text-align: right;
 }
 .my_comment {
 	opacity: 0.75;
@@ -18,7 +24,7 @@
 	background: -webkit-linear-gradient(to right, #f7797d, #FBD786, #C6FFDD);
 	background: linear-gradient(to right, #f7797d, #FBD786, #C6FFDD);
 }
-#BOARD_PWD {
+.board_pwd {
 	margin-top: 1.0em;
 }
 #btnConfirm {
@@ -86,20 +92,20 @@
 							</div>
 							
 							<div class="col-12 table-wrapper">
-								<table style="text-align: center;">
+								<table>
 									<colgroup>
-										<col width="10%" />
-										<col width="*" />
 										<col width="15%" />
+										<col width="*" />
+										<col width="20%" />
 									</colgroup>
 									<tbody>
 										<c:choose>
 											<c:when test="${fn:length(comment) > 0}">
 												<c:forEach items="${comment}" var="row">
 													<tr>
-														<td>${row.COMMENT_NAME}</td>
-														<td class="contents">${row.COMMENT_CONTENTS}</td>
-														<td>${row.PC_DT}</td>
+														<td class="comment_name">${row.COMMENT_NAME}</td>
+														<td class="comment_contents">${row.COMMENT_CONTENTS}</td>
+														<td class="comment_pc_dt">${row.PC_DT}</td>
 													</tr>
 												</c:forEach>
 											</c:when>
@@ -114,11 +120,11 @@
 							</div>
 							
 							<div class="col-12 table-wrapper">
-								<table style="text-align: center;">
+								<table>
 									<colgroup>
 										<col width="20%" />
 										<col width="*" />
-										<col width="10%" />
+										<col width="15%" />
 									</colgroup>
 									<tbody>
 										<tr>
@@ -139,8 +145,8 @@
 							<!-- Break -->
 							<div class="col-12">
 								<ul class="actions" style="float: right;">
-									<li><input type="submit" id="btnModify" value="수정" class="button primary" /></li>
-									<li><input type="submit" id="btnDelete" value="삭제" class="button" /></li>
+									<li><input type="submit" id="btnModify" value="수정" class="button primary" style="background-color: #4caf50;" /></li>
+									<li><input type="submit" id="btnDelete" value="삭제" class="button primary" /></li>
 									<li><a href="#this" class="button big" id="btnBoardList">목록</a></li>
 									<li><a href="#this" class="button big" id="btnWrite">글쓰기</a></li>
 								</ul>
@@ -161,7 +167,7 @@
 							<div class="modal-body">
 								<div class="row gtr-uniform">
 									<div class="col-12">
-										<input type="password" id="BOARD_PWD" name="BOARD_PWD" maxlength="4" />
+										<input type="password" class="board_pwd" id="BOARD_PWD" name="BOARD_PWD" maxlength="4" />
 									</div>
 									<div class="col-12-xsmall">
 										<ul class="actions">
@@ -188,28 +194,86 @@
 	var sCommand = '${COMMAND}';
 	
 	$(function(){
-		// TODO 관리자 로그인 체크하여 수정, 삭제, 글쓰기 display 처리
+		$("#frm").keydown(function (e) {
+			if(e.keyCode == "13") {
+				if(window.event) {
+					event.preventDefault();
+					return;
+				}
+			}
+		});
+		
+		switch (sCommand) {
+		case "notice": // 공지사항
+			if(!gfn_isAdmin(<%= sUserAuth %>)){
+				$("#btnModify").css("display", "none");
+				$("#btnDelete").css("display", "none");
+				$("#btnWrite").css("display", "none");
+			}
+			break;
+			
+		case "customer": // 고객 게시판
+			if($("#USER_KEY").val() != "<%= sUserKey %>"){
+				$("#btnModify").css("display", "none");
+			}
+			break;
+
+		default:
+			break;
+		}
+		
+		// 댓글
+		var sUserName = "<%= sUserName %>";
+		if(!gfn_isNull(sUserName)){
+			if(gfn_isAdmin(<%= sUserAuth %>)){
+				sUserName = "관리자";
+			}
+			
+			$("#COMMENT_NAME").val(sUserName);
+			$("#COMMENT_NAME").prop("readonly", true);
+		}
+		
 		$("#btnModify").on("click", function(e) { // 수정
 			e.preventDefault();
-			// TODO 수정 시 관리자 체크 or 숨김처리
+		
+			if(sCommand == "notice"){
+				if(!gfn_isAdmin(<%= sUserAuth %>)){
+					gfn_authError();
+				}
+			}else{
+				if($("#USER_KEY") != "<%= sUserKey %>"){
+					gfn_authError();
+				}
+			}
+			
 			fn_goWritePage("frm");
 		});
 		
 		$("#btnDelete").on("click", function(e) { // 삭제
 			e.preventDefault();
 			
-			// TODO 본인 글에만 삭제버튼이 나타나도록 하기.
 			if(sCommand == "notice"){
+				if(!gfn_isAdmin(<%= sUserAuth %>)){
+					gfn_authError();
+				}
+				
 				if(confirm("정말 삭제하시겠습니까?")){
-					// TODO 삭제 시 관리자 체크 or 숨김처리
 					fn_delBoard();
 				}else{
 					return false;
 				}
 			}else{
-				$("#BOARD_PWD").val("");
-				var comModal = new ComModal();
-				comModal.block();
+				if($("#USER_KEY") != "<%= sUserKey %>"){
+					$("#BOARD_PWD").val("");
+					var comModal = new ComModal();
+					comModal.block();
+				}else{
+					if(confirm("정말 삭제하시겠습니까?")){
+						fn_delBoard();
+					}else{
+						return false;
+					}
+				}
 			}
 		});
 		
@@ -236,31 +300,40 @@
 		
 		$("#btnWrite").on("click", function(e) { // 글쓰기
 			e.preventDefault();
+		
+			if(sCommand == "notice"){
+				if(!gfn_isAdmin(<%= sUserAuth %>)){
+					gfn_authError();
+				}
+			}
+			
 			fn_goWritePage();
 		});
 		
 		$("#btnComment").on("click", function(e) { // 댓글
 			e.preventDefault();
-		
-			var sCommentName = $("#COMMENT_NAME").val();
-			var sCommentContents = $("#COMMENT_CONTENTS").val();
-			if(gfn_isNull(sCommentName)){
-				gfn_alertPopup({message:"이름을 입력하세요."});
-				return false;
-			}
-			
-			if(gfn_isNull(sCommentContents)){
-				gfn_alertPopup({message:"댓글 내용을 입력하세요."});
-				return false;
-			}
-			
-			fn_insComment({name: sCommentName
-				, contents: sCommentContents, key: $("#BOARD_KEY").val()});
+			fn_chkComment();
 		});
 	});
 	
+	function fn_chkComment() {
+		var sCommentName = $("#COMMENT_NAME").val();
+		var sCommentContents = $("#COMMENT_CONTENTS").val();
+		if(gfn_isNull(sCommentName)){
+			gfn_alertPopup({message:"이름을 입력하세요."});
+			return false;
+		}
+		
+		if(gfn_isNull(sCommentContents)){
+			gfn_alertPopup({message:"댓글 내용을 입력하세요."});
+			return false;
+		}
+		
+		fn_insComment({name: sCommentName
+			, contents: sCommentContents, key: $("#BOARD_KEY").val()});
+	}
+	
 	function fn_goWritePage(obj) {
-		// TODO 관리자 로그인 체크
 		var comSubmit = new ComSubmit((!gfn_isNull(obj) ? obj : ""));
 		comSubmit.addParam("COMMAND", sCommand);
 		comSubmit.setUrl("<c:url value='/write.do' />");
@@ -344,7 +417,6 @@
 		if(!gfn_isNull(bTf)){
 			if(bTf == true){
 				if(confirm("정말 삭제하시겠습니까?")){
-					// TODO 삭제 시 관리자 체크 or 숨김처리
 					fn_delBoard();
 				}else{
 					return false;

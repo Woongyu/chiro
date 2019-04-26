@@ -170,11 +170,23 @@
 		
 		$("#side_join").on("click", function(e) {
 			e.preventDefault();
+			
+			if(!gfn_isAdmin(<%= sUserAuth %>)){
+				gfn_authAlert();
+				return false;
+			}
+			
 			fn_goJoin();
 		});
 		
 		$("#side_userList").on("click", function(e) {
 			e.preventDefault();
+			
+			if(!gfn_isAdmin(<%= sUserAuth %>)){
+				gfn_authAlert();
+				return false;
+			}
+			
 			fn_goUserList();
 		});
 		

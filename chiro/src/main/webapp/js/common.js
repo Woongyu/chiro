@@ -334,7 +334,24 @@ function gfn_removeCommas(x) {
 	else return x.split(",").join("");
 }
 
-function gfn_readyAlert(){
+function gfn_readyAlert() {
 	gfn_alertPopup({message:"해당 기능은 준비중입니다."});
 	return false;
+}
+
+function gfn_authAlert() {
+	return gfn_alertPopup({message:"해당 메뉴에 대한 권한이 없습니다."
+		, fade:125, duration:250});
+}
+
+function gfn_authError(){
+	gfn_authAlert();
+	
+	var myTimer = setTimeout(function() {
+		var comSubmit = new ComSubmit();
+		comSubmit.setUrl("main.do");
+		comSubmit.submit();
+		
+		clearTimeout(myTimer);
+	}, 500);
 }

@@ -36,7 +36,7 @@
 							<div class="col-12-xsmall">
 								<input type="text" name="NAME" id="NAME" value="${board.NAME}" placeholder="작성자" maxlength="30" />
 								<input type="hidden" id="BOARD_KEY" name="BOARD_KEY" value="${board.BOARD_KEY}" />
-								<input type="hidden" id="USER_KEY" name="USER_KEY" value="${board.USER_KEY}" />
+								<input type="hidden" id="USER_KEY" name="USER_KEY" value="<%= sUserKey %>" />
 							</div>
 							<div class="col-12-xsmall BOARD_PWD">
 								<input type="password" id="BOARD_PWD" name="BOARD_PWD" placeholder="비밀번호" maxlength="4" />
@@ -97,6 +97,18 @@
 				bUseModeChanger : true,
 			}
 		});
+		
+		if(gfn_isNull($("#NAME").val())){
+			var sUserName = "<%= sUserName %>";
+			if(!gfn_isNull(sUserName)){
+				if(gfn_isAdmin(<%= sUserAuth %>)){
+					sUserName = "관리자";
+				}
+				
+				$("#NAME").val(sUserName);
+				$("#NAME").prop("readonly", true);
+			}
+		}
 		
 		if(!gfn_isNull(sBoardKey)){
 			$("H1").append("(UPDATE)"); // header

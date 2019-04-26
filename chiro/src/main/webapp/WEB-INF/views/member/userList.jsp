@@ -8,16 +8,7 @@
 <script type="text/javascript">
 $(document).ready(function() {
 	if(!gfn_isAdmin(<%= sUserAuth %>)){
-		gfn_alertPopup({message:"해당 메뉴에 대한 권한이 없습니다."
-			, fade:125, duration:250});
-		
-		var myTimer = setTimeout(function() {
-			var comSubmit = new ComSubmit();
-			comSubmit.setUrl("<c:url value='main.do' />");
-			comSubmit.submit();
-			
-			clearTimeout(myTimer);
-		}, 500);
+		gfn_authError();
 	}
 });
 </script>

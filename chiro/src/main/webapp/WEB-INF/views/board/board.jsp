@@ -143,6 +143,9 @@
 			$("#board_h1").append("공지사항");
 			$("#board_h2").append("카이로76의 소식을 들려드립니다.");
 			img.src = '/images/board_pic01.png';
+			if(!gfn_isAdmin(<%= sUserAuth %>)){
+				$("#btnWrite").css("display", "none");
+			}
 			break;
 			
 		case "customer": // 고객 게시판
@@ -159,6 +162,13 @@
 		
 		$("#btnWrite").on("click", function(e) {
 			e.preventDefault();
+			
+			if(sCommand == "notice"){
+				if(!gfn_isAdmin(<%= sUserAuth %>)){
+					gfn_authError();
+				}
+			}
+			
 			fn_goWritePage(sCommand);
 		});
 		
@@ -299,7 +309,6 @@
 	}
 	
 	function fn_goWritePage(sCommand) {
-		// TODO 관리자 로그인 체크
 		var comSubmit = new ComSubmit();
 		comSubmit.addParam("COMMAND", sCommand);
 		comSubmit.setUrl("<c:url value='/write.do' />");
